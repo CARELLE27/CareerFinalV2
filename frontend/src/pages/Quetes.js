@@ -73,7 +73,7 @@ export default function Quetes() {
     getMesQuetes().then(r => setQuetes(r.data));
     setResult(null);
     setSoumission('');
- 
+   }; 
 
   const filtrees = quetes.filter(uq => {
     if (filtre === 'tous')         return true;
