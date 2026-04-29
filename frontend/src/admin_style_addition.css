@@ -1,0 +1,11 @@
+/* A ajouter dans App.css, dans la section NAVBAR */
+.navbar-links a.admin-link {
+  background: rgba(124,58,237,0.15);
+  border: 1px solid #7c3aed;
+  color: #a78bfa;
+}
+.navbar-links a.admin-link:hover,
+.navbar-links a.admin-link.active {
+  background: #7c3aed;
+  color: white;
+}
