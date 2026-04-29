@@ -1,0 +1,149 @@
+/* ===== MODAL COMPÉTENCE DÉBLOQUÉE ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-box {
+  background: linear-gradient(135deg, #1a1a2e, #2d1060);
+  border: 2px solid #7c3aed;
+  border-radius: 20px;
+  padding: 36px 32px;
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(124, 58, 237, 0.4);
+  animation: slideUp 0.3s ease;
+}
+
+/* Trophée animé */
+.modal-trophy {
+  font-size: 4rem;
+  animation: bounce 0.8s ease infinite alternate;
+  margin-bottom: 12px;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-10px); }
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fde047;
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  font-size: 0.9rem;
+  color: #a78bfa;
+  margin-bottom: 20px;
+}
+
+/* Badges compétences */
+.modal-comps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.modal-comp-badge {
+  background: rgba(124, 58, 237, 0.3);
+  border: 2px solid #7c3aed;
+  color: #a78bfa;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.modal-msg {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Section LinkedIn */
+.modal-linkedin-section {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.modal-linkedin-label {
+  font-size: 0.82rem;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+/* Bouton LinkedIn */
+.linkedin-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 20px;
+  background: #0077B5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+
+.linkedin-share-btn:hover {
+  background: #005885;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 119, 181, 0.4);
+}
+
+/* Bouton fermer */
+.modal-close-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.modal-close-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}

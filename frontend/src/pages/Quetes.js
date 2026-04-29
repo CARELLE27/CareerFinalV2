@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getMesQuetes, soumettreQuete, reessayerQuete, getProfil } from '../services/api';
-// import CompetenceUnlockedModal from '../components/CompetenceUnlockedModal';
+ import CompetenceUnlockedModal from '../components/CompetenceUnlockedModal';
 
 const DIFFICULTE = { 1: '⭐ Facile', 2: '⭐⭐ Moyen', 3: '⭐⭐⭐ Difficile' };
 
@@ -116,17 +116,17 @@ export default function Quetes() {
     <div className="page">
       <h1>⚔️ Quêtes</h1>
 
-      {/* {modal && (
-        //LInkedin
-        // <CompetenceUnlockedModal
-        //   competences={modal.competences}
-        //   username={user?.username}
-        //   level={modal.level}
-        //   points={modal.points}
-        //   onClose={() => setModal(null)}
-        // />
+      {modal && (
+       // LInkedin
+        <CompetenceUnlockedModal
+          competences={modal.competences}
+          username={user?.username}
+          level={modal.level}
+          points={modal.points}
+          onClose={() => setModal(null)}
+        />
       )
-      } */}
+      }
 
       {/* Stats */}
       <div className="quetes-stats">
