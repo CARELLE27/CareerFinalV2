@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model  = User
         fields = ['id', 'username', 'email', 'bio', 'github_username',
-                  'points', 'level', 'avatar', 'is_formateur']
+                  'points', 'level', 'avatar', 'is_formateur','is_staff']
 
     def get_level(self, obj):  return obj.get_level()
     def get_avatar(self, obj): return obj.get_avatar()
