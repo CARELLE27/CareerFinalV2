@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getMesQuetes, soumettreQuete, reessayerQuete, getProfil } from '../services/api';
-import CompetenceUnlockedModal from '../components/CompetenceUnlockedModal';
+// import CompetenceUnlockedModal from '../components/CompetenceUnlockedModal';
 
 const DIFFICULTE = { 1: '⭐ Facile', 2: '⭐⭐ Moyen', 3: '⭐⭐⭐ Difficile' };
 
