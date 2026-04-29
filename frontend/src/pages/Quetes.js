@@ -39,28 +39,41 @@ export default function Quetes() {
   };
 
   const handleSoumettre = async (e) => {
-    e.preventDefault();
-    if (!soumission.trim()) return;
-    setLoading(true);
-    setResult(null);
-    try {
-      const res = await soumettreQuete(selected.quete.id, soumission);
-      setResult({ succes: res.data.statut === 'valide', data: res.data });
-      getMesQuetes().then(r => setQuetes(r.data));
-    } catch (err) {
-      const data = err.response?.data || {};
-      setResult({ succes: false, data: { message: data.message || data.error || 'Erreur de validation' } });
-      getMesQuetes().then(r => setQuetes(r.data));
-    }
-    setLoading(false);
-  };
+  e.preventDefault();
+  if (!soumission.trim()) return;
+  setLoading(true);
+  setResult(null);
+  try {
+    const res = await soumettreQuete(selected.quete.id, soumission);
+    setResult({ succes: res.data.statut === 'valide', data: res.data });
+  } catch (err) {
+    // 401 = token expiré → géré par l'intercepteur
+    if (err.response?.status === 401) return;
+    
+    // 422 = mauvaise réponse → afficher le feedback sans planter
+    const data = err.response?.data || {};
+    setResult({
+      succes: false,
+      data: { message: data.message || data.error || 'Réponse incorrecte, réessayez !' }
+    });
+    // Mettre à jour le statut de la quête localement
+    setQuetes(prev => prev.map(q =>
+      q.quete.id === selected.quete.id
+        ? { ...q, statut: 'refuse', feedback: data.message || '' }
+        : q
+    ));
+    setSelected(prev => ({ ...prev, statut: 'refuse', feedback: data.message || '' }));
+  }
+  setLoading(false);
+};
+
 
   const handleReessayer = async (quete_id) => {
     await reessayerQuete(quete_id);
     getMesQuetes().then(r => setQuetes(r.data));
     setResult(null);
     setSoumission('');
-  };
+ 
 
   const filtrees = quetes.filter(uq => {
     if (filtre === 'tous')         return true;
