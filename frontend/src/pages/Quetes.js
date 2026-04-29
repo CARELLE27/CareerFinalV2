@@ -116,15 +116,17 @@ export default function Quetes() {
     <div className="page">
       <h1>⚔️ Quêtes</h1>
 
-      {modal && (
-        <CompetenceUnlockedModal
-          competences={modal.competences}
-          username={user?.username}
-          level={modal.level}
-          points={modal.points}
-          onClose={() => setModal(null)}
-        />
-      )}
+      {/* {modal && (
+        //LInkedin
+        // <CompetenceUnlockedModal
+        //   competences={modal.competences}
+        //   username={user?.username}
+        //   level={modal.level}
+        //   points={modal.points}
+        //   onClose={() => setModal(null)}
+        // />
+      )
+      } */}
 
       {/* Stats */}
       <div className="quetes-stats">
