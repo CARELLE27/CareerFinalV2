@@ -1,21 +1,21 @@
 from rest_framework import serializers
-from .models import User, Competence, UserCompetence, Quete, UserQuete, FILIERES
+from .models import User, Competence, UserCompetence, Quete, UserQuete
 
 
 class UserSerializer(serializers.ModelSerializer):
-    level          = serializers.SerializerMethodField()
-    avatar         = serializers.SerializerMethodField()
-    filiere_label  = serializers.SerializerMethodField()
+    level           = serializers.SerializerMethodField()
+    avatar          = serializers.SerializerMethodField()
+    filieres_labels = serializers.SerializerMethodField()
 
     class Meta:
         model  = User
         fields = ['id', 'username', 'email', 'bio', 'github_username',
                   'points', 'level', 'avatar', 'is_formateur', 'is_staff',
-                  'ecole', 'filiere', 'filiere_label']
+                  'ecole', 'filieres', 'filieres_labels']
 
-    def get_level(self, obj):         return obj.get_level()
-    def get_avatar(self, obj):        return obj.get_avatar()
-    def get_filiere_label(self, obj): return obj.get_filiere_label()
+    def get_level(self, obj):           return obj.get_level()
+    def get_avatar(self, obj):          return obj.get_avatar()
+    def get_filieres_labels(self, obj): return obj.get_filieres_labels()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = User
-        fields = ['username', 'email', 'password', 'ecole', 'filiere']
+        fields = ['username', 'email', 'password', 'ecole', 'filieres']
 
     def create(self, validated_data):
         return User.objects.create_user(
@@ -31,7 +31,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email    = validated_data['email'],
             password = validated_data['password'],
             ecole    = validated_data.get('ecole', ''),
-            filiere  = validated_data.get('filiere', 'informatique'),
+            filieres = validated_data.get('filieres', []),
         )
 
 
