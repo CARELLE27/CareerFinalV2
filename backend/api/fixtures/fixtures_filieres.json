@@ -1,0 +1,10 @@
+[
+  {"model": "api.filiere", "pk": 1, "fields": {"code": "informatique",       "label": "Informatique",        "icone": "💻", "active": true, "ordre": 1}},
+  {"model": "api.filiere", "pk": 2, "fields": {"code": "mathematiques",      "label": "Mathématiques",       "icone": "📐", "active": true, "ordre": 2}},
+  {"model": "api.filiere", "pk": 3, "fields": {"code": "sciences_physiques", "label": "Sciences Physiques",  "icone": "⚗️", "active": true, "ordre": 3}},
+  {"model": "api.filiere", "pk": 4, "fields": {"code": "sciences_naturelles","label": "Sciences Naturelles", "icone": "🌿", "active": true, "ordre": 4}},
+  {"model": "api.filiere", "pk": 5, "fields": {"code": "sante",              "label": "Santé",               "icone": "🏥", "active": true, "ordre": 5}},
+  {"model": "api.filiere", "pk": 6, "fields": {"code": "litterature",        "label": "Littérature",         "icone": "📚", "active": true, "ordre": 6}},
+  {"model": "api.filiere", "pk": 7, "fields": {"code": "langues",            "label": "Langues",             "icone": "🌍", "active": true, "ordre": 7}},
+  {"model": "api.filiere", "pk": 8, "fields": {"code": "culture_generale",   "label": "Culture Générale",    "icone": "🎓", "active": true, "ordre": 8}}
+]

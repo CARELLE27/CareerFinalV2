@@ -493,4 +493,124 @@ def admin_valider_soumission(request, userquete_id):
         uq.save()
         return Response({'message': f'Quête refusée pour {uq.user.username}'})
 
+
+# ── AJOUT DANS backend/api/views.py ──
+# Routes admin pour gérer les écoles et filières
+
+from .models import Ecole, Filiere
+
+# ─── ÉCOLES ──────────────────────────────────────────────────────────────
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def admin_ecoles(request):
+    if not is_admin_or_formateur(request.user):
+        return Response({'error': 'Accès refusé'}, status=403)
+
+    if request.method == 'GET':
+        ecoles = Ecole.objects.filter(active=True)
+        return Response([{
+            'id':    e.id,
+            'nom':   e.nom,
+            'ville': e.ville,
+            'pays':  e.pays,
+            'nb_users': User.objects.filter(ecole=e.nom).count(),
+        } for e in ecoles])
+
+    if request.method == 'POST':
+        nom = request.data.get('nom', '').strip()
+        if not nom:
+            return Response({'error': 'Nom requis'}, status=400)
+        ecole, created = Ecole.objects.get_or_create(
+            nom=nom,
+            defaults={
+                'ville': request.data.get('ville', ''),
+                'pays':  request.data.get('pays', 'France'),
+            }
+        )
+        if not created:
+            return Response({'error': 'Cette école existe déjà'}, status=400)
+        return Response({'id': ecole.id, 'nom': ecole.nom}, status=201)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def admin_ecole_detail(request, ecole_id):
+    if not is_admin_or_formateur(request.user):
+        return Response({'error': 'Accès refusé'}, status=403)
+    try:
+        ecole = Ecole.objects.get(pk=ecole_id)
+        ecole.active = False
+        ecole.save()
+        return Response({'message': f'École "{ecole.nom}" désactivée'})
+    except Ecole.DoesNotExist:
+        return Response({'error': 'École introuvable'}, status=404)
+
+
+# ─── FILIÈRES ────────────────────────────────────────────────────────────
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def liste_filieres(request):
+    """Retourne toutes les filières actives — pour le formulaire d'inscription."""
+    filieres = Filiere.objects.filter(active=True).order_by('ordre', 'label')
+    return Response([{
+        'value': f.code,
+        'label': f"{f.icone} {f.label}",
+    } for f in filieres])
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def admin_filieres(request):
+    if not is_admin_or_formateur(request.user):
+        return Response({'error': 'Accès refusé'}, status=403)
+
+    if request.method == 'GET':
+        filieres = Filiere.objects.all().order_by('ordre')
+        return Response([{
+            'id':      f.id,
+            'code':    f.code,
+            'label':   f.label,
+            'icone':   f.icone,
+            'active':  f.active,
+            'ordre':   f.ordre,
+            'nb_users': User.objects.filter(filieres__contains=f.code).count(),
+        } for f in filieres])
+
+    if request.method == 'POST':
+        code  = request.data.get('code', '').strip().lower().replace(' ', '_')
+        label = request.data.get('label', '').strip()
+        icone = request.data.get('icone', '🎓')
+        ordre = request.data.get('ordre', 99)
+        if not code or not label:
+            return Response({'error': 'Code et label requis'}, status=400)
+        if Filiere.objects.filter(code=code).exists():
+            return Response({'error': 'Ce code filière existe déjà'}, status=400)
+        f = Filiere.objects.create(code=code, label=label, icone=icone, ordre=ordre)
+        return Response({'id': f.id, 'code': f.code, 'label': f.label}, status=201)
+
+
+@api_view(['PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def admin_filiere_detail(request, filiere_id):
+    if not is_admin_or_formateur(request.user):
+        return Response({'error': 'Accès refusé'}, status=403)
+    try:
+        f = Filiere.objects.get(pk=filiere_id)
+    except Filiere.DoesNotExist:
+        return Response({'error': 'Filière introuvable'}, status=404)
+
+    if request.method == 'PUT':
+        f.label  = request.data.get('label', f.label)
+        f.icone  = request.data.get('icone', f.icone)
+        f.active = request.data.get('active', f.active)
+        f.ordre  = request.data.get('ordre', f.ordre)
+        f.save()
+        return Response({'id': f.id, 'code': f.code, 'label': f.label})
+
+    if request.method == 'DELETE':
+        f.active = False
+        f.save()
+        return Response({'message': f'Filière "{f.label}" désactivée'})
+
+
     return Response({'error': 'decision doit être "valide" ou "refuse"'}, status=400)

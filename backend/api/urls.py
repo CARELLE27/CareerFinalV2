@@ -37,4 +37,8 @@ urlpatterns = [
     path('admin/competences/<int:comp_id>/', views.admin_competence_detail),
     path('admin/soumissions/', views.admin_soumissions_attente),
     path('admin/soumissions/<int:userquete_id>/valider/', views.admin_valider_soumission),
+path('admin/ecoles/',              views.admin_ecoles),
+path('admin/ecoles/<int:ecole_id>/', views.admin_ecole_detail),
+path('admin/filieres/',              views.admin_filieres),
+path('admin/filieres/<int:filiere_id>/', views.admin_filiere_detail),
 ]

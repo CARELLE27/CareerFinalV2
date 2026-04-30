@@ -52,6 +52,12 @@ export const getClassementFiliere = (filiere) => api.get(`/classement/?filiere=$
 export const connectGithub = (username) => api.get(`/github/${username}/`);
 
 // ── ADMIN ─────────────────────────────────────────────────
+export const getAdminEcoles    = ()     => api.get('/admin/ecoles/');
+export const creerEcole        = (data) => api.post('/admin/ecoles/', data);
+export const supprimerEcole    = (id)   => api.delete(`/admin/ecoles/${id}/`);
+export const getAdminFilieres  = ()     => api.get('/admin/filieres/');
+export const creerFiliere      = (data) => api.post('/admin/filieres/', data);
+export const supprimerFiliere  = (id)   => api.delete(`/admin/filieres/${id}/`);
 export const getAdminStats       = ()              => api.get('/admin/stats/');
 export const getAdminUsers       = ()              => api.get('/admin/users/');
 export const supprimerUser       = (id)            => api.delete(`/admin/users/${id}/`);
