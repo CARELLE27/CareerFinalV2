@@ -5,11 +5,15 @@ urlpatterns = [
     # Auth
     path('auth/register/', views.register),
 
+    # Filières
+    path('filieres/', views.liste_filieres),
+
     # Profil
     path('profil/', views.profil),
 
     # Compétences
     path('competences/', views.liste_competences),
+    path('competences/all/', views.liste_competences_all),
     path('competences/mes/', views.mes_competences),
 
     # Quêtes
@@ -23,7 +27,7 @@ urlpatterns = [
     # GitHub
     path('github/<str:username>/', views.github_repos),
 
-    # ── ADMIN ──
+    # Admin
     path('admin/stats/', views.admin_stats),
     path('admin/users/', views.admin_liste_users),
     path('admin/users/<int:user_id>/', views.admin_supprimer_user),

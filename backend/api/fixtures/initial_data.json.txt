@@ -1,0 +1,154 @@
+[
+  {"model": "api.competence", "pk": 1,  "fields": {"nom": "HTML/CSS",      "categorie": "frontend", "niveau_requis": 1, "description": "Bases du web : structuration et mise en forme"}},
+  {"model": "api.competence", "pk": 2,  "fields": {"nom": "JavaScript",    "categorie": "frontend", "niveau_requis": 1, "description": "Langage de programmation web côté client"}},
+  {"model": "api.competence", "pk": 3,  "fields": {"nom": "React",         "categorie": "frontend", "niveau_requis": 3, "description": "Framework JavaScript pour interfaces utilisateur"}},
+  {"model": "api.competence", "pk": 4,  "fields": {"nom": "Python",        "categorie": "backend",  "niveau_requis": 1, "description": "Langage de programmation polyvalent"}},
+  {"model": "api.competence", "pk": 5,  "fields": {"nom": "Django",        "categorie": "backend",  "niveau_requis": 3, "description": "Framework web Python complet"}},
+  {"model": "api.competence", "pk": 6,  "fields": {"nom": "Node.js",       "categorie": "backend",  "niveau_requis": 3, "description": "JavaScript côté serveur"}},
+  {"model": "api.competence", "pk": 7,  "fields": {"nom": "Docker",        "categorie": "devops",   "niveau_requis": 2, "description": "Containerisation d'applications"}},
+  {"model": "api.competence", "pk": 8,  "fields": {"nom": "Kubernetes",    "categorie": "devops",   "niveau_requis": 5, "description": "Orchestration de conteneurs"}},
+  {"model": "api.competence", "pk": 9,  "fields": {"nom": "Git",           "categorie": "devops",   "niveau_requis": 1, "description": "Gestion de versions de code source"}},
+  {"model": "api.competence", "pk": 10, "fields": {"nom": "PostgreSQL",    "categorie": "data",     "niveau_requis": 2, "description": "Base de données relationnelle"}},
+  {"model": "api.competence", "pk": 11, "fields": {"nom": "MongoDB",       "categorie": "data",     "niveau_requis": 2, "description": "Base de données NoSQL orientée documents"}},
+  {"model": "api.competence", "pk": 12, "fields": {"nom": "CI/CD GitLab",  "categorie": "devops",   "niveau_requis": 4, "description": "Intégration et déploiement continus"}},
+
+  {
+    "model": "api.quete", "pk": 1,
+    "fields": {
+      "titre": "Créer votre premier repo GitHub public",
+      "description": "Créez un repository public sur GitHub avec une description et un README.",
+      "instructions": "1. Allez sur github.com et créez un nouveau repository\n2. Nommez-le comme vous voulez\n3. Ajoutez une description (obligatoire pour la validation)\n4. Cochez 'Add a README file'\n5. Rendez-le PUBLIC\n6. Soumettez le nom du repo",
+      "points": 50, "type_quete": "github_repo", "icone": "🐙", "difficulte": 1,
+      "validation_config": {}, "active": true,
+      "competences_debloquees": [9]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 2,
+    "fields": {
+      "titre": "Faire au moins 5 commits sur un projet",
+      "description": "Prouvez que vous pratiquez le versioning en faisant 5 commits minimum.",
+      "instructions": "1. Choisissez un repo GitHub existant\n2. Faites au moins 5 commits avec des messages clairs\n3. Exemple : 'feat: add login page', 'fix: correct typo'\n4. Soumettez le nom du repo",
+      "points": 75, "type_quete": "github_commit", "icone": "📝", "difficulte": 1,
+      "validation_config": {"min_commits": 5}, "active": true,
+      "competences_debloquees": [9]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 3,
+    "fields": {
+      "titre": "Containeriser une application avec Docker",
+      "description": "Créez un projet avec un Dockerfile et un docker-compose.yml fonctionnels.",
+      "instructions": "1. Créez un repo GitHub public\n2. Ajoutez : Dockerfile, docker-compose.yml, README.md\n3. Le README doit expliquer comment lancer le projet\n4. Soumettez le nom du repo",
+      "points": 150, "type_quete": "github_file", "icone": "🐳", "difficulte": 3,
+      "validation_config": {"required_files": ["Dockerfile", "docker-compose.yml", "README.md"]},
+      "active": true,
+      "competences_debloquees": [7]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 4,
+    "fields": {
+      "titre": "Quiz : Les bases de Docker",
+      "description": "Prouvez que vous maîtrisez les concepts fondamentaux de Docker.",
+      "instructions": "Question : Quelle commande permet de lancer tous les services définis dans un docker-compose.yml ?\n\na) docker run\nb) docker compose up\nc) docker start\nd) docker build\n\nRépondez avec la lettre uniquement (a, b, c ou d)",
+      "points": 30, "type_quete": "quiz", "icone": "🧠", "difficulte": 1,
+      "validation_config": {"answer": "b", "explanation": "docker compose up lance tous les services définis dans docker-compose.yml."},
+      "active": true,
+      "competences_debloquees": [7]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 5,
+    "fields": {
+      "titre": "Quiz : HTTP et REST API",
+      "description": "Testez vos connaissances sur les APIs REST.",
+      "instructions": "Question : Quel code HTTP retourne-t-on quand une ressource est créée avec succès ?\n\na) 200 OK\nb) 204 No Content\nc) 201 Created\nd) 301 Moved\n\nRépondez avec la lettre uniquement (a, b, c ou d)",
+      "points": 30, "type_quete": "quiz", "icone": "🌐", "difficulte": 1,
+      "validation_config": {"answer": "c", "explanation": "201 Created est le code standard pour indiquer qu'une ressource a été créée."},
+      "active": true,
+      "competences_debloquees": [4]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 6,
+    "fields": {
+      "titre": "Quiz : Git avancé",
+      "description": "Maîtrisez les concepts avancés de Git.",
+      "instructions": "Question : Quelle commande Git permet de fusionner une branche en créant toujours un commit de merge ?\n\na) git merge\nb) git merge --no-ff\nc) git rebase\nd) git cherry-pick\n\nRépondez avec la lettre uniquement",
+      "points": 40, "type_quete": "quiz", "icone": "🔀", "difficulte": 2,
+      "validation_config": {"answer": "b", "explanation": "--no-ff force la création d'un commit de merge."},
+      "active": true,
+      "competences_debloquees": [9]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 7,
+    "fields": {
+      "titre": "Déployer une application en ligne",
+      "description": "Déployez votre application sur un hébergeur et partagez l'URL publique.",
+      "instructions": "1. Déployez sur Render, Railway, Vercel ou autre\n2. Vérifiez que l'URL est accessible publiquement\n3. Soumettez l'URL complète (ex: https://mon-app.render.com)",
+      "points": 200, "type_quete": "url_submit", "icone": "🚀", "difficulte": 3,
+      "validation_config": {"check_accessible": true}, "active": true,
+      "competences_debloquees": [7, 12]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 8,
+    "fields": {
+      "titre": "Créer un pipeline CI/CD GitLab",
+      "description": "Configurez un pipeline GitLab CI avec au moins 2 stages qui passent.",
+      "instructions": "1. Créez un repo GitLab\n2. Ajoutez un .gitlab-ci.yml avec au moins 2 stages\n3. Vérifiez que le pipeline passe (badge vert)\n4. Soumettez l'URL de votre repo GitLab",
+      "points": 175, "type_quete": "url_submit", "icone": "⚙️", "difficulte": 3,
+      "validation_config": {"url_must_contain": "gitlab.com", "check_accessible": false},
+      "active": true,
+      "competences_debloquees": [12]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 9,
+    "fields": {
+      "titre": "Présenter un projet devant l'équipe",
+      "description": "Présentez un projet technique de 5 minutes.",
+      "instructions": "1. Préparez une présentation de 5 minutes d'un projet technique\n2. Présentez devant votre équipe ou formateur\n3. Décrivez ce que vous avez présenté et ce que vous avez appris\n(Votre formateur validera cette quête)",
+      "points": 100, "type_quete": "admin_review", "icone": "🎤", "difficulte": 2,
+      "validation_config": {}, "active": true,
+      "competences_debloquees": []
+    }
+  },
+  {
+    "model": "api.quete", "pk": 10,
+    "fields": {
+      "titre": "Quiz : Kubernetes - Les bases",
+      "description": "Testez vos connaissances sur Kubernetes.",
+      "instructions": "Question : Dans Kubernetes, quel objet maintient un nombre défini de réplicas d'un Pod ?\n\na) Service\nb) Ingress\nc) Deployment\nd) ConfigMap\n\nRépondez avec la lettre uniquement",
+      "points": 50, "type_quete": "quiz", "icone": "☸️", "difficulte": 2,
+      "validation_config": {"answer": "c", "explanation": "Un Deployment gère le cycle de vie des Pods."},
+      "active": true,
+      "competences_debloquees": [8]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 11,
+    "fields": {
+      "titre": "Créer un projet avec README professionnel",
+      "description": "Votre README doit contenir : description, installation, usage et stack.",
+      "instructions": "1. Créez ou améliorez un repo GitHub\n2. README.md doit contenir : description, installation, usage, stack technique\n3. Soumettez le nom du repo",
+      "points": 80, "type_quete": "github_file", "icone": "📖", "difficulte": 2,
+      "validation_config": {"required_files": ["README.md"]}, "active": true,
+      "competences_debloquees": [9]
+    }
+  },
+  {
+    "model": "api.quete", "pk": 12,
+    "fields": {
+      "titre": "Quiz : Python - Décorateurs",
+      "description": "Testez vos bases Python.",
+      "instructions": "Question : Quel symbole Python définit un décorateur ?\n\na) @\nb) #\nc) $\nd) &\n\nRépondez avec la lettre uniquement",
+      "points": 25, "type_quete": "quiz", "icone": "🐍", "difficulte": 1,
+      "validation_config": {"answer": "a", "explanation": "Le symbole @ est utilisé pour appliquer un décorateur en Python."},
+      "active": true,
+      "competences_debloquees": [4]
+    }
+  }
+]

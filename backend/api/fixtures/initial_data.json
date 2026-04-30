@@ -1,154 +1,271 @@
 [
-  {"model": "api.competence", "pk": 1,  "fields": {"nom": "HTML/CSS",      "categorie": "frontend", "niveau_requis": 1, "description": "Bases du web : structuration et mise en forme"}},
-  {"model": "api.competence", "pk": 2,  "fields": {"nom": "JavaScript",    "categorie": "frontend", "niveau_requis": 1, "description": "Langage de programmation web côté client"}},
-  {"model": "api.competence", "pk": 3,  "fields": {"nom": "React",         "categorie": "frontend", "niveau_requis": 3, "description": "Framework JavaScript pour interfaces utilisateur"}},
-  {"model": "api.competence", "pk": 4,  "fields": {"nom": "Python",        "categorie": "backend",  "niveau_requis": 1, "description": "Langage de programmation polyvalent"}},
-  {"model": "api.competence", "pk": 5,  "fields": {"nom": "Django",        "categorie": "backend",  "niveau_requis": 3, "description": "Framework web Python complet"}},
-  {"model": "api.competence", "pk": 6,  "fields": {"nom": "Node.js",       "categorie": "backend",  "niveau_requis": 3, "description": "JavaScript côté serveur"}},
-  {"model": "api.competence", "pk": 7,  "fields": {"nom": "Docker",        "categorie": "devops",   "niveau_requis": 2, "description": "Containerisation d'applications"}},
-  {"model": "api.competence", "pk": 8,  "fields": {"nom": "Kubernetes",    "categorie": "devops",   "niveau_requis": 5, "description": "Orchestration de conteneurs"}},
-  {"model": "api.competence", "pk": 9,  "fields": {"nom": "Git",           "categorie": "devops",   "niveau_requis": 1, "description": "Gestion de versions de code source"}},
-  {"model": "api.competence", "pk": 10, "fields": {"nom": "PostgreSQL",    "categorie": "data",     "niveau_requis": 2, "description": "Base de données relationnelle"}},
-  {"model": "api.competence", "pk": 11, "fields": {"nom": "MongoDB",       "categorie": "data",     "niveau_requis": 2, "description": "Base de données NoSQL orientée documents"}},
-  {"model": "api.competence", "pk": 12, "fields": {"nom": "CI/CD GitLab",  "categorie": "devops",   "niveau_requis": 4, "description": "Intégration et déploiement continus"}},
+  
 
-  {
-    "model": "api.quete", "pk": 1,
-    "fields": {
-      "titre": "Créer votre premier repo GitHub public",
-      "description": "Créez un repository public sur GitHub avec une description et un README.",
-      "instructions": "1. Allez sur github.com et créez un nouveau repository\n2. Nommez-le comme vous voulez\n3. Ajoutez une description (obligatoire pour la validation)\n4. Cochez 'Add a README file'\n5. Rendez-le PUBLIC\n6. Soumettez le nom du repo",
-      "points": 50, "type_quete": "github_repo", "icone": "🐙", "difficulte": 1,
-      "validation_config": {}, "active": true,
-      "competences_debloquees": [9]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 2,
-    "fields": {
-      "titre": "Faire au moins 5 commits sur un projet",
-      "description": "Prouvez que vous pratiquez le versioning en faisant 5 commits minimum.",
-      "instructions": "1. Choisissez un repo GitHub existant\n2. Faites au moins 5 commits avec des messages clairs\n3. Exemple : 'feat: add login page', 'fix: correct typo'\n4. Soumettez le nom du repo",
-      "points": 75, "type_quete": "github_commit", "icone": "📝", "difficulte": 1,
-      "validation_config": {"min_commits": 5}, "active": true,
-      "competences_debloquees": [9]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 3,
-    "fields": {
-      "titre": "Containeriser une application avec Docker",
-      "description": "Créez un projet avec un Dockerfile et un docker-compose.yml fonctionnels.",
-      "instructions": "1. Créez un repo GitHub public\n2. Ajoutez : Dockerfile, docker-compose.yml, README.md\n3. Le README doit expliquer comment lancer le projet\n4. Soumettez le nom du repo",
-      "points": 150, "type_quete": "github_file", "icone": "🐳", "difficulte": 3,
-      "validation_config": {"required_files": ["Dockerfile", "docker-compose.yml", "README.md"]},
-      "active": true,
-      "competences_debloquees": [7]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 4,
-    "fields": {
-      "titre": "Quiz : Les bases de Docker",
-      "description": "Prouvez que vous maîtrisez les concepts fondamentaux de Docker.",
-      "instructions": "Question : Quelle commande permet de lancer tous les services définis dans un docker-compose.yml ?\n\na) docker run\nb) docker compose up\nc) docker start\nd) docker build\n\nRépondez avec la lettre uniquement (a, b, c ou d)",
-      "points": 30, "type_quete": "quiz", "icone": "🧠", "difficulte": 1,
-      "validation_config": {"answer": "b", "explanation": "docker compose up lance tous les services définis dans docker-compose.yml."},
-      "active": true,
-      "competences_debloquees": [7]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 5,
-    "fields": {
-      "titre": "Quiz : HTTP et REST API",
-      "description": "Testez vos connaissances sur les APIs REST.",
-      "instructions": "Question : Quel code HTTP retourne-t-on quand une ressource est créée avec succès ?\n\na) 200 OK\nb) 204 No Content\nc) 201 Created\nd) 301 Moved\n\nRépondez avec la lettre uniquement (a, b, c ou d)",
-      "points": 30, "type_quete": "quiz", "icone": "🌐", "difficulte": 1,
-      "validation_config": {"answer": "c", "explanation": "201 Created est le code standard pour indiquer qu'une ressource a été créée."},
-      "active": true,
-      "competences_debloquees": [4]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 6,
-    "fields": {
-      "titre": "Quiz : Git avancé",
-      "description": "Maîtrisez les concepts avancés de Git.",
-      "instructions": "Question : Quelle commande Git permet de fusionner une branche en créant toujours un commit de merge ?\n\na) git merge\nb) git merge --no-ff\nc) git rebase\nd) git cherry-pick\n\nRépondez avec la lettre uniquement",
-      "points": 40, "type_quete": "quiz", "icone": "🔀", "difficulte": 2,
-      "validation_config": {"answer": "b", "explanation": "--no-ff force la création d'un commit de merge."},
-      "active": true,
-      "competences_debloquees": [9]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 7,
-    "fields": {
-      "titre": "Déployer une application en ligne",
-      "description": "Déployez votre application sur un hébergeur et partagez l'URL publique.",
-      "instructions": "1. Déployez sur Render, Railway, Vercel ou autre\n2. Vérifiez que l'URL est accessible publiquement\n3. Soumettez l'URL complète (ex: https://mon-app.render.com)",
-      "points": 200, "type_quete": "url_submit", "icone": "🚀", "difficulte": 3,
-      "validation_config": {"check_accessible": true}, "active": true,
-      "competences_debloquees": [7, 12]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 8,
-    "fields": {
-      "titre": "Créer un pipeline CI/CD GitLab",
-      "description": "Configurez un pipeline GitLab CI avec au moins 2 stages qui passent.",
-      "instructions": "1. Créez un repo GitLab\n2. Ajoutez un .gitlab-ci.yml avec au moins 2 stages\n3. Vérifiez que le pipeline passe (badge vert)\n4. Soumettez l'URL de votre repo GitLab",
-      "points": 175, "type_quete": "url_submit", "icone": "⚙️", "difficulte": 3,
-      "validation_config": {"url_must_contain": "gitlab.com", "check_accessible": false},
-      "active": true,
-      "competences_debloquees": [12]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 9,
-    "fields": {
-      "titre": "Présenter un projet devant l'équipe",
-      "description": "Présentez un projet technique de 5 minutes.",
-      "instructions": "1. Préparez une présentation de 5 minutes d'un projet technique\n2. Présentez devant votre équipe ou formateur\n3. Décrivez ce que vous avez présenté et ce que vous avez appris\n(Votre formateur validera cette quête)",
-      "points": 100, "type_quete": "admin_review", "icone": "🎤", "difficulte": 2,
-      "validation_config": {}, "active": true,
-      "competences_debloquees": []
-    }
-  },
-  {
-    "model": "api.quete", "pk": 10,
-    "fields": {
-      "titre": "Quiz : Kubernetes - Les bases",
-      "description": "Testez vos connaissances sur Kubernetes.",
-      "instructions": "Question : Dans Kubernetes, quel objet maintient un nombre défini de réplicas d'un Pod ?\n\na) Service\nb) Ingress\nc) Deployment\nd) ConfigMap\n\nRépondez avec la lettre uniquement",
-      "points": 50, "type_quete": "quiz", "icone": "☸️", "difficulte": 2,
-      "validation_config": {"answer": "c", "explanation": "Un Deployment gère le cycle de vie des Pods."},
-      "active": true,
-      "competences_debloquees": [8]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 11,
-    "fields": {
-      "titre": "Créer un projet avec README professionnel",
-      "description": "Votre README doit contenir : description, installation, usage et stack.",
-      "instructions": "1. Créez ou améliorez un repo GitHub\n2. README.md doit contenir : description, installation, usage, stack technique\n3. Soumettez le nom du repo",
-      "points": 80, "type_quete": "github_file", "icone": "📖", "difficulte": 2,
-      "validation_config": {"required_files": ["README.md"]}, "active": true,
-      "competences_debloquees": [9]
-    }
-  },
-  {
-    "model": "api.quete", "pk": 12,
-    "fields": {
-      "titre": "Quiz : Python - Décorateurs",
-      "description": "Testez vos bases Python.",
-      "instructions": "Question : Quel symbole Python définit un décorateur ?\n\na) @\nb) #\nc) $\nd) &\n\nRépondez avec la lettre uniquement",
-      "points": 25, "type_quete": "quiz", "icone": "🐍", "difficulte": 1,
-      "validation_config": {"answer": "a", "explanation": "Le symbole @ est utilisé pour appliquer un décorateur en Python."},
-      "active": true,
-      "competences_debloquees": [4]
-    }
-  }
+ 
+  {"model":"api.competence","pk":1, "fields":{"nom":"HTML/CSS",       "categorie":"frontend", "niveau_requis":1,"description":"Bases du web","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":2, "fields":{"nom":"JavaScript",     "categorie":"frontend", "niveau_requis":1,"description":"Langage web côté client","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":3, "fields":{"nom":"React",          "categorie":"frontend", "niveau_requis":3,"description":"Framework UI JavaScript","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":4, "fields":{"nom":"Python",         "categorie":"backend",  "niveau_requis":1,"description":"Langage polyvalent","filieres_cibles":["informatique","sciences_physiques","mathematiques"]}},
+  {"model":"api.competence","pk":5, "fields":{"nom":"Django",         "categorie":"backend",  "niveau_requis":3,"description":"Framework web Python","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":6, "fields":{"nom":"Docker",         "categorie":"devops",   "niveau_requis":2,"description":"Containerisation","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":7, "fields":{"nom":"Git",            "categorie":"devops",   "niveau_requis":1,"description":"Gestion de versions","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":8, "fields":{"nom":"CI/CD GitLab",   "categorie":"devops",   "niveau_requis":4,"description":"Intégration continue","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":9, "fields":{"nom":"PostgreSQL",     "categorie":"data",     "niveau_requis":2,"description":"Base de données relationnelle","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":10,"fields":{"nom":"Kubernetes",     "categorie":"devops",   "niveau_requis":5,"description":"Orchestration conteneurs","filieres_cibles":["informatique"]}},
+
+
+  {"model":"api.competence","pk":11,"fields":{"nom":"Rédaction web",      "categorie":"redaction","niveau_requis":1,"description":"Écriture pour le web","filieres_cibles":["litterature","langues"]}},
+  {"model":"api.competence","pk":12,"fields":{"nom":"SEO / Référencement","categorie":"redaction","niveau_requis":2,"description":"Optimisation moteurs de recherche","filieres_cibles":["litterature","langues"]}},
+  {"model":"api.competence","pk":13,"fields":{"nom":"Anglais technique",  "categorie":"langues",  "niveau_requis":1,"description":"Anglais professionnel","filieres_cibles":["langues","informatique"]}},
+  {"model":"api.competence","pk":14,"fields":{"nom":"Traduction",         "categorie":"langues",  "niveau_requis":2,"description":"Traduction de documents","filieres_cibles":["langues"]}},
+  {"model":"api.competence","pk":15,"fields":{"nom":"Communication écrite","categorie":"redaction","niveau_requis":1,"description":"Expression écrite professionnelle","filieres_cibles":["litterature","langues","sante","sciences_naturelles"]}},
+
+ 
+  {"model":"api.competence","pk":16,"fields":{"nom":"Statistiques",       "categorie":"maths",    "niveau_requis":2,"description":"Analyse statistique","filieres_cibles":["mathematiques","sciences_physiques","sante"]}},
+  {"model":"api.competence","pk":17,"fields":{"nom":"Algèbre linéaire",   "categorie":"maths",    "niveau_requis":3,"description":"Matrices et vecteurs","filieres_cibles":["mathematiques","sciences_physiques"]}},
+  {"model":"api.competence","pk":18,"fields":{"nom":"Excel avancé",       "categorie":"data",     "niveau_requis":1,"description":"Tableaux, formules, graphiques","filieres_cibles":["mathematiques","sante","sciences_naturelles","litterature"]}},
+  {"model":"api.competence","pk":19,"fields":{"nom":"Python scientifique","categorie":"sciences", "niveau_requis":2,"description":"NumPy, Pandas, Matplotlib","filieres_cibles":["mathematiques","sciences_physiques","sciences_naturelles"]}},
+  {"model":"api.competence","pk":20,"fields":{"nom":"LaTeX",              "categorie":"redaction","niveau_requis":2,"description":"Rédaction scientifique","filieres_cibles":["mathematiques","sciences_physiques"]}},
+
+
+  {"model":"api.competence","pk":21,"fields":{"nom":"Recherche bibliographique","categorie":"sante","niveau_requis":1,"description":"PubMed, bases de données santé","filieres_cibles":["sante","sciences_naturelles"]}},
+  {"model":"api.competence","pk":22,"fields":{"nom":"Bases de données médicales","categorie":"sante","niveau_requis":2,"description":"SNOMED, CIM-10","filieres_cibles":["sante"]}},
+  {"model":"api.competence","pk":23,"fields":{"nom":"Biostatistiques",    "categorie":"sante",    "niveau_requis":3,"description":"Stats appliquées à la santé","filieres_cibles":["sante"]}},
+
+
+  {"model":"api.competence","pk":24,"fields":{"nom":"Biologie moléculaire","categorie":"sciences","niveau_requis":2,"description":"ADN, protéines, cellules","filieres_cibles":["sciences_naturelles"]}},
+  {"model":"api.competence","pk":25,"fields":{"nom":"Écologie",           "categorie":"sciences", "niveau_requis":1,"description":"Étude des écosystèmes","filieres_cibles":["sciences_naturelles"]}},
+
+ 
+  {"model":"api.competence","pk":26,"fields":{"nom":"Présentation orale", "categorie":"autre",    "niveau_requis":1,"description":"Prise de parole en public","filieres_cibles":[]}},
+  {"model":"api.competence","pk":27,"fields":{"nom":"Gestion de projet",  "categorie":"autre",    "niveau_requis":2,"description":"Organisation et planning","filieres_cibles":[]}},
+  {"model":"api.competence","pk":28,"fields":{"nom":"Travail en équipe",  "categorie":"autre",    "niveau_requis":1,"description":"Collaboration et communication","filieres_cibles":[]}},
+
+  
+
+  {"model":"api.quete","pk":1,"fields":{
+    "titre":"Présenter un projet devant l'équipe",
+    "description":"Présentez un projet de 5 minutes devant votre équipe ou formateur.",
+    "instructions":"1. Préparez une présentation de 5 minutes\n2. Présentez devant votre équipe\n3. Décrivez ce que vous avez appris\n(Votre formateur validera)",
+    "points":100,"type_quete":"admin_review","icone":"🎤","difficulte":2,
+    "validation_config":{},"active":true,
+    "filieres_cibles":[],
+    "competences_debloquees":[26,28]
+  }},
+  {"model":"api.quete","pk":2,"fields":{
+    "titre":"Rédiger un rapport de projet",
+    "description":"Rédigez un rapport structuré sur un projet ou travail réalisé.",
+    "instructions":"1. Rédigez un rapport de 2 pages minimum\n2. Il doit contenir : introduction, développement, conclusion\n3. Soumettez un lien vers le document (Google Docs, PDF en ligne)",
+    "points":80,"type_quete":"url_submit","icone":"📄","difficulte":2,
+    "validation_config":{"check_accessible":false},"active":true,
+    "filieres_cibles":[],
+    "competences_debloquees":[15,28]
+  }},
+  {"model":"api.quete","pk":3,"fields":{
+    "titre":"Quiz : Gestion de projet Agile",
+    "description":"Testez vos connaissances sur les méthodes agiles.",
+    "instructions":"Question : Dans la méthode Scrum, comment s'appelle la réunion quotidienne courte ?\n\na) Sprint Review\nb) Daily Scrum\nc) Sprint Planning\nd) Retrospective\n\nRépondez avec la lettre uniquement",
+    "points":30,"type_quete":"quiz","icone":"📋","difficulte":1,
+    "validation_config":{"answer":"b","explanation":"Le Daily Scrum (ou stand-up) est une réunion de 15 min max chaque jour."},"active":true,
+    "filieres_cibles":[],
+    "competences_debloquees":[27]
+  }},
+
+  
+  {"model":"api.quete","pk":4,"fields":{
+    "titre":"Créer votre premier repo GitHub",
+    "description":"Créez un repository public avec une description et un README.",
+    "instructions":"1. Allez sur github.com\n2. Créez un repo public\n3. Ajoutez une description\n4. Cochez Add README\n5. Soumettez le nom du repo",
+    "points":50,"type_quete":"github_repo","icone":"🐙","difficulte":1,
+    "validation_config":{},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[7]
+  }},
+  {"model":"api.quete","pk":5,"fields":{
+    "titre":"Faire au moins 5 commits",
+    "description":"Pratiquez le versioning avec 5 commits minimum.",
+    "instructions":"1. Sur un repo GitHub\n2. Faites au moins 5 commits avec messages clairs\n3. Soumettez le nom du repo",
+    "points":75,"type_quete":"github_commit","icone":"📝","difficulte":1,
+    "validation_config":{"min_commits":5},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[7]
+  }},
+  {"model":"api.quete","pk":6,"fields":{
+    "titre":"Containeriser une application avec Docker",
+    "description":"Créez un Dockerfile et docker-compose.yml fonctionnels.",
+    "instructions":"1. Créez un repo GitHub public\n2. Ajoutez Dockerfile, docker-compose.yml, README.md\n3. Soumettez le nom du repo",
+    "points":150,"type_quete":"github_file","icone":"🐳","difficulte":3,
+    "validation_config":{"required_files":["Dockerfile","docker-compose.yml","README.md"]},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[6]
+  }},
+  {"model":"api.quete","pk":7,"fields":{
+    "titre":"Quiz : Les bases de Docker",
+    "description":"Maîtrisez les concepts fondamentaux de Docker.",
+    "instructions":"Question : Quelle commande lance tous les services d'un docker-compose.yml ?\n\na) docker run\nb) docker compose up\nc) docker start\nd) docker build\n\nRépondez avec la lettre uniquement",
+    "points":30,"type_quete":"quiz","icone":"🧠","difficulte":1,
+    "validation_config":{"answer":"b","explanation":"docker compose up lance tous les services définis dans docker-compose.yml."},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[6]
+  }},
+  {"model":"api.quete","pk":8,"fields":{
+    "titre":"Déployer une application en ligne",
+    "description":"Déployez votre app et partagez l'URL publique.",
+    "instructions":"1. Déployez sur Render, Railway ou Vercel\n2. Vérifiez que l'URL est accessible\n3. Soumettez l'URL complète",
+    "points":200,"type_quete":"url_submit","icone":"🚀","difficulte":3,
+    "validation_config":{"check_accessible":true},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[6,8]
+  }},
+  {"model":"api.quete","pk":9,"fields":{
+    "titre":"Créer un pipeline CI/CD GitLab",
+    "description":"Configurez un pipeline avec au moins 2 stages.",
+    "instructions":"1. Créez un repo GitLab\n2. Ajoutez .gitlab-ci.yml avec 2 stages minimum\n3. Vérifiez que le pipeline passe\n4. Soumettez l'URL du repo GitLab",
+    "points":175,"type_quete":"url_submit","icone":"⚙️","difficulte":3,
+    "validation_config":{"url_must_contain":"gitlab.com","check_accessible":false},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[8]
+  }},
+  {"model":"api.quete","pk":10,"fields":{
+    "titre":"Quiz : HTTP et REST API",
+    "description":"Testez vos connaissances sur les APIs REST.",
+    "instructions":"Question : Quel code HTTP indique qu'une ressource a été créée avec succès ?\n\na) 200 OK\nb) 204 No Content\nc) 201 Created\nd) 301 Moved\n\nRépondez avec la lettre uniquement",
+    "points":30,"type_quete":"quiz","icone":"🌐","difficulte":1,
+    "validation_config":{"answer":"c","explanation":"201 Created est le code standard pour une création réussie."},"active":true,
+    "filieres_cibles":["informatique"],
+    "competences_debloquees":[4]
+  }},
+
+  
+
+  {"model":"api.quete","pk":11,"fields":{
+    "titre":"Créer un blog ou portfolio écrit",
+    "description":"Publiez un blog ou portfolio en ligne avec au moins 3 articles.",
+    "instructions":"1. Créez un blog (Medium, Wordpress, Wix, ou autre)\n2. Publiez au moins 3 articles de 300 mots minimum\n3. Soumettez l'URL de votre blog",
+    "points":120,"type_quete":"url_submit","icone":"✍️","difficulte":2,
+    "validation_config":{"check_accessible":true},"active":true,
+    "filieres_cibles":["litterature"],
+    "competences_debloquees":[11,15]
+  }},
+  {"model":"api.quete","pk":12,"fields":{
+    "titre":"Quiz : Figures de style",
+    "description":"Identifiez les figures de style en littérature.",
+    "instructions":"Question : Comment s'appelle la figure de style qui consiste à attribuer des qualités humaines à un objet ou une abstraction ?\n\na) Métaphore\nb) Personnification\nc) Synecdoque\nd) Antiphrase\n\nRépondez avec la lettre uniquement",
+    "points":25,"type_quete":"quiz","icone":"📖","difficulte":1,
+    "validation_config":{"answer":"b","explanation":"La personnification attribue des traits humains à des éléments non-humains."},"active":true,
+    "filieres_cibles":["litterature"],
+    "competences_debloquees":[15]
+  }},
+  {"model":"api.quete","pk":13,"fields":{
+    "titre":"Rédiger et publier un article SEO",
+    "description":"Rédigez un article optimisé pour les moteurs de recherche.",
+    "instructions":"1. Choisissez un sujet de votre domaine\n2. Rédigez un article de 500 mots avec mots-clés\n3. Publiez-le en ligne\n4. Soumettez l'URL de l'article",
+    "points":100,"type_quete":"url_submit","icone":"🔍","difficulte":2,
+    "validation_config":{"check_accessible":true},"active":true,
+    "filieres_cibles":["litterature","langues"],
+    "competences_debloquees":[11,12]
+  }},
+
+  
+  {"model":"api.quete","pk":14,"fields":{
+    "titre":"Quiz : Anglais technique — vocabulaire IT",
+    "description":"Maîtrisez le vocabulaire anglais technique en informatique.",
+    "instructions":"Question : En anglais technique, que signifie le terme 'deployment' ?\n\na) Développement\nb) Déploiement\nc) Documentation\nd) Diagnostic\n\nRépondez avec la lettre uniquement",
+    "points":25,"type_quete":"quiz","icone":"🌍","difficulte":1,
+    "validation_config":{"answer":"b","explanation":"Deployment signifie déploiement en anglais technique IT."},"active":true,
+    "filieres_cibles":["langues","informatique"],
+    "competences_debloquees":[13]
+  }},
+  {"model":"api.quete","pk":15,"fields":{
+    "titre":"Traduire un document technique",
+    "description":"Traduisez un document technique de 500 mots dans une autre langue.",
+    "instructions":"1. Choisissez un document technique (notice, guide, article)\n2. Traduisez-le dans une autre langue\n3. Publiez la traduction en ligne (Google Docs, blog)\n4. Soumettez l'URL",
+    "points":90,"type_quete":"url_submit","icone":"🔤","difficulte":2,
+    "validation_config":{"check_accessible":false},"active":true,
+    "filieres_cibles":["langues"],
+    "competences_debloquees":[14,15]
+  }},
+
+  
+
+  {"model":"api.quete","pk":16,"fields":{
+    "titre":"Quiz : Statistiques — moyenne et écart-type",
+    "description":"Maîtrisez les bases des statistiques descriptives.",
+    "instructions":"Question : Quel indicateur mesure la dispersion des données autour de la moyenne ?\n\na) La médiane\nb) Le mode\nc) L'écart-type\nd) Le quartile\n\nRépondez avec la lettre uniquement",
+    "points":30,"type_quete":"quiz","icone":"📊","difficulte":1,
+    "validation_config":{"answer":"c","explanation":"L'écart-type mesure la dispersion des données autour de la moyenne."},"active":true,
+    "filieres_cibles":["mathematiques","sciences_physiques","sante"],
+    "competences_debloquees":[16]
+  }},
+  {"model":"api.quete","pk":17,"fields":{
+    "titre":"Créer un notebook Python scientifique",
+    "description":"Créez un Jupyter Notebook avec analyse de données.",
+    "instructions":"1. Créez un repo GitHub public\n2. Ajoutez un fichier .ipynb avec analyse de données\n3. Utilisez NumPy, Pandas ou Matplotlib\n4. Soumettez le nom du repo",
+    "points":120,"type_quete":"github_file","icone":"🔬","difficulte":2,
+    "validation_config":{"required_files":["README.md"]},"active":true,
+    "filieres_cibles":["mathematiques","sciences_physiques","sciences_naturelles"],
+    "competences_debloquees":[4,19]
+  }},
+  {"model":"api.quete","pk":18,"fields":{
+    "titre":"Rédiger un document LaTeX",
+    "description":"Rédigez un document scientifique en LaTeX.",
+    "instructions":"1. Installez LaTeX (Overleaf en ligne = gratuit)\n2. Rédigez un document avec formules mathématiques\n3. Exportez en PDF et publiez le lien\n4. Soumettez l'URL du PDF",
+    "points":100,"type_quete":"url_submit","icone":"📐","difficulte":2,
+    "validation_config":{"check_accessible":false},"active":true,
+    "filieres_cibles":["mathematiques","sciences_physiques"],
+    "competences_debloquees":[20]
+  }},
+
+ 
+
+  {"model":"api.quete","pk":19,"fields":{
+    "titre":"Quiz : Électricité — loi d'Ohm",
+    "description":"Maîtrisez les bases de l'électricité.",
+    "instructions":"Question : Quelle est la formule de la loi d'Ohm ?\n\na) P = U × I\nb) U = R × I\nc) I = P / U\nd) R = U + I\n\nRépondez avec la lettre uniquement",
+    "points":25,"type_quete":"quiz","icone":"⚡","difficulte":1,
+    "validation_config":{"answer":"b","explanation":"U = R × I est la loi d'Ohm : tension = résistance × intensité."},"active":true,
+    "filieres_cibles":["sciences_physiques"],
+    "competences_debloquees":[16]
+  }},
+
+  
+  {"model":"api.quete","pk":20,"fields":{
+    "titre":"Recherche bibliographique sur PubMed",
+    "description":"Effectuez une recherche bibliographique sur un sujet de santé.",
+    "instructions":"1. Allez sur pubmed.ncbi.nlm.nih.gov\n2. Recherchez 5 articles sur un sujet de santé\n3. Rédigez un résumé de 300 mots\n4. Publiez-le et soumettez le lien",
+    "points":90,"type_quete":"url_submit","icone":"🔬","difficulte":2,
+    "validation_config":{"check_accessible":false},"active":true,
+    "filieres_cibles":["sante"],
+    "competences_debloquees":[21,15]
+  }},
+  {"model":"api.quete","pk":21,"fields":{
+    "titre":"Quiz : Anatomie — système cardiovasculaire",
+    "description":"Testez vos connaissances en anatomie.",
+    "instructions":"Question : Quel est le rôle principal des globules rouges ?\n\na) Défense immunitaire\nb) Coagulation du sang\nc) Transport de l'oxygène\nd) Production d'hormones\n\nRépondez avec la lettre uniquement",
+    "points":25,"type_quete":"quiz","icone":"❤️","difficulte":1,
+    "validation_config":{"answer":"c","explanation":"Les globules rouges (érythrocytes) transportent l'oxygène grâce à l'hémoglobine."},"active":true,
+    "filieres_cibles":["sante"],
+    "competences_debloquees":[21]
+  }},
+
+  
+
+  {"model":"api.quete","pk":22,"fields":{
+    "titre":"Quiz : Biologie — la cellule",
+    "description":"Testez vos connaissances sur la cellule.",
+    "instructions":"Question : Quel organite cellulaire est responsable de la production d'énergie (ATP) ?\n\na) Le noyau\nb) Le ribosome\nc) La mitochondrie\nd) Le réticulum endoplasmique\n\nRépondez avec la lettre uniquement",
+    "points":25,"type_quete":"quiz","icone":"🌿","difficulte":1,
+    "validation_config":{"answer":"c","explanation":"La mitochondrie produit l'ATP (énergie) via la respiration cellulaire."},"active":true,
+    "filieres_cibles":["sciences_naturelles"],
+    "competences_debloquees":[24]
+  }},
+  {"model":"api.quete","pk":23,"fields":{
+    "titre":"Créer un herbier numérique",
+    "description":"Photographiez et documentez 5 espèces végétales.",
+    "instructions":"1. Photographiez 5 plantes différentes\n2. Identifiez chaque espèce (nom commun + nom latin)\n3. Créez un document avec photos et descriptions\n4. Publiez-le en ligne et soumettez le lien",
+    "points":80,"type_quete":"url_submit","icone":"🌱","difficulte":2,
+    "validation_config":{"check_accessible":false},"active":true,
+    "filieres_cibles":["sciences_naturelles"],
+    "competences_debloquees":[25,15]
+  }}
 ]

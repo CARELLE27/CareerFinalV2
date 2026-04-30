@@ -2,11 +2,27 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+FILIERES = [
+    ('informatique',      '💻 Informatique'),
+    ('litterature',       '📚 Littérature'),
+    ('langues',           '🌍 Langues'),
+    ('mathematiques',     '📐 Mathématiques'),
+    ('sciences_physiques','⚗️ Sciences Physiques'),
+    ('sante',             '🏥 Santé'),
+    ('sciences_naturelles','🌿 Sciences Naturelles'),
+    ('autre',             '🎯 Autre'),
+]
+
+
 class User(AbstractUser):
-    bio = models.TextField(blank=True)
+    bio             = models.TextField(blank=True)
     github_username = models.CharField(max_length=100, blank=True)
-    points = models.IntegerField(default=0)
-    is_formateur = models.BooleanField(default=False)
+    points          = models.IntegerField(default=0)
+    is_formateur    = models.BooleanField(default=False)
+
+    # ✅ NOUVEAUX CHAMPS
+    ecole           = models.CharField(max_length=200, blank=True, help_text="Nom de votre école")
+    filiere         = models.CharField(max_length=50, choices=FILIERES, default='informatique')
 
     def get_level(self):
         return max(1, self.points // 100)
@@ -18,32 +34,47 @@ class User(AbstractUser):
         elif level <= 30: return 'senior'
         else:             return 'expert'
 
+    def get_filiere_label(self):
+        return dict(FILIERES).get(self.filiere, self.filiere)
+
     def __str__(self):
         return self.username
 
 
 class Competence(models.Model):
     CATEGORIES = [
-        ('frontend', 'Frontend'),
-        ('backend', 'Backend'),
-        ('devops', 'DevOps'),
-        ('data', 'Data'),
-        ('autre', 'Autre'),
+        ('frontend',  'Frontend'),
+        ('backend',   'Backend'),
+        ('devops',    'DevOps'),
+        ('data',      'Data'),
+        ('redaction', 'Rédaction'),
+        ('langues',   'Langues'),
+        ('sciences',  'Sciences'),
+        ('sante',     'Santé'),
+        ('maths',     'Mathématiques'),
+        ('autre',     'Autre'),
     ]
-    nom = models.CharField(max_length=100)
-    categorie = models.CharField(max_length=50, choices=CATEGORIES)
+    nom           = models.CharField(max_length=100)
+    categorie     = models.CharField(max_length=50, choices=CATEGORIES)
     niveau_requis = models.IntegerField(default=1)
-    description = models.TextField(blank=True)
+    description   = models.TextField(blank=True)
+
+    # ✅ Filières concernées par cette compétence
+    filieres_cibles = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Liste des filières pour lesquelles cette compétence est proposée. Vide = toutes."
+    )
 
     def __str__(self):
         return self.nom
 
 
 class UserCompetence(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='competences')
-    competence = models.ForeignKey(Competence, on_delete=models.CASCADE)
-    date_ajout = models.DateTimeField(auto_now_add=True)
-    auto_debloquee = models.BooleanField(default=False)  # True si débloquée via quête
+    user           = models.ForeignKey(User, on_delete=models.CASCADE, related_name='competences')
+    competence     = models.ForeignKey(Competence, on_delete=models.CASCADE)
+    date_ajout     = models.DateTimeField(auto_now_add=True)
+    auto_debloquee = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'competence')
@@ -63,22 +94,27 @@ class Quete(models.Model):
     ]
     DIFFICULTES = [(1, 'Facile'), (2, 'Moyen'), (3, 'Difficile')]
 
-    titre = models.CharField(max_length=200)
-    description = models.TextField()
-    instructions = models.TextField()
-    points = models.IntegerField(default=50)
-    type_quete = models.CharField(max_length=50, choices=TYPES)
-    icone = models.CharField(max_length=10, default='⚔️')
-    difficulte = models.IntegerField(default=1, choices=DIFFICULTES)
-    validation_config = models.JSONField(default=dict, blank=True)
-    active = models.BooleanField(default=True)
+    titre              = models.CharField(max_length=200)
+    description        = models.TextField()
+    instructions       = models.TextField()
+    points             = models.IntegerField(default=50)
+    type_quete         = models.CharField(max_length=50, choices=TYPES)
+    icone              = models.CharField(max_length=10, default='⚔️')
+    difficulte         = models.IntegerField(default=1, choices=DIFFICULTES)
+    validation_config  = models.JSONField(default=dict, blank=True)
+    active             = models.BooleanField(default=True)
 
-    # ✅ NOUVEAU : compétences débloquées automatiquement quand cette quête est validée
+    # ✅ Filières ciblées — vide = proposée à tout le monde
+    filieres_cibles = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Filières qui voient cette quête en priorité. Vide = toutes les filières."
+    )
+
     competences_debloquees = models.ManyToManyField(
         Competence,
         blank=True,
-        related_name='quetes_associees',
-        help_text="Compétences ajoutées automatiquement au profil quand cette quête est validée"
+        related_name='quetes_associees'
     )
 
     def __str__(self):
@@ -94,15 +130,18 @@ class UserQuete(models.Model):
         ('refuse',       'Refusé ❌'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quetes')
-    quete = models.ForeignKey(Quete, on_delete=models.CASCADE)
-    statut = models.CharField(max_length=20, choices=STATUTS, default='non_commence')
-    soumission = models.TextField(blank=True)
-    soumission_data = models.JSONField(default=dict, blank=True)
-    feedback = models.TextField(blank=True)
-    date_soumission = models.DateTimeField(null=True, blank=True)
-    date_validation = models.DateTimeField(null=True, blank=True)
-    points_gagnes = models.IntegerField(default=0)
+    user             = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quetes')
+    quete            = models.ForeignKey(Quete, on_delete=models.CASCADE)
+    statut           = models.CharField(max_length=20, choices=STATUTS, default='non_commence')
+    soumission       = models.TextField(blank=True)
+    soumission_data  = models.JSONField(default=dict, blank=True)
+    feedback         = models.TextField(blank=True)
+    date_soumission  = models.DateTimeField(null=True, blank=True)
+    date_validation  = models.DateTimeField(null=True, blank=True)
+    points_gagnes    = models.IntegerField(default=0)
+
+    # ✅ Indique si cette quête est recommandée pour la filière de l'utilisateur
+    recommandee      = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'quete')
