@@ -53,24 +53,21 @@ export default function Dashboard() {
         <div className="hero-info">
           <h1>Bienvenue, {user.username} ! ⚔️</h1>
 
-          {/* Tags école + filières */}
-          <div className="hero-meta">
-            {user.ecole && <span className="hero-tag ecole">🏫 {user.ecole}</span>}
-            {filieres.map((f, i) => (
-              <span key={i} className="hero-tag filiere">{f}</span>
-            ))}
-          </div>
-
-          {/* Niveau + nom avatar explicite */}
-          <div className="hero-level-row">
-            <p className="level-badge">Niveau {user.level}</p>
-            <span className="avatar-title-badge">{
-              user.avatar === 'etudiant' ? '🧑‍💻 Étudiant'
-              : user.avatar === 'junior' ? '👨‍🔬 Junior Dev'
-              : user.avatar === 'senior' ? '🧙‍♂️ Senior Dev'
-              : '🦸 Expert'
-            }</span>
-          </div>
+         {/* ✅ École + Niveau + Avatar sur la même ligne */}
+<div className="hero-level-row">
+   <span className="avatar-title-badge">{
+    user.avatar === 'etudiant' ? '🧑‍💻 Étudiant'
+    : user.avatar === 'junior' ? '👨‍🔬 Junior Dev'
+    : user.avatar === 'senior' ? '🧙‍♂️ Senior Dev'
+    : '🦸 Expert'
+  }</span>
+  <p className="level-badge">Niveau {user.level}</p>
+    {/* Filtres filière */}
+  {filieres.map((f, i) => (
+    <span key={i} className="hero-tag filiere">{f}</span>
+  ))}
+   {user.ecole && <span className="hero-tag ecole">🏫 {user.ecole}</span>}
+</div>
 
           {/* Barre XP vers prochain niveau */}
           <ProgressBar
@@ -148,11 +145,18 @@ export default function Dashboard() {
       </div>
 
       <style>{`
+    
         .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
         .hero-tag { padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
         .hero-tag.ecole   { background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid #0ea5e9; }
         .hero-tag.filiere { background: rgba(111,66,193,0.2); color: #a78bfa; border: 1px solid #6f42c1; }
-        .hero-level-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+         .hero-level-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
         .avatar-title-badge {
           background: rgba(111,66,193,0.15);
           border: 1px solid #6f42c1;
