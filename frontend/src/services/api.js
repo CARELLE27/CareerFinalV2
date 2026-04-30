@@ -33,11 +33,11 @@ export const getFilieres = () => api.get('/filieres/');
 export const getProfil    = ()     => api.get('/profil/');
 export const updateProfil = (data) => api.put('/profil/', data);
 
-// ── COMPÉTENCES ───────────────────────────────────────────
-export const getCompetences      = ()    => api.get('/competences/');
-export const getMesCompetences   = ()    => api.get('/competences/mes/');
-export const ajouterCompetence   = (id)  => api.post('/competences/mes/', { competence_id: id });
-export const supprimerCompetence = (id)  => api.delete('/competences/mes/', { data: { competence_id: id } });
+// ── COMPÉTENCES UTILISATEUR ───────────────────────────────
+export const getCompetences           = ()    => api.get('/competences/');
+export const getMesCompetences        = ()    => api.get('/competences/mes/');
+export const ajouterCompetence        = (id)  => api.post('/competences/mes/', { competence_id: id });
+export const supprimerMaCompetence    = (id)  => api.delete('/competences/mes/', { data: { competence_id: id } });
 
 // ── QUÊTES ────────────────────────────────────────────────
 export const getMesQuetes    = ()               => api.get('/quetes/');
