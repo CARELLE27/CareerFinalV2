@@ -1,17 +1,16 @@
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-
 const api = axios.create({ baseURL: `${API_URL}/api` });
 
-// Intercepteur REQUEST — ajoute le token JWT
+// Intercepteur REQUEST
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Intercepteur RESPONSE — gère les 401 automatiquement
+// Intercepteur RESPONSE — gère les 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -27,28 +26,38 @@ api.interceptors.response.use(
 export const register = (data) => api.post('/auth/register/', data);
 export const login    = (data) => api.post('/token/', data);
 
+// ── FILIÈRES ──────────────────────────────────────────────
+export const getFilieres = () => api.get('/filieres/');
+
 // ── PROFIL ────────────────────────────────────────────────
 export const getProfil    = ()     => api.get('/profil/');
 export const updateProfil = (data) => api.put('/profil/', data);
 
-// ── COMPÉTENCES ───────────────────────────────────────────
-export const getCompetences      = ()    => api.get('/competences/');
-export const getMesCompetences   = ()    => api.get('/competences/mes/');
-export const ajouterCompetence   = (id)  => api.post('/competences/mes/', { competence_id: id });
-export const supprimerCompetence_user = (id) => api.delete('/competences/mes/', { data: { competence_id: id } });
+// ── COMPÉTENCES UTILISATEUR ───────────────────────────────
+export const getCompetences           = ()    => api.get('/competences/');
+export const getMesCompetences        = ()    => api.get('/competences/mes/');
+export const ajouterCompetence        = (id)  => api.post('/competences/mes/', { competence_id: id });
+export const supprimerMaCompetence    = (id)  => api.delete('/competences/mes/', { data: { competence_id: id } });
 
 // ── QUÊTES ────────────────────────────────────────────────
-export const getMesQuetes    = ()                => api.get('/quetes/');
-export const soumettreQuete  = (id, soumission)  => api.post(`/quetes/${id}/soumettre/`, { soumission });
-export const reessayerQuete  = (id)              => api.post(`/quetes/${id}/reessayer/`);
+export const getMesQuetes    = ()               => api.get('/quetes/');
+export const soumettreQuete  = (id, soumission) => api.post(`/quetes/${id}/soumettre/`, { soumission });
+export const reessayerQuete  = (id)             => api.post(`/quetes/${id}/reessayer/`);
 
 // ── CLASSEMENT ────────────────────────────────────────────
-export const getClassement = () => api.get('/classement/');
+export const getClassement        = ()        => api.get('/classement/');
+export const getClassementFiliere = (filiere) => api.get(`/classement/?filiere=${filiere}`);
 
 // ── GITHUB ────────────────────────────────────────────────
 export const connectGithub = (username) => api.get(`/github/${username}/`);
 
 // ── ADMIN ─────────────────────────────────────────────────
+export const getAdminEcoles    = ()     => api.get('/admin/ecoles/');
+export const creerEcole        = (data) => api.post('/admin/ecoles/', data);
+export const supprimerEcole    = (id)   => api.delete(`/admin/ecoles/${id}/`);
+export const getAdminFilieres  = ()     => api.get('/admin/filieres/');
+export const creerFiliere      = (data) => api.post('/admin/filieres/', data);
+export const supprimerFiliere  = (id)   => api.delete(`/admin/filieres/${id}/`);
 export const getAdminStats       = ()              => api.get('/admin/stats/');
 export const getAdminUsers       = ()              => api.get('/admin/users/');
 export const supprimerUser       = (id)            => api.delete(`/admin/users/${id}/`);

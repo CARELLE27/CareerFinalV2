@@ -1,3 +1,7 @@
+# Remplacer dans backend/api/models.py
+# Le champ filiere devient filieres (multiple)
+# Et FILIERES remplace "autre" par "culture_generale"
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -9,15 +13,16 @@ FILIERES = [
     ('sciences_physiques', '⚗️ Sciences Physiques'),
     ('sante',              '🏥 Santé'),
     ('sciences_naturelles','🌿 Sciences Naturelles'),
-    ('culture_generale',   '🎓 Culture Générale'),
+    ('culture_generale',   '🎓 Culture Générale'),  # ← Remplace "autre"
 ]
 
 
 class Ecole(models.Model):
-    nom        = models.CharField(max_length=200, unique=True)
-    ville      = models.CharField(max_length=100, blank=True)
-    pays       = models.CharField(max_length=100, default='France')
-    active     = models.BooleanField(default=True)
+    """Écoles gérées par l'admin depuis le dashboard."""
+    nom      = models.CharField(max_length=200, unique=True)
+    ville    = models.CharField(max_length=100, blank=True)
+    pays     = models.CharField(max_length=100, default='France')
+    active   = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -28,11 +33,12 @@ class Ecole(models.Model):
 
 
 class Filiere(models.Model):
-    code       = models.CharField(max_length=50, unique=True)
-    label      = models.CharField(max_length=100)
-    icone      = models.CharField(max_length=10, default='🎓')
-    active     = models.BooleanField(default=True)
-    ordre      = models.IntegerField(default=0)
+    """Filières gérées par l'admin depuis le dashboard."""
+    code     = models.CharField(max_length=50, unique=True)
+    label    = models.CharField(max_length=100)
+    icone    = models.CharField(max_length=10, default='🎓')
+    active   = models.BooleanField(default=True)
+    ordre    = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -48,6 +54,8 @@ class User(AbstractUser):
     points          = models.IntegerField(default=0)
     is_formateur    = models.BooleanField(default=False)
     ecole           = models.CharField(max_length=200, blank=True)
+
+    # ✅ FILIERES MULTIPLES — stockées en JSON ["informatique","mathematiques"]
     filieres        = models.JSONField(default=list, blank=True)
 
     def get_level(self):
@@ -61,13 +69,15 @@ class User(AbstractUser):
         else:             return 'expert'
 
     def get_filieres_labels(self):
+        """Retourne les labels lisibles des filières de l'utilisateur."""
+        from .models import Filiere as FiliereModel
         labels = []
         for code in (self.filieres or []):
-            # ✅ Filiere est défini dans ce même fichier, pas besoin d'import
-            f = Filiere.objects.filter(code=code, active=True).first()
+            f = FiliereModel.objects.filter(code=code, active=True).first()
             if f:
                 labels.append(f"{f.icone} {f.label}")
             else:
+                # Fallback sur le dict statique
                 d = dict(FILIERES)
                 if code in d:
                     labels.append(d[code])
@@ -121,16 +131,16 @@ class Quete(models.Model):
     ]
     DIFFICULTES = [(1, 'Facile'), (2, 'Moyen'), (3, 'Difficile')]
 
-    titre                  = models.CharField(max_length=200)
-    description            = models.TextField()
-    instructions           = models.TextField()
-    points                 = models.IntegerField(default=50)
-    type_quete             = models.CharField(max_length=50, choices=TYPES)
-    icone                  = models.CharField(max_length=10, default='⚔️')
-    difficulte             = models.IntegerField(default=1, choices=DIFFICULTES)
-    validation_config      = models.JSONField(default=dict, blank=True)
-    active                 = models.BooleanField(default=True)
-    filieres_cibles        = models.JSONField(default=list, blank=True)
+    titre             = models.CharField(max_length=200)
+    description       = models.TextField()
+    instructions      = models.TextField()
+    points            = models.IntegerField(default=50)
+    type_quete        = models.CharField(max_length=50, choices=TYPES)
+    icone             = models.CharField(max_length=10, default='⚔️')
+    difficulte        = models.IntegerField(default=1, choices=DIFFICULTES)
+    validation_config = models.JSONField(default=dict, blank=True)
+    active            = models.BooleanField(default=True)
+    filieres_cibles   = models.JSONField(default=list, blank=True)
     competences_debloquees = models.ManyToManyField(
         Competence, blank=True, related_name='quetes_associees'
     )

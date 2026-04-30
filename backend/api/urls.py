@@ -5,6 +5,9 @@ urlpatterns = [
     # Auth
     path('auth/register/', views.register),
 
+    # Filières (public — pour le formulaire d'inscription)
+    path('filieres/', views.liste_filieres),
+
     # Profil
     path('profil/', views.profil),
 
@@ -24,13 +27,17 @@ urlpatterns = [
     path('github/<str:username>/', views.github_repos),
 
     # ── ADMIN ──
-    path('admin/stats/', views.admin_stats),
-    path('admin/users/', views.admin_liste_users),
-    path('admin/users/<int:user_id>/', views.admin_supprimer_user),
-    path('admin/quetes/', views.admin_quetes),
-    path('admin/quetes/<int:quete_id>/', views.admin_quete_detail),
-    path('admin/competences/', views.admin_competences),
-    path('admin/competences/<int:comp_id>/', views.admin_competence_detail),
-    path('admin/soumissions/', views.admin_soumissions_attente),
+    path('admin/stats/',                              views.admin_stats),
+    path('admin/users/',                              views.admin_liste_users),
+    path('admin/users/<int:user_id>/',                views.admin_supprimer_user),
+    path('admin/quetes/',                             views.admin_quetes),
+    path('admin/quetes/<int:quete_id>/',              views.admin_quete_detail),
+    path('admin/competences/',                        views.admin_competences),
+    path('admin/competences/<int:comp_id>/',          views.admin_competence_detail),
+    path('admin/soumissions/',                        views.admin_soumissions_attente),
     path('admin/soumissions/<int:userquete_id>/valider/', views.admin_valider_soumission),
+    path('admin/ecoles/',                             views.admin_ecoles),
+    path('admin/ecoles/<int:ecole_id>/',              views.admin_ecole_detail),
+    path('admin/filieres/',                           views.admin_filieres),
+    path('admin/filieres/<int:filiere_id>/',          views.admin_filiere_detail),
 ]

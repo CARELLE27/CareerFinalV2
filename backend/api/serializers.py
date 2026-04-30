@@ -3,22 +3,19 @@ from .models import User, Competence, UserCompetence, Quete, UserQuete
 
 
 class UserSerializer(serializers.ModelSerializer):
-    level  = serializers.SerializerMethodField()
-    avatar = serializers.SerializerMethodField()
+    level           = serializers.SerializerMethodField()
+    avatar          = serializers.SerializerMethodField()
+    filieres_labels = serializers.SerializerMethodField()
 
     class Meta:
         model  = User
         fields = ['id', 'username', 'email', 'bio', 'github_username',
-                  'points', 'level', 'avatar', 'is_formateur','is_staff']
+                  'points', 'level', 'avatar', 'is_formateur', 'is_staff',
+                  'ecole', 'filieres', 'filieres_labels']
 
-    def get_level(self, obj):  return obj.get_level()
-    def get_avatar(self, obj): return obj.get_avatar()
-
-
-class UserAdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = User
-        fields = ['id', 'username', 'email', 'points', 'is_formateur', 'is_staff']
+    def get_level(self, obj):           return obj.get_level()
+    def get_avatar(self, obj):          return obj.get_avatar()
+    def get_filieres_labels(self, obj): return obj.get_filieres_labels()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -26,16 +23,22 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'ecole', 'filieres']
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        return User.objects.create_user(
+            username = validated_data['username'],
+            email    = validated_data['email'],
+            password = validated_data['password'],
+            ecole    = validated_data.get('ecole', ''),
+            filieres = validated_data.get('filieres', []),
+        )
 
 
 class CompetenceSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Competence
-        fields = ['id', 'nom', 'categorie', 'niveau_requis', 'description']
+        fields = ['id', 'nom', 'categorie', 'niveau_requis', 'description', 'filieres_cibles']
 
 
 class UserCompetenceSerializer(serializers.ModelSerializer):
@@ -54,7 +57,7 @@ class QueteSerializer(serializers.ModelSerializer):
         model  = Quete
         fields = ['id', 'titre', 'description', 'instructions', 'points',
                   'type_quete', 'icone', 'difficulte', 'validation_config',
-                  'competences_debloquees']
+                  'filieres_cibles', 'competences_debloquees']
 
 
 class QueteAdminSerializer(serializers.ModelSerializer):
@@ -68,7 +71,8 @@ class QueteAdminSerializer(serializers.ModelSerializer):
         model  = Quete
         fields = ['id', 'titre', 'description', 'instructions', 'points',
                   'type_quete', 'icone', 'difficulte', 'validation_config',
-                  'active', 'competences_debloquees', 'competences_debloquees_ids']
+                  'active', 'filieres_cibles',
+                  'competences_debloquees', 'competences_debloquees_ids']
 
 
 class UserQueteSerializer(serializers.ModelSerializer):
@@ -78,4 +82,4 @@ class UserQueteSerializer(serializers.ModelSerializer):
     class Meta:
         model  = UserQuete
         fields = ['id', 'quete', 'statut', 'soumission', 'feedback',
-                  'date_soumission', 'date_validation', 'points_gagnes']
+                  'date_soumission', 'date_validation', 'points_gagnes', 'recommandee']
