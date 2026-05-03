@@ -18,7 +18,26 @@ function getNextAvatar(points) {
   ].find(a => a.minXP > points) || null;
 }
 
-// ── ARBRE EN TABLEAU GRILLE ───────────────────────────────
+// ── Bouton LinkedIn ───────────────────────────────────────
+function LinkedInShareComp({ competenceNom, username, level }) {
+  const handleShare = () => {
+    const texte = `🎮 J'ai maîtrisé la compétence "${competenceNom}" sur CareerQuest !\n\nToutes les quêtes validées. Niveau ${level} atteint 🚀\n\n#CareerQuest #${competenceNom.replace(/[\s\/\-]/g, '')} #Formation #Dev`;
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
+      '_blank', 'width=600,height=600,scrollbars=yes'
+    );
+  };
+  return (
+    <button className="linkedin-comp-btn" onClick={handleShare}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Partager sur LinkedIn
+    </button>
+  );
+}
+
+// ── GRILLE COMPÉTENCES ────────────────────────────────────
 function CompetencesGrid({ competences, mesCompIds }) {
   const categories = [...new Set(competences.map(c => c.categorie))];
   return (
@@ -28,16 +47,12 @@ function CompetencesGrid({ competences, mesCompIds }) {
         if (!comps.length) return null;
         return (
           <div key={cat} className="comp-grid-section">
-            <div className="comp-grid-cat-label">
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </div>
+            <div className="comp-grid-cat-label">{cat.charAt(0).toUpperCase() + cat.slice(1)}</div>
             <div className="comp-grid-row">
               {comps.map(c => {
                 const owned = mesCompIds.includes(c.id);
                 return (
-                  <div key={c.id}
-                    className={`comp-grid-cell ${owned ? 'owned' : 'locked'}`}
-                    title={c.description || c.nom}>
+                  <div key={c.id} className={`comp-grid-cell ${owned ? 'owned' : 'locked'}`} title={c.description || c.nom}>
                     <span className="comp-grid-icon">{owned ? '✅' : '🔒'}</span>
                     <span className="comp-grid-name">{c.nom}</span>
                     {owned && <span className="comp-grid-badge">Acquise</span>}
@@ -52,32 +67,25 @@ function CompetencesGrid({ competences, mesCompIds }) {
   );
 }
 
-// ── VUE PAR COMPÉTENCE (chemins) ─────────────────────────
-function VueParCompetence({ quetes }) {
+// ── VUE PAR COMPÉTENCE ────────────────────────────────────
+function VueParCompetence({ quetes, user }) {
   const parcours = {};
 
   quetes.forEach(uq => {
     const comps = uq.quete.competences_debloquees || [];
     if (comps.length === 0) {
-      if (!parcours['__general__']) {
-        parcours['__general__'] = { nom: '🎯 Général', quetes: [] };
-      }
-      if (!parcours['__general__'].quetes.find(q => q.id === uq.id)) {
+      if (!parcours['__general__']) parcours['__general__'] = { nom: '🎯 Général', quetes: [] };
+      if (!parcours['__general__'].quetes.find(q => q.id === uq.id))
         parcours['__general__'].quetes.push(uq);
-      }
     } else {
       comps.forEach(c => {
-        if (!parcours[c.id]) {
-          parcours[c.id] = { nom: c.nom, quetes: [] };
-        }
-        if (!parcours[c.id].quetes.find(q => q.id === uq.id)) {
+        if (!parcours[c.id]) parcours[c.id] = { nom: c.nom, quetes: [] };
+        if (!parcours[c.id].quetes.find(q => q.id === uq.id))
           parcours[c.id].quetes.push(uq);
-        }
       });
     }
   });
 
-  // Trier par difficulté
   Object.values(parcours).forEach(p => {
     p.quetes.sort((a, b) => a.quete.difficulte - b.quete.difficulte);
   });
@@ -85,42 +93,44 @@ function VueParCompetence({ quetes }) {
   return (
     <div className="vpc-wrap">
       {Object.entries(parcours).map(([key, parcour]) => {
-        const total    = parcour.quetes.length;
-        const valides  = parcour.quetes.filter(q => q.statut === 'valide').length;
-        const pct      = Math.round((valides / total) * 100);
+        const total     = parcour.quetes.length;
+        const valides   = parcour.quetes.filter(q => q.statut === 'valide').length;
+        const pct       = Math.round((valides / total) * 100);
         const prochaine = parcour.quetes.find(q => q.statut !== 'valide');
+        const maitrisee = valides === total;
 
         return (
-          <div key={key} className="vpc-parcour">
+          <div key={key} className={`vpc-parcour ${maitrisee ? 'maitrisee' : ''}`}>
+
             {/* En-tête */}
             <div className="vpc-header">
               <div className="vpc-header-left">
                 <span className="vpc-nom">🎓 {parcour.nom}</span>
                 <span className="vpc-count">{valides}/{total}</span>
+                {maitrisee && <span className="vpc-badge-maitrisee">✨ Maîtrisée !</span>}
               </div>
               <div className="vpc-bar-wrap">
                 <div className="vpc-bar-bg">
-                  <div className="vpc-bar-fill" style={{ width: `${pct}%` }} />
+                  <div className="vpc-bar-fill" style={{ width: `${pct}%`, background: maitrisee ? 'linear-gradient(90deg, #4ade80, #fde047)' : 'linear-gradient(90deg, #7c3aed, #4ade80)' }} />
                 </div>
-                <span className="vpc-pct">{pct}%</span>
+                <span className="vpc-pct" style={{ color: maitrisee ? '#fde047' : '#a78bfa' }}>{pct}%</span>
               </div>
             </div>
 
-            {/* Chemin horizontal */}
+            {/* Chemin */}
             <div className="vpc-chemin">
               {parcour.quetes.map((uq, i) => {
                 const estProch = prochaine?.id === uq.id;
                 const done     = uq.statut === 'valide';
                 const refused  = uq.statut === 'refuse';
                 const waiting  = uq.statut === 'soumis';
-
                 return (
                   <React.Fragment key={uq.id}>
                     {i > 0 && (
                       <div className={`vpc-connector ${parcour.quetes[i-1].statut === 'valide' ? 'done' : ''}`}>→</div>
                     )}
                     <div className={`vpc-quete-card ${estProch ? 'prochaine' : ''} ${done ? 'done' : ''}`}>
-                      {estProch && <div className="vpc-badge-prochaine">✈️ Suivante</div>}
+                      {estProch && !maitrisee && <div className="vpc-badge-prochaine">✈️ Suivante</div>}
                       <div className="vpc-quete-icone">{uq.quete.icone}</div>
                       <div className="vpc-quete-titre">{uq.quete.titre}</div>
                       <div className="vpc-quete-meta">
@@ -128,27 +138,37 @@ function VueParCompetence({ quetes }) {
                         <span className="vpc-xp">+{uq.quete.points}XP</span>
                       </div>
                       <div className="vpc-quete-statut">
-                        {done    ? '✅ Validée'      : ''}
-                        {refused ? '❌ Refusée'      : ''}
-                        {waiting ? '⏳ En attente'   : ''}
-                        {estProch && !refused && !waiting ? '✈️ À faire' : ''}
-                        {!done && !refused && !waiting && !estProch ? '🔒 Bloquée' : ''}
+                        {done    ? '✅ Validée'    : ''}
+                        {refused ? '❌ Refusée'    : ''}
+                        {waiting ? '⏳ En attente' : ''}
+                        {!done && !refused && !waiting && estProch  ? '✈️ À faire'  : ''}
+                        {!done && !refused && !waiting && !estProch ? '🔒 Bloquée'  : ''}
                       </div>
                     </div>
                   </React.Fragment>
                 );
               })}
 
-              {/* Récompense */}
+              {/* ✅ RÉCOMPENSE FINALE avec LinkedIn si maîtrisée */}
               <div className="vpc-connector done">→</div>
-              <div className={`vpc-reward ${valides === total ? 'unlocked' : ''}`}>
-                <span>{valides === total ? '🏆' : '🔒'}</span>
+              <div className={`vpc-reward ${maitrisee ? 'unlocked' : ''}`}>
+                <span className="vpc-reward-trophy">{maitrisee ? '🏆' : '🔒'}</span>
                 <span className="vpc-reward-nom">{parcour.nom}</span>
                 <span className="vpc-reward-label">
-                  {valides === total ? 'Maîtrisée !' : 'Compétence'}
+                  {maitrisee ? 'Maîtrisée !' : `${valides}/${total} quêtes`}
                 </span>
+
+                {/* ✅ BOUTON LINKEDIN — uniquement si maîtrisée */}
+                {maitrisee && key !== '__general__' && (
+                  <LinkedInShareComp
+                    competenceNom={parcour.nom}
+                    username={user?.username}
+                    level={user?.level}
+                  />
+                )}
               </div>
             </div>
+
           </div>
         );
       })}
@@ -166,7 +186,7 @@ export default function Profil() {
   const [editMode, setEditMode]       = useState(false);
   const [showGithub, setShowGithub]   = useState(false);
   const [editForm, setEditForm]       = useState({ ecole: '', bio: '' });
-  const [viewMode, setViewMode]       = useState('grille'); // 'grille' | 'parcours'
+  const [viewMode, setViewMode]       = useState('grille');
 
   const reloadUser = () => getProfil().then(r => {
     setUser(r.data);
@@ -206,11 +226,7 @@ export default function Profil() {
       {message && <div className="toast">{message}</div>}
 
       {showGithub && (
-        <GithubModal
-          onClose={() => setShowGithub(false)}
-          onSuccess={reloadUser}
-          githubUsername={user.github_username}
-        />
+        <GithubModal onClose={() => setShowGithub(false)} onSuccess={reloadUser} githubUsername={user.github_username} />
       )}
 
       {/* ── EN-TÊTE ── */}
@@ -256,36 +272,26 @@ export default function Profil() {
           <div className="edit-row">
             <div className="edit-field">
               <label>École</label>
-              <input type="text" value={editForm.ecole}
-                onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))}
-                placeholder="Votre école..." />
+              <input type="text" value={editForm.ecole} onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))} placeholder="Votre école..." />
             </div>
             <div className="edit-field">
               <label>Bio</label>
-              <input type="text" value={editForm.bio}
-                onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))}
-                placeholder="Quelques mots..." />
+              <input type="text" value={editForm.bio} onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))} placeholder="Quelques mots..." />
             </div>
           </div>
           <button type="submit" className="btn-save">Sauvegarder</button>
         </form>
       )}
 
-      {/* ── SECTION COMPÉTENCES ── */}
+      {/* ── SECTION ── */}
       <section className="section">
         <div className="section-toggle-header">
           <h2>🧠 Compétences & Progression</h2>
           <div className="view-toggle">
-            <button
-              className={`toggle-btn ${viewMode === 'grille' ? 'active' : ''}`}
-              onClick={() => setViewMode('grille')}
-            >
+            <button className={`toggle-btn ${viewMode === 'grille' ? 'active' : ''}`} onClick={() => setViewMode('grille')}>
               📊 Tableau
             </button>
-            <button
-              className={`toggle-btn ${viewMode === 'parcours' ? 'active' : ''}`}
-              onClick={() => setViewMode('parcours')}
-            >
+            <button className={`toggle-btn ${viewMode === 'parcours' ? 'active' : ''}`} onClick={() => setViewMode('parcours')}>
               🎓 Par compétence
             </button>
           </div>
@@ -296,8 +302,7 @@ export default function Profil() {
             <div className="comp-legende">
               <span className="comp-badge owned" style={{ cursor: 'default' }}>✅ Débloquée</span>
               <span className="comp-badge locked" style={{ cursor: 'default' }}>🔒 Via quête</span>
-              <p className="comp-legende-text">
-                Se débloquent automatiquement en validant les quêtes.
+              <p className="comp-legende-text">Se débloquent automatiquement en validant les quêtes.
                 {filieres.length > 0 && <> Pour : <strong>{filieres.join(', ')}</strong></>}
               </p>
             </div>
@@ -306,12 +311,11 @@ export default function Profil() {
         )}
 
         {viewMode === 'parcours' && (
-          <VueParCompetence quetes={quetes} />
+          <VueParCompetence quetes={quetes} user={user} />
         )}
       </section>
 
       <style>{`
-        /* ── HERO ── */
         .profil-hero { background:linear-gradient(135deg,#1a1a40,#2d1060); border:1px solid #6f42c1; border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
         .profil-hero-info { flex:1; min-width:200px; }
         .profil-hero-info h2 { font-size:1.5rem; font-weight:700; color:#e0e0f0; margin-bottom:4px; }
@@ -346,8 +350,6 @@ export default function Profil() {
         .toggle-btn.active { background:#7c3aed; border-color:#7c3aed; color:white; }
         .comp-legende { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; padding:10px 14px; background:rgba(111,66,193,0.08); border-radius:8px; border:1px solid #2a1a5e; }
         .comp-legende-text { font-size:0.78rem; color:#888; width:100%; margin-top:4px; }
-
-        /* ── GRILLE COMPÉTENCES ── */
         .comp-grid-wrap { display:flex; flex-direction:column; gap:16px; }
         .comp-grid-cat-label { font-size:0.72rem; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
         .comp-grid-row { display:flex; flex-wrap:wrap; gap:8px; }
@@ -359,31 +361,25 @@ export default function Profil() {
         .comp-grid-name  { font-size:0.65rem; font-weight:600; color:#e0e0f0; line-height:1.2; }
         .comp-grid-badge { font-size:0.55rem; color:#4ade80; margin-top:3px; font-weight:700; }
 
-        /* ── VUE PAR COMPÉTENCE ── */
+        /* VUE PAR COMPÉTENCE */
         .vpc-wrap { display:flex; flex-direction:column; gap:20px; }
-        .vpc-parcour { background:#0d0d2b; border:1px solid #2a1a5e; border-radius:14px; padding:16px; }
+        .vpc-parcour { background:#0d0d2b; border:1px solid #2a1a5e; border-radius:14px; padding:16px; transition:all 0.3s; }
+        .vpc-parcour.maitrisee { border-color:#fde047; background:rgba(253,224,71,0.03); box-shadow:0 0 20px rgba(253,224,71,0.1); }
         .vpc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
-        .vpc-header-left { display:flex; align-items:center; gap:10px; }
+        .vpc-header-left { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
         .vpc-nom { font-size:0.95rem; font-weight:700; color:#a78bfa; }
         .vpc-count { font-size:0.75rem; color:#888; background:#1a1a2e; padding:2px 8px; border-radius:10px; }
+        .vpc-badge-maitrisee { background:rgba(253,224,71,0.15); border:1px solid #fde047; color:#fde047; font-size:0.7rem; font-weight:700; padding:2px 10px; border-radius:10px; animation:glow-gold 1.5s ease infinite alternate; }
         .vpc-bar-wrap { display:flex; align-items:center; gap:8px; flex:1; max-width:200px; }
         .vpc-bar-bg { flex:1; background:#1a1a2e; border-radius:4px; height:6px; overflow:hidden; }
-        .vpc-bar-fill { background:linear-gradient(90deg,#7c3aed,#4ade80); height:100%; border-radius:4px; transition:width 0.4s ease; }
-        .vpc-pct { font-size:0.72rem; color:#a78bfa; font-weight:700; }
-
-        /* Chemin scrollable */
+        .vpc-bar-fill { height:100%; border-radius:4px; transition:width 0.4s ease; }
+        .vpc-pct { font-size:0.72rem; font-weight:700; }
         .vpc-chemin { display:flex; align-items:center; gap:0; overflow-x:auto; padding:10px 0 14px; }
         .vpc-chemin::-webkit-scrollbar { height:4px; }
         .vpc-chemin::-webkit-scrollbar-thumb { background:#6f42c1; border-radius:4px; }
         .vpc-connector { color:#444; font-size:1.2rem; padding:0 6px; flex-shrink:0; }
         .vpc-connector.done { color:#4ade80; }
-
-        /* Carte dans le chemin */
-        .vpc-quete-card {
-          position:relative; background:#1a1a2e; border:1.5px solid #2a2a4e;
-          border-radius:10px; padding:10px 12px; min-width:150px; max-width:180px;
-          flex-shrink:0; text-align:center; transition:all 0.2s;
-        }
+        .vpc-quete-card { position:relative; background:#1a1a2e; border:1.5px solid #2a2a4e; border-radius:10px; padding:10px 12px; min-width:150px; max-width:180px; flex-shrink:0; text-align:center; transition:all 0.2s; }
         .vpc-quete-card.done     { border-color:#16a34a; background:rgba(22,163,74,0.08); }
         .vpc-quete-card.prochaine { border-color:#fde047; box-shadow:0 0 12px rgba(253,224,71,0.25); }
         .vpc-badge-prochaine { position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:#fde047; color:#000; font-size:0.6rem; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
@@ -394,13 +390,23 @@ export default function Profil() {
         .vpc-quete-statut { font-size:0.68rem; font-weight:700; color:#888; }
 
         /* Récompense finale */
-        .vpc-reward { display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a2e; border:1.5px dashed #333; border-radius:10px; padding:12px 14px; min-width:90px; flex-shrink:0; text-align:center; gap:3px; }
-        .vpc-reward > span:first-child { font-size:1.6rem; }
-        .vpc-reward-nom   { font-size:0.7rem; color:#a78bfa; font-weight:700; }
-        .vpc-reward-label { font-size:0.6rem; color:#888; }
-        .vpc-reward.unlocked { border-color:#fde047; background:rgba(253,224,71,0.08); animation:glow-gold 1.5s ease infinite alternate; }
+        .vpc-reward { display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a2e; border:1.5px dashed #333; border-radius:10px; padding:12px 14px; min-width:110px; flex-shrink:0; text-align:center; gap:4px; }
+        .vpc-reward-trophy { font-size:1.8rem; }
+        .vpc-reward-nom    { font-size:0.72rem; color:#a78bfa; font-weight:700; }
+        .vpc-reward-label  { font-size:0.62rem; color:#888; }
+        .vpc-reward.unlocked { border-color:#fde047; border-style:solid; background:rgba(253,224,71,0.06); animation:glow-gold 1.5s ease infinite alternate; }
         .vpc-reward.unlocked .vpc-reward-nom   { color:#fde047; }
         .vpc-reward.unlocked .vpc-reward-label { color:#fde047; }
+
+        /* ✅ Bouton LinkedIn compétence maîtrisée */
+        .linkedin-comp-btn {
+          display: flex; align-items: center; gap: 6px; justify-content: center;
+          background: #0077b5; color: white; border: none;
+          padding: 6px 12px; border-radius: 8px; cursor: pointer;
+          font-size: 0.72rem; font-weight: 700; width: 100%;
+          margin-top: 6px; transition: all 0.2s;
+        }
+        .linkedin-comp-btn:hover { background: #005885; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,119,181,0.4); }
 
         @keyframes glow-gold { from { box-shadow:0 0 6px rgba(253,224,71,0.2); } to { box-shadow:0 0 20px rgba(253,224,71,0.5); } }
         @media (max-width:700px) { .profil-hero { flex-direction:column; } .edit-row { grid-template-columns:1fr; } .profil-actions { flex-direction:row; } }

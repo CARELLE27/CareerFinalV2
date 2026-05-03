@@ -251,7 +251,8 @@ export default function Quetes() {
   const nb_recomm  = quetes.filter(q => q.recommandee).length;
   const total_xp   = quetes.reduce((sum, q) => sum + (q.points_gagnes || 0), 0);
 
-  const modeCompetence = filtre === 'par_competence';
+  //const modeCompetence = filtre === 'par_competence';
+  const modeCompetence= false;
 
   return (
     <div className="quetes-root">
