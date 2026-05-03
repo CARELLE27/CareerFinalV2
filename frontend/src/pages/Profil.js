@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { getProfil, getMesCompetences, getCompetences, updateProfil, getMesQuetes } from '../services/api';
 import Avatar from '../components/Avatar';
 import GithubModal from '../components/GithubModal';
-import TreasureMap from '../components/TreasureMap';
 
 const AVATAR_LABELS = {
   etudiant: '🧑‍💻 Étudiant',
@@ -36,17 +35,119 @@ function CompetencesGrid({ competences, mesCompIds }) {
               {comps.map(c => {
                 const owned = mesCompIds.includes(c.id);
                 return (
-                  <div
-                    key={c.id}
+                  <div key={c.id}
                     className={`comp-grid-cell ${owned ? 'owned' : 'locked'}`}
-                    title={c.description || c.nom}
-                  >
+                    title={c.description || c.nom}>
                     <span className="comp-grid-icon">{owned ? '✅' : '🔒'}</span>
                     <span className="comp-grid-name">{c.nom}</span>
                     {owned && <span className="comp-grid-badge">Acquise</span>}
                   </div>
                 );
               })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── VUE PAR COMPÉTENCE (chemins) ─────────────────────────
+function VueParCompetence({ quetes }) {
+  const parcours = {};
+
+  quetes.forEach(uq => {
+    const comps = uq.quete.competences_debloquees || [];
+    if (comps.length === 0) {
+      if (!parcours['__general__']) {
+        parcours['__general__'] = { nom: '🎯 Général', quetes: [] };
+      }
+      if (!parcours['__general__'].quetes.find(q => q.id === uq.id)) {
+        parcours['__general__'].quetes.push(uq);
+      }
+    } else {
+      comps.forEach(c => {
+        if (!parcours[c.id]) {
+          parcours[c.id] = { nom: c.nom, quetes: [] };
+        }
+        if (!parcours[c.id].quetes.find(q => q.id === uq.id)) {
+          parcours[c.id].quetes.push(uq);
+        }
+      });
+    }
+  });
+
+  // Trier par difficulté
+  Object.values(parcours).forEach(p => {
+    p.quetes.sort((a, b) => a.quete.difficulte - b.quete.difficulte);
+  });
+
+  return (
+    <div className="vpc-wrap">
+      {Object.entries(parcours).map(([key, parcour]) => {
+        const total    = parcour.quetes.length;
+        const valides  = parcour.quetes.filter(q => q.statut === 'valide').length;
+        const pct      = Math.round((valides / total) * 100);
+        const prochaine = parcour.quetes.find(q => q.statut !== 'valide');
+
+        return (
+          <div key={key} className="vpc-parcour">
+            {/* En-tête */}
+            <div className="vpc-header">
+              <div className="vpc-header-left">
+                <span className="vpc-nom">🎓 {parcour.nom}</span>
+                <span className="vpc-count">{valides}/{total}</span>
+              </div>
+              <div className="vpc-bar-wrap">
+                <div className="vpc-bar-bg">
+                  <div className="vpc-bar-fill" style={{ width: `${pct}%` }} />
+                </div>
+                <span className="vpc-pct">{pct}%</span>
+              </div>
+            </div>
+
+            {/* Chemin horizontal */}
+            <div className="vpc-chemin">
+              {parcour.quetes.map((uq, i) => {
+                const estProch = prochaine?.id === uq.id;
+                const done     = uq.statut === 'valide';
+                const refused  = uq.statut === 'refuse';
+                const waiting  = uq.statut === 'soumis';
+
+                return (
+                  <React.Fragment key={uq.id}>
+                    {i > 0 && (
+                      <div className={`vpc-connector ${parcour.quetes[i-1].statut === 'valide' ? 'done' : ''}`}>→</div>
+                    )}
+                    <div className={`vpc-quete-card ${estProch ? 'prochaine' : ''} ${done ? 'done' : ''}`}>
+                      {estProch && <div className="vpc-badge-prochaine">✈️ Suivante</div>}
+                      <div className="vpc-quete-icone">{uq.quete.icone}</div>
+                      <div className="vpc-quete-titre">{uq.quete.titre}</div>
+                      <div className="vpc-quete-meta">
+                        {'⭐'.repeat(uq.quete.difficulte)}
+                        <span className="vpc-xp">+{uq.quete.points}XP</span>
+                      </div>
+                      <div className="vpc-quete-statut">
+                        {done    ? '✅ Validée'      : ''}
+                        {refused ? '❌ Refusée'      : ''}
+                        {waiting ? '⏳ En attente'   : ''}
+                        {estProch && !refused && !waiting ? '✈️ À faire' : ''}
+                        {!done && !refused && !waiting && !estProch ? '🔒 Bloquée' : ''}
+                      </div>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+
+              {/* Récompense */}
+              <div className="vpc-connector done">→</div>
+              <div className={`vpc-reward ${valides === total ? 'unlocked' : ''}`}>
+                <span>{valides === total ? '🏆' : '🔒'}</span>
+                <span className="vpc-reward-nom">{parcour.nom}</span>
+                <span className="vpc-reward-label">
+                  {valides === total ? 'Maîtrisée !' : 'Compétence'}
+                </span>
+              </div>
             </div>
           </div>
         );
@@ -65,7 +166,7 @@ export default function Profil() {
   const [editMode, setEditMode]       = useState(false);
   const [showGithub, setShowGithub]   = useState(false);
   const [editForm, setEditForm]       = useState({ ecole: '', bio: '' });
-  const [viewMode, setViewMode]       = useState('grille'); // 'grille' | 'tresor'
+  const [viewMode, setViewMode]       = useState('grille'); // 'grille' | 'parcours'
 
   const reloadUser = () => getProfil().then(r => {
     setUser(r.data);
@@ -129,7 +230,9 @@ export default function Profil() {
             <div className="profil-xp-bar-bg">
               <div className="profil-xp-bar-fill" style={{ width: `${progression}%` }} />
             </div>
-            <span className="profil-xp-label">{user.points} XP — encore {xpRestant} XP pour le niveau {user.level + 1}</span>
+            <span className="profil-xp-label">
+              {user.points} XP — encore {xpRestant} XP pour le niveau {user.level + 1}
+            </span>
           </div>
           {xpNextAvatar !== null && (
             <div className="next-avatar-info">
@@ -153,42 +256,63 @@ export default function Profil() {
           <div className="edit-row">
             <div className="edit-field">
               <label>École</label>
-              <input type="text" value={editForm.ecole} onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))} placeholder="Votre école..." />
+              <input type="text" value={editForm.ecole}
+                onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))}
+                placeholder="Votre école..." />
             </div>
             <div className="edit-field">
               <label>Bio</label>
-              <input type="text" value={editForm.bio} onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))} placeholder="Quelques mots..." />
+              <input type="text" value={editForm.bio}
+                onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))}
+                placeholder="Quelques mots..." />
             </div>
           </div>
           <button type="submit" className="btn-save">Sauvegarder</button>
         </form>
       )}
 
-      {/* ── SECTION COMPÉTENCES + QUÊTES ── */}
+      {/* ── SECTION COMPÉTENCES ── */}
       <section className="section">
         <div className="section-toggle-header">
           <h2>🧠 Compétences & Progression</h2>
           <div className="view-toggle">
-            <button className={`toggle-btn ${viewMode === 'grille' ? 'active' : ''}`} onClick={() => setViewMode('grille')}>
-              📊 Tableau compétences
+            <button
+              className={`toggle-btn ${viewMode === 'grille' ? 'active' : ''}`}
+              onClick={() => setViewMode('grille')}
+            >
+              📊 Tableau
             </button>
-            <button className={`toggle-btn ${viewMode === 'tresor' ? 'active' : ''}`} onClick={() => setViewMode('tresor')}>
-              🗺️ Carte au trésor
+            <button
+              className={`toggle-btn ${viewMode === 'parcours' ? 'active' : ''}`}
+              onClick={() => setViewMode('parcours')}
+            >
+              🎓 Par compétence
             </button>
           </div>
         </div>
 
         {viewMode === 'grille' && (
-          <CompetencesGrid competences={competences} mesCompIds={mesCompIds} />
+          <>
+            <div className="comp-legende">
+              <span className="comp-badge owned" style={{ cursor: 'default' }}>✅ Débloquée</span>
+              <span className="comp-badge locked" style={{ cursor: 'default' }}>🔒 Via quête</span>
+              <p className="comp-legende-text">
+                Se débloquent automatiquement en validant les quêtes.
+                {filieres.length > 0 && <> Pour : <strong>{filieres.join(', ')}</strong></>}
+              </p>
+            </div>
+            <CompetencesGrid competences={competences} mesCompIds={mesCompIds} />
+          </>
         )}
-        {viewMode === 'tresor' && (
-          <TreasureMap quetes={quetes} />
+
+        {viewMode === 'parcours' && (
+          <VueParCompetence quetes={quetes} />
         )}
       </section>
 
       <style>{`
         /* ── HERO ── */
-        .profil-hero { background: linear-gradient(135deg,#1a1a40,#2d1060); border:1px solid #6f42c1; border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
+        .profil-hero { background:linear-gradient(135deg,#1a1a40,#2d1060); border:1px solid #6f42c1; border-radius:16px; padding:24px; display:flex; align-items:flex-start; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
         .profil-hero-info { flex:1; min-width:200px; }
         .profil-hero-info h2 { font-size:1.5rem; font-weight:700; color:#e0e0f0; margin-bottom:4px; }
         .profil-bio { font-size:0.85rem; color:#888; font-style:italic; margin-bottom:8px; }
@@ -220,84 +344,66 @@ export default function Profil() {
         .toggle-btn { background:#1a1a2e; border:1px solid #333; color:#888; padding:6px 14px; border-radius:8px; cursor:pointer; font-size:0.8rem; transition:all 0.2s; }
         .toggle-btn:hover  { border-color:#6f42c1; color:#a78bfa; }
         .toggle-btn.active { background:#7c3aed; border-color:#7c3aed; color:white; }
+        .comp-legende { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px; padding:10px 14px; background:rgba(111,66,193,0.08); border-radius:8px; border:1px solid #2a1a5e; }
+        .comp-legende-text { font-size:0.78rem; color:#888; width:100%; margin-top:4px; }
 
         /* ── GRILLE COMPÉTENCES ── */
         .comp-grid-wrap { display:flex; flex-direction:column; gap:16px; }
-        .comp-grid-section {}
-        .comp-grid-cat-label { font-size:0.72rem; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; padding-left:4px; }
+        .comp-grid-cat-label { font-size:0.72rem; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
         .comp-grid-row { display:flex; flex-wrap:wrap; gap:8px; }
-        .comp-grid-cell {
-          display:flex; flex-direction:column; align-items:center; justify-content:center;
-          width:100px; min-height:80px; padding:8px;
-          border-radius:10px; border:1px solid;
-          transition:all 0.2s; cursor:default; text-align:center;
-        }
+        .comp-grid-cell { display:flex; flex-direction:column; align-items:center; justify-content:center; width:100px; min-height:80px; padding:8px; border-radius:10px; border:1px solid; transition:all 0.2s; text-align:center; }
         .comp-grid-cell.owned  { background:rgba(22,163,74,0.1); border-color:#16a34a; }
         .comp-grid-cell.locked { background:#1a1a2e; border-color:#2a2a2e; }
         .comp-grid-cell:hover  { transform:translateY(-2px); }
-        .comp-grid-icon { font-size:1.3rem; margin-bottom:4px; }
-        .comp-grid-name { font-size:0.65rem; font-weight:600; color:#e0e0f0; line-height:1.2; }
+        .comp-grid-icon  { font-size:1.3rem; margin-bottom:4px; }
+        .comp-grid-name  { font-size:0.65rem; font-weight:600; color:#e0e0f0; line-height:1.2; }
         .comp-grid-badge { font-size:0.55rem; color:#4ade80; margin-top:3px; font-weight:700; }
 
-        /* ── CARTE AU TRÉSOR ── */
-        .tm-wrap { background:linear-gradient(135deg,#07071a,#0d0d2b); border:2px solid #6f42c1; border-radius:16px; padding:20px; }
-        .tm-header { margin-bottom:16px; }
-        .tm-title { font-size:1rem; font-weight:700; color:#fde047; margin-bottom:8px; }
-        .tm-progress-row { display:flex; align-items:center; gap:10px; }
-        .tm-progress-bar-bg { flex:1; background:#1a1a2e; border-radius:6px; height:8px; overflow:hidden; }
-        .tm-progress-bar-fill { background:linear-gradient(90deg,#7c3aed,#4ade80); height:100%; border-radius:6px; transition:width 0.5s ease; }
-        .tm-progress-label { font-size:0.78rem; color:#a78bfa; white-space:nowrap; }
+        /* ── VUE PAR COMPÉTENCE ── */
+        .vpc-wrap { display:flex; flex-direction:column; gap:20px; }
+        .vpc-parcour { background:#0d0d2b; border:1px solid #2a1a5e; border-radius:14px; padding:16px; }
+        .vpc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
+        .vpc-header-left { display:flex; align-items:center; gap:10px; }
+        .vpc-nom { font-size:0.95rem; font-weight:700; color:#a78bfa; }
+        .vpc-count { font-size:0.75rem; color:#888; background:#1a1a2e; padding:2px 8px; border-radius:10px; }
+        .vpc-bar-wrap { display:flex; align-items:center; gap:8px; flex:1; max-width:200px; }
+        .vpc-bar-bg { flex:1; background:#1a1a2e; border-radius:4px; height:6px; overflow:hidden; }
+        .vpc-bar-fill { background:linear-gradient(90deg,#7c3aed,#4ade80); height:100%; border-radius:4px; transition:width 0.4s ease; }
+        .vpc-pct { font-size:0.72rem; color:#a78bfa; font-weight:700; }
 
-        .tm-grid {
-          display:grid;
-          grid-template-columns:repeat(4,1fr);
-          gap:12px;
-          margin-bottom:16px;
-        }
-        .tm-cell {
-          position:relative;
-          border:2px solid;
-          border-radius:12px;
-          padding:10px 8px;
-          text-align:center;
-          cursor:default;
-          transition:all 0.2s;
-          min-height:100px;
-          display:flex; flex-direction:column; align-items:center; justify-content:center;
-          gap:3px;
-        }
-        .tm-cell:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,0.4); }
-        .tm-step-num  { font-size:0.6rem; font-weight:700; opacity:0.8; }
-        .tm-quest-icon { font-size:1.4rem; }
-        .tm-status-icon { font-size:0.9rem; }
-        .tm-quest-name { font-size:0.62rem; color:#ccc; line-height:1.2; max-width:90px; }
-        .tm-xp { font-size:0.62rem; font-weight:700; }
+        /* Chemin scrollable */
+        .vpc-chemin { display:flex; align-items:center; gap:0; overflow-x:auto; padding:10px 0 14px; }
+        .vpc-chemin::-webkit-scrollbar { height:4px; }
+        .vpc-chemin::-webkit-scrollbar-thumb { background:#6f42c1; border-radius:4px; }
+        .vpc-connector { color:#444; font-size:1.2rem; padding:0 6px; flex-shrink:0; }
+        .vpc-connector.done { color:#4ade80; }
 
-        .tm-start {
-          background:rgba(111,66,193,0.2); border:2px dashed #7c3aed;
-          border-radius:12px; display:flex; align-items:center; justify-content:center;
-          font-size:0.8rem; color:#a78bfa; font-weight:700; min-height:60px;
+        /* Carte dans le chemin */
+        .vpc-quete-card {
+          position:relative; background:#1a1a2e; border:1.5px solid #2a2a4e;
+          border-radius:10px; padding:10px 12px; min-width:150px; max-width:180px;
+          flex-shrink:0; text-align:center; transition:all 0.2s;
         }
-        .tm-treasure {
-          background:rgba(253,224,71,0.05); border:2px dashed #ca8a04;
-          border-radius:12px; display:flex; align-items:center; justify-content:center;
-          font-size:0.78rem; color:#fde047; font-weight:700; min-height:60px; text-align:center; padding:8px;
-        }
-        .tm-treasure.reached {
-          background:rgba(253,224,71,0.15); border-color:#fde047;
-          animation:pulse 1.2s ease infinite alternate;
-        }
-        .tm-legend { display:flex; gap:12px; flex-wrap:wrap; padding-top:12px; border-top:1px solid #2a1a5e; }
-        .tm-legend-item { font-size:0.72rem; font-weight:600; }
-        .tm-empty { text-align:center; color:#666; padding:40px; }
+        .vpc-quete-card.done     { border-color:#16a34a; background:rgba(22,163,74,0.08); }
+        .vpc-quete-card.prochaine { border-color:#fde047; box-shadow:0 0 12px rgba(253,224,71,0.25); }
+        .vpc-badge-prochaine { position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:#fde047; color:#000; font-size:0.6rem; font-weight:700; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+        .vpc-quete-icone { font-size:1.4rem; margin-bottom:4px; }
+        .vpc-quete-titre { font-size:0.72rem; font-weight:700; color:#e0e0f0; line-height:1.3; margin-bottom:4px; }
+        .vpc-quete-meta { font-size:0.65rem; color:#888; display:flex; gap:6px; justify-content:center; margin-bottom:4px; }
+        .vpc-xp { color:#a78bfa !important; font-weight:700; }
+        .vpc-quete-statut { font-size:0.68rem; font-weight:700; color:#888; }
 
-        @keyframes pulse { from { box-shadow:0 0 8px rgba(253,224,71,0.2); } to { box-shadow:0 0 20px rgba(253,224,71,0.5); } }
-        @media (max-width:700px) {
-          .profil-hero { flex-direction:column; }
-          .edit-row { grid-template-columns:1fr; }
-          .tm-grid { grid-template-columns:repeat(2,1fr); }
-          .comp-grid-cell { width:80px; min-height:70px; }
-        }
+        /* Récompense finale */
+        .vpc-reward { display:flex; flex-direction:column; align-items:center; justify-content:center; background:#1a1a2e; border:1.5px dashed #333; border-radius:10px; padding:12px 14px; min-width:90px; flex-shrink:0; text-align:center; gap:3px; }
+        .vpc-reward > span:first-child { font-size:1.6rem; }
+        .vpc-reward-nom   { font-size:0.7rem; color:#a78bfa; font-weight:700; }
+        .vpc-reward-label { font-size:0.6rem; color:#888; }
+        .vpc-reward.unlocked { border-color:#fde047; background:rgba(253,224,71,0.08); animation:glow-gold 1.5s ease infinite alternate; }
+        .vpc-reward.unlocked .vpc-reward-nom   { color:#fde047; }
+        .vpc-reward.unlocked .vpc-reward-label { color:#fde047; }
+
+        @keyframes glow-gold { from { box-shadow:0 0 6px rgba(253,224,71,0.2); } to { box-shadow:0 0 20px rgba(253,224,71,0.5); } }
+        @media (max-width:700px) { .profil-hero { flex-direction:column; } .edit-row { grid-template-columns:1fr; } .profil-actions { flex-direction:row; } }
       `}</style>
     </div>
   );
