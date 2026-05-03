@@ -66,7 +66,9 @@ export default function Quetes() {
       const data = err.response?.data || {};
       setResult({ succes: false, data: { message: data.message || data.error || 'Réponse incorrecte, réessayez !' } });
       if (err.response?.status === 422) {
-        setQuetes(prev => prev.map(q => q.quete.id === selected.quete.id ? { ...q, statut: 'refuse', feedback: data.message || '' } : q));
+        setQuetes(prev => prev.map(q =>
+          q.quete.id === selected.quete.id ? { ...q, statut: 'refuse', feedback: data.message || '' } : q
+        ));
         setSelected(prev => ({ ...prev, statut: 'refuse', feedback: data.message || '' }));
       }
     }
@@ -98,7 +100,7 @@ export default function Quetes() {
   const total_xp   = quetes.reduce((sum, q) => sum + (q.points_gagnes || 0), 0);
 
   return (
-    <div className="quetes-page">
+    <div className="quetes-root">
 
       {modal && (
         <CompetenceUnlockedModal
@@ -110,71 +112,82 @@ export default function Quetes() {
         />
       )}
 
-      {/* ── EN-TÊTE ── */}
-      <div className="quetes-header">
-        <h1>⚔️ Quêtes</h1>
-        <div className="quetes-stats">
-          <div className="stat-pill">✅ {nb_valides} validées</div>
-          <div className="stat-pill">⏳ {nb_attente} en attente</div>
-          <div className="stat-pill">🏆 {total_xp} XP gagnés</div>
-        </div>
-        <div className="filtres">
-          {[
-            { id: 'recommandees', label: `⭐ Ma filière (${nb_recomm})` },
-            { id: 'toutes',       label: 'Toutes' },
-            { id: 'a_faire',      label: 'À faire' },
-            { id: 'en_attente',   label: 'En attente' },
-            { id: 'valide',       label: 'Validées' },
-          ].map(f => (
-            <button key={f.id} className={`filtre-btn ${filtre === f.id ? 'active' : ''}`}
-              onClick={() => setFiltre(f.id)}>{f.label}</button>
-          ))}
-        </div>
-      </div>
-
-      {/* ── LAYOUT 2 COLONNES FIXES ── */}
+      {/* ══ LAYOUT : colonne gauche + colonne droite dès le haut ══ */}
       <div className="quetes-body">
 
-        {/* Colonne gauche — liste scrollable */}
+        {/* ── COLONNE GAUCHE : titre + stats + filtres + liste ── */}
         <div className="quetes-col-left">
-          {filtrees.length === 0 && (
-            <div className="quetes-vide">Aucune quête dans cette catégorie</div>
-          )}
-          {filtrees.map(uq => {
-            const style = STATUT_STYLE[uq.statut] || STATUT_STYLE.non_commence;
-            return (
-              <div
-                key={uq.id}
-                className={`quete-card-new ${selected?.id === uq.id ? 'selected' : ''}`}
-                style={{ borderColor: style.border, background: style.bg }}
-                onClick={() => handleOuvrir(uq)}
+
+          {/* Titre */}
+          <h1 className="quetes-titre">⚔️ Quêtes</h1>
+
+          {/* Stats */}
+          <div className="quetes-stats">
+            <div className="stat-pill">✅ {nb_valides} validées</div>
+            <div className="stat-pill">⏳ {nb_attente} en attente</div>
+            <div className="stat-pill">🏆 {total_xp} XP gagnés</div>
+          </div>
+
+          {/* Filtres */}
+          <div className="filtres">
+            {[
+              { id: 'recommandees', label: `⭐ Ma filière (${nb_recomm})` },
+              { id: 'toutes',       label: 'Toutes' },
+              { id: 'a_faire',      label: 'À faire' },
+              { id: 'en_attente',   label: 'En attente' },
+              { id: 'valide',       label: 'Validées' },
+            ].map(f => (
+              <button
+                key={f.id}
+                className={`filtre-btn ${filtre === f.id ? 'active' : ''}`}
+                onClick={() => setFiltre(f.id)}
               >
-                <div className="quete-card-top">
-                  <span className="quete-icone-big">{uq.quete.icone}</span>
-                  <div className="quete-card-info">
-                    <strong>
-                      {uq.recommandee && <span style={{ color: '#fde047' }}>⭐ </span>}
-                      {uq.quete.titre}
-                    </strong>
-                    <span className="quete-diff">{DIFFICULTE[uq.quete.difficulte]}</span>
+                {f.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Liste des quêtes */}
+          <div className="quetes-liste-inner">
+            {filtrees.length === 0 && (
+              <div className="quetes-vide">Aucune quête dans cette catégorie</div>
+            )}
+            {filtrees.map(uq => {
+              const style = STATUT_STYLE[uq.statut] || STATUT_STYLE.non_commence;
+              return (
+                <div
+                  key={uq.id}
+                  className={`quete-card-new ${selected?.id === uq.id ? 'selected' : ''}`}
+                  style={{ borderColor: style.border, background: style.bg }}
+                  onClick={() => handleOuvrir(uq)}
+                >
+                  <div className="quete-card-top">
+                    <span className="quete-icone-big">{uq.quete.icone}</span>
+                    <div className="quete-card-info">
+                      <strong>
+                        {uq.recommandee && <span style={{ color: '#fde047' }}>⭐ </span>}
+                        {uq.quete.titre}
+                      </strong>
+                      <span className="quete-diff">{DIFFICULTE[uq.quete.difficulte]}</span>
+                    </div>
+                    <div className="quete-card-right">
+                      <span className="xp-badge">+{uq.quete.points} XP</span>
+                      <span className="statut-badge" style={{ color: style.border }}>{style.label}</span>
+                    </div>
                   </div>
-                  <div className="quete-card-right">
-                    <span className="xp-badge">+{uq.quete.points} XP</span>
-                    <span className="statut-badge" style={{ color: style.border }}>{style.label}</span>
-                  </div>
+                  <p className="quete-desc-short">{uq.quete.description}</p>
+                  {uq.quete.competences_debloquees?.length > 0 && (
+                    <div className="quete-comps-preview">
+                      🎯 Débloque : {uq.quete.competences_debloquees.map(c => c.nom).join(', ')}
+                    </div>
+                  )}
                 </div>
-                <p className="quete-desc-short">{uq.quete.description}</p>
-                {uq.quete.competences_debloquees?.length > 0 && (
-                  <div className="quete-comps-preview">
-                    🎯 Débloque : {uq.quete.competences_debloquees.map(c => c.nom).join(', ')}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Colonne droite — détail fixe */}
+        {/* ── COLONNE DROITE : commence tout en haut ── */}
         <div className="quetes-col-right">
           {selected ? (
             <div className="quete-detail-inner">
@@ -184,7 +197,7 @@ export default function Quetes() {
                 {DIFFICULTE[selected.quete.difficulte]} • +{selected.quete.points} XP
               </span>
 
-              {/* Compétences débloquées */}
+              {/* Compétences */}
               {selected.quete.competences_debloquees?.length > 0 && (
                 <div className="quete-detail-comps">
                   <span className="quete-detail-comps-label">🎯 Compétences débloquées :</span>
@@ -202,11 +215,13 @@ export default function Quetes() {
                 <pre className="instructions-text">{selected.quete.instructions}</pre>
               </div>
 
-              {/* Feedback */}
+              {/* Feedback précédent */}
               {selected.feedback && (
                 <div className={`feedback-box ${selected.statut === 'valide' ? 'success' : 'error'}`}>
                   <strong>Résultat :</strong> {selected.feedback}
-                  {selected.points_gagnes > 0 && <span className="xp-earned"> +{selected.points_gagnes} XP !</span>}
+                  {selected.points_gagnes > 0 && (
+                    <span className="xp-earned"> +{selected.points_gagnes} XP !</span>
+                  )}
                 </div>
               )}
 
@@ -214,7 +229,9 @@ export default function Quetes() {
               {result && (
                 <div className={`feedback-box ${result.succes ? 'success' : 'error'}`}>
                   {result.data.message}
-                  {result.data.points_gagnes > 0 && <span className="xp-earned"> +{result.data.points_gagnes} XP !</span>}
+                  {result.data.points_gagnes > 0 && (
+                    <span className="xp-earned"> +{result.data.points_gagnes} XP !</span>
+                  )}
                 </div>
               )}
 
@@ -249,12 +266,18 @@ export default function Quetes() {
                 <div className="valide-box">
                   🎉 Quête complétée ! +{selected.points_gagnes} XP
                   {selected.quete.competences_debloquees?.length > 0 && (
-                    <button className="linkedin-share-btn" style={{ marginTop: '12px', width: '100%' }}
+                    <button
+                      className="linkedin-share-btn"
+                      style={{ marginTop: '12px', width: '100%' }}
                       onClick={() => {
                         const comp = selected.quete.competences_debloquees.map(c => c.nom).join(', ');
                         const texte = `🎮 J'ai validé "${selected.quete.titre}" sur CareerQuest et débloqué "${comp}" ! #CareerQuest #Formation`;
-                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`, '_blank', 'width=600,height=600');
-                      }}>
+                        window.open(
+                          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
+                          '_blank', 'width=600,height=600'
+                        );
+                      }}
+                    >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
                         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                       </svg>
@@ -275,59 +298,76 @@ export default function Quetes() {
 
       <style>{`
         /* ── PAGE ── */
-        .quetes-page {
-          display: flex;
-          flex-direction: column;
+        .quetes-root {
           height: calc(100vh - 60px);
           overflow: hidden;
-          padding: 20px 24px 0;
+          padding: 0 24px;
+          display: flex;
+          flex-direction: column;
         }
-        .quetes-header {
-          flex-shrink: 0;
-          margin-bottom: 12px;
-        }
-        .quetes-header h1 { margin-bottom: 10px; }
 
-        /* ── BODY 2 COLONNES ── */
+        /* ── BODY 2 COLONNES dès le haut ── */
         .quetes-body {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 20px;
           flex: 1;
           overflow: hidden;
-          padding-bottom: 16px;
+          padding: 16px 0;
         }
 
         /* ── COLONNE GAUCHE ── */
         .quetes-col-left {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          gap: 8px;
+        }
+        .quetes-titre {
+          font-size: 1.6rem;
+          font-weight: 700;
+          margin: 0;
+          flex-shrink: 0;
+        }
+        .quetes-stats {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          flex-shrink: 0;
+        }
+        .filtres {
+          display: flex;
+          gap: 6px;
+          flex-wrap: wrap;
+          flex-shrink: 0;
+        }
+
+        /* Liste scrollable */
+        .quetes-liste-inner {
+          flex: 1;
           overflow-y: auto;
           display: flex;
           flex-direction: column;
           gap: 10px;
           padding-right: 4px;
         }
-        .quetes-col-left::-webkit-scrollbar { width: 4px; }
-        .quetes-col-left::-webkit-scrollbar-thumb { background: #6f42c1; border-radius: 4px; }
+        .quetes-liste-inner::-webkit-scrollbar { width: 4px; }
+        .quetes-liste-inner::-webkit-scrollbar-thumb { background: #6f42c1; border-radius: 4px; }
 
-        /* ── COLONNE DROITE ── */
+        /* ── COLONNE DROITE : commence tout en haut ── */
         .quetes-col-right {
           overflow-y: auto;
           background: #1a1a2e;
           border: 1px solid #6f42c1;
           border-radius: 12px;
+          /* ✅ Pas de margin-top → commence au niveau du titre */
         }
         .quetes-col-right::-webkit-scrollbar { width: 4px; }
         .quetes-col-right::-webkit-scrollbar-thumb { background: #6f42c1; border-radius: 4px; }
 
-        .quete-detail-inner {
-          padding: 20px;
-        }
-        .quete-detail-inner h2 {
-          font-size: 1.1rem;
-          margin-bottom: 4px;
-        }
+        .quete-detail-inner { padding: 20px; }
+        .quete-detail-inner h2 { font-size: 1.1rem; margin-bottom: 6px; }
 
-        /* ── VIDE ── */
         .quete-detail-empty {
           height: 100%;
           display: flex;
@@ -339,7 +379,7 @@ export default function Quetes() {
           text-align: center;
         }
 
-        /* ── INSTRUCTIONS ── */
+        /* Instructions */
         .instructions-box {
           background: #07071a;
           border: 1px solid #2a1a5e;
@@ -347,11 +387,7 @@ export default function Quetes() {
           padding: 14px;
           margin: 12px 0;
         }
-        .instructions-box h3 {
-          font-size: 0.9rem;
-          color: #a78bfa;
-          margin-bottom: 8px;
-        }
+        .instructions-box h3 { font-size: 0.9rem; color: #a78bfa; margin-bottom: 8px; }
         .instructions-text {
           font-family: inherit;
           font-size: 0.85rem;
@@ -362,7 +398,7 @@ export default function Quetes() {
           line-height: 1.6;
         }
 
-        /* ── COMPÉTENCES ── */
+        /* Compétences */
         .quete-detail-comps {
           background: rgba(111,66,193,0.1);
           border: 1px solid #6f42c1;
@@ -370,52 +406,32 @@ export default function Quetes() {
           padding: 10px 12px;
           margin: 10px 0;
         }
-        .quete-detail-comps-label {
-          font-size: 0.75rem;
-          color: #a78bfa;
-        }
+        .quete-detail-comps-label { font-size: 0.75rem; color: #a78bfa; }
         .quete-detail-comp-badge {
-          background: #6f42c1;
-          color: white;
-          padding: 3px 10px;
-          border-radius: 12px;
-          font-size: 0.75rem;
-          font-weight: 700;
+          background: #6f42c1; color: white;
+          padding: 3px 10px; border-radius: 12px;
+          font-size: 0.75rem; font-weight: 700;
         }
 
-        /* ── QUETES LISTE ── */
+        /* Liste quêtes */
         .quete-comps-preview {
-          font-size: 0.75rem;
-          color: #a78bfa;
-          margin-top: 6px;
-          padding-top: 6px;
+          font-size: 0.75rem; color: #a78bfa;
+          margin-top: 6px; padding-top: 6px;
           border-top: 1px solid #2a1a5e;
         }
-        .quetes-vide {
-          text-align: center;
-          color: #666;
-          padding: 40px;
-          font-size: 0.9rem;
-        }
+        .quetes-vide { text-align: center; color: #666; padding: 40px; font-size: 0.9rem; }
 
-        /* ── FORMULAIRE ── */
+        /* Formulaire */
         .soumission-form { margin-top: 14px; }
         .soumission-form h3 { font-size: 0.9rem; color: #a78bfa; margin-bottom: 8px; }
         .soumission-form textarea {
-          width: 100%;
-          background: #07071a;
-          border: 1px solid #444;
-          border-radius: 8px;
-          color: white;
-          padding: 10px;
-          font-family: inherit;
-          font-size: 0.85rem;
-          resize: vertical;
-          margin-bottom: 8px;
-          box-sizing: border-box;
+          width: 100%; background: #07071a; border: 1px solid #444;
+          border-radius: 8px; color: white; padding: 10px;
+          font-family: inherit; font-size: 0.85rem;
+          resize: vertical; margin-bottom: 8px; box-sizing: border-box;
         }
 
-        /* ── FEEDBACK ── */
+        /* Feedback */
         .feedback-box { border-radius: 8px; padding: 10px 12px; margin: 10px 0; font-size: 0.85rem; }
         .feedback-box.success { background: rgba(22,163,74,0.15); border: 1px solid #16a34a; color: #4ade80; }
         .feedback-box.error   { background: rgba(220,38,38,0.15); border: 1px solid #dc2626; color: #f87171; }
@@ -423,11 +439,11 @@ export default function Quetes() {
         .attente-box { background: rgba(202,138,4,0.15); border: 1px solid #ca8a04; color: #fde047; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
         .valide-box  { background: rgba(22,163,74,0.15); border: 1px solid #16a34a; color: #4ade80; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
 
-        /* ── MOBILE ── */
+        /* Mobile */
         @media (max-width: 800px) {
-          .quetes-page { height: auto; overflow: visible; }
+          .quetes-root { height: auto; overflow: visible; }
           .quetes-body { grid-template-columns: 1fr; overflow: visible; }
-          .quetes-col-left { overflow-y: visible; }
+          .quetes-liste-inner { overflow-y: visible; }
           .quetes-col-right { overflow-y: visible; }
         }
       `}</style>
