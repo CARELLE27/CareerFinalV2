@@ -1,42 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { getProfil, getMesCompetences, getCompetences, connectGithub, updateProfil, getFilieres } from '../services/api';
+import { getProfil, getMesCompetences, getCompetences, connectGithub, updateProfil } from '../services/api';
 import Avatar from '../components/Avatar';
-import ProgressBar from '../components/ProgressBar';
 
-//ADD PROFIL
-const AVATAR_LEVELS = [
-  { type: 'etudiant', label: 'Étudiant',   minLevel: 1,  minXP: 0    },
-  { type: 'junior',   label: 'Junior Dev',  minLevel: 6,  minXP: 500  },
-  { type: 'senior',   label: 'Senior Dev',  minLevel: 16, minXP: 1500 },
-  { type: 'expert',   label: 'Expert',      minLevel: 31, minXP: 3000 },
+const AVATAR_LABELS = {
+  etudiant: '🧑‍💻 Étudiant',
+  junior:   '👨‍🔬 Junior Dev',
+  senior:   '🧙‍♂️ Senior Dev',
+  expert:   '🦸 Expert',
+};
+
+const AVATAR_NEXT = [
+  { type: 'junior', label: 'Junior Dev', minXP: 500  },
+  { type: 'senior', label: 'Senior Dev', minXP: 1500 },
+  { type: 'expert', label: 'Expert',     minXP: 3000 },
 ];
 
 function getNextAvatar(points) {
-  const next = AVATAR_LEVELS.find(a => a.minXP > points);
-  return next || null;
+  return AVATAR_NEXT.find(a => a.minXP > points) || null;
 }
-
-  if (!user) return <div className="loading">Chargement...</div>;
-
-  const validees    = quetes.filter(q => q.statut === 'valide');
-  const enAttente   = quetes.filter(q => q.statut === 'soumis');
-  const progression = user.points % 100;
-  const xpProchainniveau = 100 - progression;
-  const nextAvatar  = getNextAvatar(user.points);
-  const xpProchainAvatar = nextAvatar ? nextAvatar.minXP - user.points : null;
-
-  const quetesFiltrees = [
-    ...quetes.filter(q => q.recommandee && q.statut !== 'valide'),
-    ...quetes.filter(q => !q.recommandee && q.statut !== 'valide'),
-    ...quetes.filter(q => q.statut === 'valide'),
-  ].slice(0, 4);
-
-  // Filières (peut être un tableau)
-  const filieres = Array.isArray(user.filieres)
-    ? user.filieres
-    : (user.filiere_label ? [user.filiere_label] : []);
-//
-
 
 export default function Profil() {
   const [user, setUser]               = useState(null);
@@ -45,7 +26,6 @@ export default function Profil() {
   const [githubUser, setGithubUser]   = useState('');
   const [githubRepos, setGithubRepos] = useState([]);
   const [message, setMessage]         = useState('');
-  const [filieres, setFilieres]       = useState([]);
   const [editMode, setEditMode]       = useState(false);
   const [editForm, setEditForm]       = useState({ ecole: '', bio: '' });
 
@@ -57,14 +37,13 @@ export default function Profil() {
     }).catch(() => {});
     getCompetences().then(r => setCompetences(r.data)).catch(() => {});
     getMesCompetences().then(r => setMesComps(r.data)).catch(() => {});
-    getFilieres().then(r => setFilieres(r.data)).catch(() => {});
   }, []);
 
   const handleGithub = async (e) => {
     e.preventDefault();
     try {
       const res = await connectGithub(githubUser);
-      setGithubRepos(res.data.repos);
+      setGithubRepos(res.data.repos || []);
       setMessage(res.data.message);
       getProfil().then(r => setUser(r.data));
       setTimeout(() => setMessage(''), 3000);
@@ -77,151 +56,117 @@ export default function Profil() {
       await updateProfil(editForm);
       getProfil().then(r => setUser(r.data));
       setEditMode(false);
-      setMessage('Profil mis à jour ✅');
+      setMessage('✅ Profil mis à jour !');
       setTimeout(() => setMessage(''), 2000);
     } catch { setMessage('Erreur lors de la mise à jour'); }
   };
 
   if (!user) return <div className="loading">Chargement...</div>;
 
-  const mesCompIds = mesComps.map(mc => mc.competence.id);
-  const categories = [...new Set(competences.map(c => c.categorie))];
+  const mesCompIds   = mesComps.map(mc => mc.competence?.id);
+  const categories   = [...new Set(competences.map(c => c.categorie))];
+  const progression  = user.points % 100;
+  const xpRestant    = 100 - progression;
+  const nextAvatar   = getNextAvatar(user.points);
+  const xpNextAvatar = nextAvatar ? nextAvatar.minXP - user.points : null;
+
+  // Filières — peut être un tableau ou un champ unique
+  const filieres = Array.isArray(user.filieres)
+    ? user.filieres
+    : (user.filiere_label ? [user.filiere_label] : []);
 
   return (
     <div className="page">
       <h1>👤 Mon Profil</h1>
       {message && <div className="toast">{message}</div>}
 
-      {/* ✅ Header avec avatar à côté du nom */}
-      <div className="profil-header">
-        <div className="profil-header-main">
+      {/* ══ EN-TÊTE IDENTIQUE AU DASHBOARD ══ */}
+      <div className="profil-hero">
+        <Avatar type={user.avatar} level={user.level} />
 
-          {/* Avatar */}
-          <div className="profil-avatar-section">
-            <Avatar type={user.avatar} level={user.level} />
+        <div className="profil-hero-info">
+          <h2>{user.username}</h2>
+          {user.bio && <p className="profil-bio">{user.bio}</p>}
+
+          {/* Tags — même disposition que le Dashboard */}
+          <div className="hero-level-row">
+            <span className="hero-tag avatar-tag">
+              {AVATAR_LABELS[user.avatar] || '🧑‍💻 Étudiant'}
+            </span>
+            <span className="hero-tag niveau">Niveau {user.level}</span>
+            {user.ecole && <span className="hero-tag ecole">🏫 {user.ecole}</span>}
+            {filieres.map((f, i) => (
+              <span key={i} className="hero-tag filiere">{f}</span>
+            ))}
+            {user.github_username && (
+              <span className="hero-tag github">🐙 {user.github_username}</span>
+            )}
           </div>
 
-          {/* Infos */}
-          <div className="profil-infos">
-            <h2>{user.username}</h2>
-            <p className="profil-sub">Niveau {user.level} • {user.points} XP</p>
-            {user.bio && <p className="profil-bio">{user.bio}</p>}
-
-            {/* Tags école et filière */}
-            <div className="profil-tags">
-              {user.ecole && (
-                <span className="profil-tag ecole">🏫 {user.ecole}</span>
-              )}
-              {user.filiere_label && (
-                <span className="profil-tag filiere">{user.filiere_label}</span>
-              )}
-              {user.github_username && (
-                <span className="profil-tag github">🐙 {user.github_username}</span>
-              )}
+          {/* Barre XP */}
+          <div className="profil-xp-bar-wrap">
+            <div className="profil-xp-bar-bg">
+              <div className="profil-xp-bar-fill" style={{ width: `${progression}%` }} />
             </div>
-
-            {/* PLUS ADD INFO  */}
-               {/* ✅ École + Niveau + Avatar sur la même ligne */}
-            <div className="hero-level-row">
-               <span className="avatar-title-badge">{
-                user.avatar === 'etudiant' ? '🧑‍💻 Étudiant'
-                : user.avatar === 'junior' ? '👨‍🔬 Junior Dev'
-                : user.avatar === 'senior' ? '🧙‍♂️ Senior Dev'
-                : '🦸 Expert'
-              }</span>
-             <span className="hero-tag niveau">Niveau {user.level}</span>
-                {/* Filtres filière */}
-              {filieres.map((f, i) => (
-                <span key={i} className="hero-tag filiere">{f}</span>
-              ))}
-               {user.ecole && <span className="hero-tag ecole">🏫 {user.ecole}</span>}
-            </div>
-            
-                      {/* Barre XP vers prochain niveau */}
-                      <ProgressBar
-                        value={progression}
-                        max={100}
-                        label={`${progression}/100 XP — encore ${xpProchainniveau} XP pour le niveau ${user.level + 1}`}
-                      />
-            
-                      {/* XP restants pour le prochain avatar */}
-                      {xpProchainAvatar !== null && (
-                        <div className="next-avatar-info">
-                          🎯 Il vous reste <strong>{xpProchainAvatar} XP</strong> pour devenir{' '}
-                          <strong>{nextAvatar.label}</strong>
-                          {nextAvatar.type === 'junior'  && ' 👨‍🔬'}
-                          {nextAvatar.type === 'senior'  && ' 🧙‍♂️'}
-                          {nextAvatar.type === 'expert'  && ' 🦸'}
-                        </div>
-                      )}
-            
-                      <div className="stats-row">
-                        <div className="stat clickable" onClick={() => navigate('/profil')}>
-                          <span className="stat-value">{user.points}</span>
-                          <span className="stat-label">XP Total</span>
-                        </div>
-                        <div className="stat clickable" onClick={() => navigate('/quetes')}>
-                          <span className="stat-value">{validees.length}</span>
-                          <span className="stat-label">Quêtes validées</span>
-                        </div>
-                        <div className="stat clickable" onClick={() => navigate('/quetes')}>
-                          <span className="stat-value">{enAttente.length}</span>
-                          <span className="stat-label">En attente</span>
-                        </div>
-                        <div className="stat clickable" onClick={() => navigate('/classement')}>
-                          <span className="stat-value">{user.level}</span>
-                          <span className="stat-label">Niveau</span>
-                        </div>
-                      </div>
-                    {/* PLUS ADD INFO  */}
-
-
+            <span className="profil-xp-label">
+              {user.points} XP — encore {xpRestant} XP pour le niveau {user.level + 1}
+            </span>
           </div>
 
-          {/* Bouton modifier */}
-          <button className="btn-edit" onClick={() => setEditMode(!editMode)}>
-            {editMode ? '✕ Annuler' : '✏️ Modifier'}
-          </button>
+          {/* XP prochain avatar */}
+          {xpNextAvatar !== null && (
+            <div className="next-avatar-info">
+              🎯 Il vous reste <strong>{xpNextAvatar} XP</strong> pour devenir{' '}
+              <strong>{nextAvatar.label}</strong>
+            </div>
+          )}
         </div>
 
-        {/* Formulaire d'édition */}
-        {editMode && (
-          <form className="edit-form" onSubmit={handleSaveEdit}>
-            <div className="edit-row">
-              <div className="edit-field">
-                <label>École</label>
-                <input
-                  type="text"
-                  value={editForm.ecole}
-                  onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))}
-                  placeholder="Votre école..."
-                />
-              </div>
-              <div className="edit-field">
-                <label>Bio</label>
-                <input
-                  type="text"
-                  value={editForm.bio}
-                  onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))}
-                  placeholder="Quelques mots sur vous..."
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn-save">Sauvegarder</button>
-          </form>
-        )}
+        {/* Bouton modifier */}
+        <button className="btn-edit" onClick={() => setEditMode(!editMode)}>
+          {editMode ? '✕ Annuler' : '✏️ Modifier'}
+        </button>
       </div>
 
-      {/* Arbre de compétences */}
+      {/* Formulaire modification */}
+      {editMode && (
+        <form className="edit-form" onSubmit={handleSaveEdit}>
+          <div className="edit-row">
+            <div className="edit-field">
+              <label>École</label>
+              <input
+                type="text"
+                value={editForm.ecole}
+                onChange={e => setEditForm(f => ({ ...f, ecole: e.target.value }))}
+                placeholder="Votre école..."
+              />
+            </div>
+            <div className="edit-field">
+              <label>Bio</label>
+              <input
+                type="text"
+                value={editForm.bio}
+                onChange={e => setEditForm(f => ({ ...f, bio: e.target.value }))}
+                placeholder="Quelques mots sur vous..."
+              />
+            </div>
+          </div>
+          <button type="submit" className="btn-save">Sauvegarder</button>
+        </form>
+      )}
+
+      {/* ══ ARBRE DE COMPÉTENCES ══ */}
       <section className="section">
         <h2>🧠 Arbre de Compétences</h2>
+
         <div className="comp-legende">
           <span className="comp-badge owned" style={{ cursor: 'default' }}>✅ Débloquée</span>
           <span className="comp-badge locked" style={{ cursor: 'default' }}>🔒 Via quête</span>
           <p className="comp-legende-text">
-            Compétences filtrées pour votre filière :
-            <strong> {user.filiere_label}</strong>.
-            Elles se débloquent automatiquement en validant les quêtes associées.
+            Les compétences se débloquent automatiquement en validant les quêtes associées.
+            {filieres.length > 0 && (
+              <> Filtrées pour : <strong>{filieres.join(', ')}</strong></>
+            )}
           </p>
         </div>
 
@@ -241,8 +186,8 @@ export default function Profil() {
                       key={c.id}
                       className={`comp-badge ${owned ? 'owned' : 'locked'}`}
                       title={owned
-                        ? 'Compétence débloquée ✅'
-                        : 'Complétez une quête associée pour débloquer'
+                        ? '✅ Compétence débloquée via une quête'
+                        : '🔒 Complétez une quête associée pour débloquer'
                       }
                     >
                       {owned ? '✅ ' : '🔒 '}{c.nom}
@@ -255,9 +200,12 @@ export default function Profil() {
         })}
       </section>
 
-      {/* GitHub */}
+      {/* ══ GITHUB ══ */}
       <section className="section">
         <h2>🐙 Connecter GitHub</h2>
+        <p style={{ fontSize: '0.82rem', color: '#888', marginBottom: '10px' }}>
+          Connectez votre compte GitHub pour importer vos repos et gagner des XP (+10 XP par repo public).
+        </p>
         <form onSubmit={handleGithub} className="github-form">
           <input
             type="text"
@@ -280,47 +228,87 @@ export default function Profil() {
       </section>
 
       <style>{`
-        .profil-header-main {
+        /* ── HERO ── */
+        .profil-hero {
+          background: linear-gradient(135deg, #1a1a40, #2d1060);
+          border: 1px solid #6f42c1;
+          border-radius: 16px;
+          padding: 24px;
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: 20px;
+          margin-bottom: 24px;
+          flex-wrap: wrap;
         }
-        .profil-avatar-section {
-          flex-shrink: 0;
-        }
-        .profil-infos {
+        .profil-hero-info {
           flex: 1;
+          min-width: 200px;
         }
-        .profil-infos h2 {
-          font-size: 1.4rem;
-          margin-bottom: 3px;
-        }
-        .profil-sub {
-          font-size: 0.9rem;
-          color: #aaa;
+        .profil-hero-info h2 {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: #e0e0f0;
           margin-bottom: 4px;
         }
         .profil-bio {
           font-size: 0.85rem;
           color: #888;
-          margin-bottom: 6px;
           font-style: italic;
+          margin-bottom: 8px;
         }
-        .profil-tags {
+
+        /* ── TAGS ── */
+        .hero-level-row {
           display: flex;
+          align-items: center;
           gap: 8px;
           flex-wrap: wrap;
-          margin-top: 8px;
+          margin-bottom: 12px;
         }
-        .profil-tag {
+        .hero-tag {
           padding: 4px 12px;
           border-radius: 20px;
           font-size: 0.78rem;
-          font-weight: 600;
+          font-weight: 700;
         }
-        .profil-tag.ecole   { background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid #0ea5e9; }
-        .profil-tag.filiere { background: rgba(111,66,193,0.2); color: #a78bfa; border: 1px solid #6f42c1; }
-        .profil-tag.github  { background: rgba(255,255,255,0.05); color: #888; border: 1px solid #444; }
+        .hero-tag.avatar-tag { background: rgba(111,66,193,0.2); color: #a78bfa; border: 1px solid #6f42c1; }
+        .hero-tag.niveau     { background: rgba(236,72,153,0.2); color: #f472b6; border: 1px solid #ec4899; }
+        .hero-tag.ecole      { background: rgba(14,165,233,0.15); color: #38bdf8; border: 1px solid #0ea5e9; }
+        .hero-tag.filiere    { background: rgba(111,66,193,0.15); color: #a78bfa; border: 1px solid #6f42c1; }
+        .hero-tag.github     { background: rgba(255,255,255,0.05); color: #888; border: 1px solid #444; }
+
+        /* ── BARRE XP ── */
+        .profil-xp-bar-wrap { margin-bottom: 10px; }
+        .profil-xp-bar-bg {
+          background: #333;
+          border-radius: 6px;
+          height: 8px;
+          overflow: hidden;
+          margin-bottom: 4px;
+        }
+        .profil-xp-bar-fill {
+          background: linear-gradient(90deg, #7c3aed, #a78bfa);
+          height: 100%;
+          border-radius: 6px;
+          transition: width 0.4s ease;
+        }
+        .profil-xp-label {
+          font-size: 0.78rem;
+          color: #888;
+        }
+
+        /* ── NEXT AVATAR ── */
+        .next-avatar-info {
+          background: rgba(253,224,71,0.08);
+          border: 1px solid rgba(253,224,71,0.3);
+          border-radius: 8px;
+          padding: 8px 12px;
+          font-size: 0.82rem;
+          color: #fde047;
+          margin-top: 8px;
+        }
+
+        /* ── BOUTON MODIFIER ── */
         .btn-edit {
           background: transparent;
           border: 1px solid #6f42c1;
@@ -334,10 +322,14 @@ export default function Profil() {
           align-self: flex-start;
         }
         .btn-edit:hover { background: #6f42c1; color: white; }
+
+        /* ── FORMULAIRE EDITION ── */
         .edit-form {
-          margin-top: 16px;
-          padding-top: 16px;
-          border-top: 1px solid #2a1a5e;
+          background: #1a1a2e;
+          border: 1px solid #2a1a5e;
+          border-radius: 12px;
+          padding: 16px;
+          margin-bottom: 20px;
         }
         .edit-row {
           display: grid;
@@ -359,6 +351,7 @@ export default function Profil() {
           border-radius: 7px;
           color: white;
           font-size: 0.85rem;
+          box-sizing: border-box;
         }
         .btn-save {
           background: #7c3aed;
@@ -369,7 +362,11 @@ export default function Profil() {
           cursor: pointer;
           font-size: 0.85rem;
           font-weight: 700;
+          transition: all 0.2s;
         }
+        .btn-save:hover { background: #5a32a3; }
+
+        /* ── COMPÉTENCES ── */
         .comp-legende {
           display: flex;
           align-items: center;
@@ -386,6 +383,12 @@ export default function Profil() {
           color: #888;
           width: 100%;
           margin-top: 4px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+          .profil-hero { flex-direction: column; }
+          .edit-row    { grid-template-columns: 1fr; }
         }
       `}</style>
     </div>
