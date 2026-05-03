@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getProfil, getMesCompetences, getCompetences, updateProfil, getMesQuetes } from '../services/api';
 import Avatar from '../components/Avatar';
 import GithubModal from '../components/GithubModal';
+import TreasureMap from '../components/TreasureMap';
 
 const AVATAR_LABELS = {
   etudiant: '🧑‍💻 Étudiant',
@@ -50,116 +51,6 @@ function CompetencesGrid({ competences, mesCompIds }) {
           </div>
         );
       })}
-    </div>
-  );
-}
-
-// ── CARTE AU TRÉSOR ───────────────────────────────────────
-function TreasureMap({ quetes }) {
-  if (!quetes.length) return <div className="tm-empty">Aucune quête disponible</div>;
-
-  const nb_valides = quetes.filter(q => q.statut === 'valide').length;
-  const pct = Math.round((nb_valides / quetes.length) * 100);
-
-  const STATUT = {
-    valide:       { emoji: '✅', color: '#4ade80', bg: '#052e16', border: '#16a34a', label: 'Validée' },
-    soumis:       { emoji: '⏳', color: '#fde047', bg: '#1c1a05', border: '#ca8a04', label: 'En attente' },
-    refuse:       { emoji: '❌', color: '#f87171', bg: '#2e0505', border: '#dc2626', label: 'Refusée' },
-    en_cours:     { emoji: '🔄', color: '#60a5fa', bg: '#051c2e', border: '#1d4ed8', label: 'En cours' },
-    non_commence: { emoji: '🔒', color: '#666',    bg: '#1a1a2e', border: '#333',    label: 'Non commencé' },
-  };
-
-  // Positions de la carte : serpentin sur 4 colonnes
-  const cols = 4;
-  const positioned = quetes.map((uq, i) => {
-    const row = Math.floor(i / cols);
-    const col = row % 2 === 0 ? i % cols : (cols - 1 - (i % cols));
-    return { ...uq, row, col };
-  });
-
-  const maxRow = Math.floor((quetes.length - 1) / cols);
-
-  return (
-    <div className="tm-wrap">
-      {/* En-tête carte */}
-      <div className="tm-header">
-        <div className="tm-title">🗺️ Carte au Trésor — Votre Aventure</div>
-        <div className="tm-progress-row">
-          <div className="tm-progress-bar-bg">
-            <div className="tm-progress-bar-fill" style={{ width: `${pct}%` }} />
-          </div>
-          <span className="tm-progress-label">{nb_valides}/{quetes.length} quêtes • {pct}%</span>
-        </div>
-      </div>
-
-      {/* Grille carte */}
-      <div className="tm-grid" style={{ gridTemplateRows: `repeat(${maxRow + 1}, auto)` }}>
-        {/* Départ */}
-        <div className="tm-start" style={{ gridColumn: '1', gridRow: '1' }}>
-          🏁 Départ
-        </div>
-
-        {positioned.map((uq, i) => {
-          const cfg = STATUT[uq.statut] || STATUT.non_commence;
-          return (
-            <div
-              key={uq.id}
-              className="tm-cell"
-              style={{
-                gridColumn: uq.col + 1,
-                gridRow: uq.row + 1,
-                borderColor: cfg.border,
-                background: cfg.bg,
-              }}
-              title={uq.quete.titre}
-            >
-              {/* Numéro étape */}
-              <div className="tm-step-num" style={{ color: cfg.color }}>#{i + 1}</div>
-
-              {/* Icône quête */}
-              <div className="tm-quest-icon">{uq.quete.icone}</div>
-
-              {/* Statut */}
-              <div className="tm-status-icon">{cfg.emoji}</div>
-
-              {/* Titre tronqué */}
-              <div className="tm-quest-name">{uq.quete.titre}</div>
-
-              {/* XP */}
-              <div className="tm-xp" style={{ color: cfg.color }}>
-                {uq.statut === 'valide' ? `+${uq.points_gagnes} XP ✨` : `+${uq.quete.points} XP`}
-              </div>
-
-              {/* Connecteur vers suivant */}
-              {i < quetes.length - 1 && (
-                <div className={`tm-connector ${uq.statut === 'valide' ? 'done' : ''}`} />
-              )}
-            </div>
-          );
-        })}
-
-        {/* Trésor final */}
-        <div
-          className={`tm-treasure ${nb_valides === quetes.length ? 'reached' : ''}`}
-          style={{
-            gridColumn: maxRow % 2 === 0
-              ? Math.min((quetes.length - 1) % cols, cols - 1) + 1
-              : cols - Math.min((quetes.length - 1) % cols, cols - 1),
-            gridRow: maxRow + 1,
-          }}
-        >
-          {nb_valides === quetes.length ? '🏆 Trésor découvert !' : '🏆 Trésor'}
-        </div>
-      </div>
-
-      {/* Légende */}
-      <div className="tm-legend">
-        {Object.entries(STATUT).map(([k, v]) => (
-          <span key={k} className="tm-legend-item" style={{ color: v.color }}>
-            {v.emoji} {v.label}
-          </span>
-        ))}
-      </div>
     </div>
   );
 }
