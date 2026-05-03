@@ -25,24 +25,40 @@ export default function Register() {
     }));
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setError('');
+  //   if (form.filieres.length === 0) {
+  //     setError('Veuillez sélectionner au moins une filière.');
+  //     return;
+  //   }
+  //   try {
+  //     await register(form);
+  //     setSuccess('Compte créé ! Redirection...');
+  //     setTimeout(() => navigate('/login'), 1500);
+  //   } catch (err) {
+  //     const data = err.response?.data;
+  //     if (data?.username) setError('Ce nom d\'utilisateur est déjà pris.');
+  //     else if (data?.email) setError('Cet email est déjà utilisé.');
+  //     else setError('Erreur lors de la création du compte.');
+  //   }
+  // };
+
+  // auto connexion après inscription
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    if (form.filieres.length === 0) {
-      setError('Veuillez sélectionner au moins une filière.');
-      return;
-    }
-    try {
-      await register(form);
-      setSuccess('Compte créé ! Redirection...');
-      setTimeout(() => navigate('/login'), 1500);
-    } catch (err) {
-      const data = err.response?.data;
-      if (data?.username) setError('Ce nom d\'utilisateur est déjà pris.');
-      else if (data?.email) setError('Cet email est déjà utilisé.');
-      else setError('Erreur lors de la création du compte.');
-    }
-  };
+  e.preventDefault();
+  try {
+    await register(form);
+    setSuccess('✅ Compte créé ! Connexion en cours...');
+    
+    // ✅ Auto-connexion immédiate
+    const res = await login({ username: form.username, password: form.password });
+    localStorage.setItem('token', res.data.access);
+    setTimeout(() => navigate('/dashboard'), 1000);
+  } catch (err) {
+    setError('Erreur lors de la création du compte.');
+  }
+};
 
   return (
     <div className="auth-container">

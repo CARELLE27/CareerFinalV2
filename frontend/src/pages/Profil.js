@@ -83,6 +83,63 @@ export default function Profil() {
                 <span className="profil-tag github">🐙 {user.github_username}</span>
               )}
             </div>
+
+            {/* PLUS ADD INFO  */}
+               {/* ✅ École + Niveau + Avatar sur la même ligne */}
+            <div className="hero-level-row">
+               <span className="avatar-title-badge">{
+                user.avatar === 'etudiant' ? '🧑‍💻 Étudiant'
+                : user.avatar === 'junior' ? '👨‍🔬 Junior Dev'
+                : user.avatar === 'senior' ? '🧙‍♂️ Senior Dev'
+                : '🦸 Expert'
+              }</span>
+             <span className="hero-tag niveau">Niveau {user.level}</span>
+                {/* Filtres filière */}
+              {filieres.map((f, i) => (
+                <span key={i} className="hero-tag filiere">{f}</span>
+              ))}
+               {user.ecole && <span className="hero-tag ecole">🏫 {user.ecole}</span>}
+            </div>
+            
+                      {/* Barre XP vers prochain niveau */}
+                      <ProgressBar
+                        value={progression}
+                        max={100}
+                        label={`${progression}/100 XP — encore ${xpProchainniveau} XP pour le niveau ${user.level + 1}`}
+                      />
+            
+                      {/* XP restants pour le prochain avatar */}
+                      {xpProchainAvatar !== null && (
+                        <div className="next-avatar-info">
+                          🎯 Il vous reste <strong>{xpProchainAvatar} XP</strong> pour devenir{' '}
+                          <strong>{nextAvatar.label}</strong>
+                          {nextAvatar.type === 'junior'  && ' 👨‍🔬'}
+                          {nextAvatar.type === 'senior'  && ' 🧙‍♂️'}
+                          {nextAvatar.type === 'expert'  && ' 🦸'}
+                        </div>
+                      )}
+            
+                      <div className="stats-row">
+                        <div className="stat clickable" onClick={() => navigate('/profil')}>
+                          <span className="stat-value">{user.points}</span>
+                          <span className="stat-label">XP Total</span>
+                        </div>
+                        <div className="stat clickable" onClick={() => navigate('/quetes')}>
+                          <span className="stat-value">{validees.length}</span>
+                          <span className="stat-label">Quêtes validées</span>
+                        </div>
+                        <div className="stat clickable" onClick={() => navigate('/quetes')}>
+                          <span className="stat-value">{enAttente.length}</span>
+                          <span className="stat-label">En attente</span>
+                        </div>
+                        <div className="stat clickable" onClick={() => navigate('/classement')}>
+                          <span className="stat-value">{user.level}</span>
+                          <span className="stat-label">Niveau</span>
+                        </div>
+                      </div>
+                    {/* PLUS ADD INFO  */}
+
+
           </div>
 
           {/* Bouton modifier */}
