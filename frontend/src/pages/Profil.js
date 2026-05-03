@@ -1,6 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { getProfil, getMesCompetences, getCompetences, connectGithub, updateProfil, getFilieres } from '../services/api';
 import Avatar from '../components/Avatar';
+import ProgressBar from '../components/ProgressBar';
+
+//ADD PROFIL
+const AVATAR_LEVELS = [
+  { type: 'etudiant', label: 'Étudiant',   minLevel: 1,  minXP: 0    },
+  { type: 'junior',   label: 'Junior Dev',  minLevel: 6,  minXP: 500  },
+  { type: 'senior',   label: 'Senior Dev',  minLevel: 16, minXP: 1500 },
+  { type: 'expert',   label: 'Expert',      minLevel: 31, minXP: 3000 },
+];
+
+function getNextAvatar(points) {
+  const next = AVATAR_LEVELS.find(a => a.minXP > points);
+  return next || null;
+}
+
+  if (!user) return <div className="loading">Chargement...</div>;
+
+  const validees    = quetes.filter(q => q.statut === 'valide');
+  const enAttente   = quetes.filter(q => q.statut === 'soumis');
+  const progression = user.points % 100;
+  const xpProchainniveau = 100 - progression;
+  const nextAvatar  = getNextAvatar(user.points);
+  const xpProchainAvatar = nextAvatar ? nextAvatar.minXP - user.points : null;
+
+  const quetesFiltrees = [
+    ...quetes.filter(q => q.recommandee && q.statut !== 'valide'),
+    ...quetes.filter(q => !q.recommandee && q.statut !== 'valide'),
+    ...quetes.filter(q => q.statut === 'valide'),
+  ].slice(0, 4);
+
+  // Filières (peut être un tableau)
+  const filieres = Array.isArray(user.filieres)
+    ? user.filieres
+    : (user.filiere_label ? [user.filiere_label] : []);
+//
+
 
 export default function Profil() {
   const [user, setUser]               = useState(null);
