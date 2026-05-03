@@ -1,271 +1,120 @@
 [
-  
+  {"model":"api.competence","pk":1,  "fields":{"nom":"HTML/CSS",              "categorie":"frontend",  "niveau_requis":1,"description":"Bases du web","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":2,  "fields":{"nom":"JavaScript",            "categorie":"frontend",  "niveau_requis":1,"description":"Langage web","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":3,  "fields":{"nom":"React",                 "categorie":"frontend",  "niveau_requis":3,"description":"Framework UI","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":4,  "fields":{"nom":"Python",                "categorie":"backend",   "niveau_requis":1,"description":"Langage polyvalent","filieres_cibles":["informatique","sciences_physiques","mathematiques"]}},
+  {"model":"api.competence","pk":5,  "fields":{"nom":"Django",                "categorie":"backend",   "niveau_requis":3,"description":"Framework web Python","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":6,  "fields":{"nom":"Docker",                "categorie":"devops",    "niveau_requis":2,"description":"Containerisation","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":7,  "fields":{"nom":"Git",                   "categorie":"devops",    "niveau_requis":1,"description":"Gestion de versions","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":8,  "fields":{"nom":"CI/CD GitLab",          "categorie":"devops",    "niveau_requis":4,"description":"Intégration continue","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":9,  "fields":{"nom":"PostgreSQL",            "categorie":"data",      "niveau_requis":2,"description":"Base de données","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":10, "fields":{"nom":"Kubernetes",            "categorie":"devops",    "niveau_requis":5,"description":"Orchestration","filieres_cibles":["informatique"]}},
+  {"model":"api.competence","pk":11, "fields":{"nom":"Rédaction web",         "categorie":"redaction", "niveau_requis":1,"description":"Écriture web","filieres_cibles":["litterature","langues"]}},
+  {"model":"api.competence","pk":12, "fields":{"nom":"SEO",                   "categorie":"redaction", "niveau_requis":2,"description":"Référencement","filieres_cibles":["litterature","langues"]}},
+  {"model":"api.competence","pk":13, "fields":{"nom":"Anglais technique",     "categorie":"langues",   "niveau_requis":1,"description":"Anglais IT","filieres_cibles":["langues","informatique"]}},
+  {"model":"api.competence","pk":14, "fields":{"nom":"Traduction",            "categorie":"langues",   "niveau_requis":2,"description":"Traduction","filieres_cibles":["langues"]}},
+  {"model":"api.competence","pk":15, "fields":{"nom":"Communication écrite",  "categorie":"redaction", "niveau_requis":1,"description":"Expression écrite","filieres_cibles":[]}},
+  {"model":"api.competence","pk":16, "fields":{"nom":"Statistiques",          "categorie":"maths",     "niveau_requis":2,"description":"Stats descriptives","filieres_cibles":["mathematiques","sciences_physiques","sante"]}},
+  {"model":"api.competence","pk":17, "fields":{"nom":"Algèbre linéaire",      "categorie":"maths",     "niveau_requis":3,"description":"Matrices et vecteurs","filieres_cibles":["mathematiques","sciences_physiques"]}},
+  {"model":"api.competence","pk":18, "fields":{"nom":"Python scientifique",   "categorie":"sciences",  "niveau_requis":2,"description":"NumPy, Pandas","filieres_cibles":["mathematiques","sciences_physiques","sciences_naturelles"]}},
+  {"model":"api.competence","pk":19, "fields":{"nom":"LaTeX",                 "categorie":"redaction", "niveau_requis":2,"description":"Rédaction scientifique","filieres_cibles":["mathematiques","sciences_physiques"]}},
+  {"model":"api.competence","pk":20, "fields":{"nom":"Recherche biblio",      "categorie":"sante",     "niveau_requis":1,"description":"PubMed, BDD santé","filieres_cibles":["sante","sciences_naturelles"]}},
+  {"model":"api.competence","pk":21, "fields":{"nom":"Biostatistiques",       "categorie":"sante",     "niveau_requis":3,"description":"Stats santé","filieres_cibles":["sante"]}},
+  {"model":"api.competence","pk":22, "fields":{"nom":"Biologie moléculaire",  "categorie":"sciences",  "niveau_requis":2,"description":"ADN, protéines","filieres_cibles":["sciences_naturelles"]}},
+  {"model":"api.competence","pk":23, "fields":{"nom":"Écologie",              "categorie":"sciences",  "niveau_requis":1,"description":"Écosystèmes","filieres_cibles":["sciences_naturelles"]}},
+  {"model":"api.competence","pk":24, "fields":{"nom":"Présentation orale",    "categorie":"autre",     "niveau_requis":1,"description":"Prise de parole","filieres_cibles":[]}},
+  {"model":"api.competence","pk":25, "fields":{"nom":"Gestion de projet",     "categorie":"autre",     "niveau_requis":2,"description":"Organisation","filieres_cibles":[]}},
+  {"model":"api.competence","pk":26, "fields":{"nom":"Travail en équipe",     "categorie":"autre",     "niveau_requis":1,"description":"Collaboration","filieres_cibles":[]}},
+  {"model":"api.competence","pk":27, "fields":{"nom":"Excel avancé",          "categorie":"data",      "niveau_requis":1,"description":"Tableurs","filieres_cibles":["mathematiques","sante","sciences_naturelles"]}},
+  {"model":"api.competence","pk":28, "fields":{"nom":"Culture générale",      "categorie":"autre",     "niveau_requis":1,"description":"Connaissances générales","filieres_cibles":["culture_generale"]}},
+
+
+  {"model":"api.quete","pk":1,"fields":{"titre":"Présenter un projet devant l'équipe","description":"Présentez un projet de 5 minutes.","instructions":"1. Préparez une présentation de 5 minutes\n2. Présentez devant votre équipe ou formateur\n3. Décrivez ce que vous avez appris\n(Votre formateur validera)","points":100,"type_quete":"admin_review","icone":"🎤","difficulte":2,"validation_config":{},"active":true,"filieres_cibles":[],"competences_debloquees":[24,26]}},
+  {"model":"api.quete","pk":2,"fields":{"titre":"Rédiger un rapport de projet","description":"Rédigez un rapport structuré sur un travail réalisé.","instructions":"1. Rédigez un rapport de 2 pages minimum\n2. Sections : introduction, développement, conclusion\n3. Publiez-le en ligne (Google Docs, PDF)\n4. Soumettez l'URL","points":80,"type_quete":"url_submit","icone":"📄","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":[],"competences_debloquees":[15,26]}},
+  {"model":"api.quete","pk":3,"fields":{"titre":"Quiz : Gestion de projet Agile","description":"Testez vos connaissances sur les méthodes agiles.","instructions":"Question : Dans la méthode Scrum, comment s'appelle la réunion quotidienne courte ?\n\na) Sprint Review\nb) Daily Scrum\nc) Sprint Planning\nd) Retrospective\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"📋","difficulte":1,"validation_config":{"answer":"b","explanation":"Le Daily Scrum est une réunion de 15 min max chaque matin."},"active":true,"filieres_cibles":[],"competences_debloquees":[25]}},
+  {"model":"api.quete","pk":4,"fields":{"titre":"Quiz : Communication en équipe","description":"Testez vos connaissances sur la communication professionnelle.","instructions":"Question : Dans une réunion professionnelle, quelle attitude favorise le mieux la collaboration ?\n\na) Parler le plus possible pour montrer ses connaissances\nb) Écouter activement et reformuler les propos des autres\nc) Ne parler que si on est interrogé directement\nd) Éviter tout désaccord pour maintenir la paix\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🤝","difficulte":1,"validation_config":{"answer":"b","explanation":"L'écoute active et la reformulation sont les bases d'une communication efficace en équipe."},"active":true,"filieres_cibles":[],"competences_debloquees":[26]}},
 
  
-  {"model":"api.competence","pk":1, "fields":{"nom":"HTML/CSS",       "categorie":"frontend", "niveau_requis":1,"description":"Bases du web","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":2, "fields":{"nom":"JavaScript",     "categorie":"frontend", "niveau_requis":1,"description":"Langage web côté client","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":3, "fields":{"nom":"React",          "categorie":"frontend", "niveau_requis":3,"description":"Framework UI JavaScript","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":4, "fields":{"nom":"Python",         "categorie":"backend",  "niveau_requis":1,"description":"Langage polyvalent","filieres_cibles":["informatique","sciences_physiques","mathematiques"]}},
-  {"model":"api.competence","pk":5, "fields":{"nom":"Django",         "categorie":"backend",  "niveau_requis":3,"description":"Framework web Python","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":6, "fields":{"nom":"Docker",         "categorie":"devops",   "niveau_requis":2,"description":"Containerisation","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":7, "fields":{"nom":"Git",            "categorie":"devops",   "niveau_requis":1,"description":"Gestion de versions","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":8, "fields":{"nom":"CI/CD GitLab",   "categorie":"devops",   "niveau_requis":4,"description":"Intégration continue","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":9, "fields":{"nom":"PostgreSQL",     "categorie":"data",     "niveau_requis":2,"description":"Base de données relationnelle","filieres_cibles":["informatique"]}},
-  {"model":"api.competence","pk":10,"fields":{"nom":"Kubernetes",     "categorie":"devops",   "niveau_requis":5,"description":"Orchestration conteneurs","filieres_cibles":["informatique"]}},
+  {"model":"api.quete","pk":5,"fields":{"titre":"Créer votre premier repo GitHub","description":"Créez un repository public avec une description et un README.","instructions":"1. Allez sur github.com\n2. Créez un nouveau repo public\n3. Ajoutez une description (obligatoire)\n4. Cochez 'Add a README file'\n5. Soumettez le nom du repo","points":50,"type_quete":"github_repo","icone":"🐙","difficulte":1,"validation_config":{},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[7]}},
+  {"model":"api.quete","pk":6,"fields":{"titre":"Faire au moins 5 commits","description":"Pratiquez le versioning avec 5 commits minimum.","instructions":"1. Choisissez un repo GitHub existant\n2. Faites au moins 5 commits avec des messages clairs\n3. Ex: 'feat: add login page', 'fix: correct typo'\n4. Soumettez le nom du repo","points":75,"type_quete":"github_commit","icone":"📝","difficulte":1,"validation_config":{"min_commits":5},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[7]}},
+  {"model":"api.quete","pk":7,"fields":{"titre":"Containeriser une application avec Docker","description":"Créez un projet avec Dockerfile et docker-compose.yml.","instructions":"1. Créez un repo GitHub public\n2. Ajoutez : Dockerfile, docker-compose.yml, README.md\n3. Le README doit expliquer comment lancer le projet\n4. Soumettez le nom du repo","points":150,"type_quete":"github_file","icone":"🐳","difficulte":3,"validation_config":{"required_files":["Dockerfile","docker-compose.yml","README.md"]},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[6]}},
+  {"model":"api.quete","pk":8,"fields":{"titre":"Quiz : Les bases de Docker","description":"Maîtrisez les concepts fondamentaux de Docker.","instructions":"Question : Quelle commande lance tous les services d'un docker-compose.yml ?\n\na) docker run\nb) docker compose up\nc) docker start\nd) docker build\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🐳","difficulte":1,"validation_config":{"answer":"b","explanation":"'docker compose up' lance tous les services définis dans docker-compose.yml."},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[6]}},
+  {"model":"api.quete","pk":9,"fields":{"titre":"Quiz : HTTP et REST API","description":"Testez vos connaissances sur les APIs REST.","instructions":"Question : Quel code HTTP indique qu'une ressource a été créée avec succès ?\n\na) 200 OK\nb) 204 No Content\nc) 201 Created\nd) 301 Moved\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🌐","difficulte":1,"validation_config":{"answer":"c","explanation":"201 Created est le code standard pour une création réussie."},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[4]}},
+  {"model":"api.quete","pk":10,"fields":{"titre":"Déployer une application en ligne","description":"Déployez votre app sur un hébergeur public.","instructions":"1. Déployez sur Render, Railway ou Vercel\n2. Vérifiez que l'URL est accessible\n3. Soumettez l'URL complète (https://...)","points":200,"type_quete":"url_submit","icone":"🚀","difficulte":3,"validation_config":{"check_accessible":true},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[6,8]}},
+  {"model":"api.quete","pk":11,"fields":{"titre":"Créer un pipeline CI/CD","description":"Configurez un pipeline GitLab CI avec 2 stages minimum.","instructions":"1. Créez un repo GitLab\n2. Ajoutez .gitlab-ci.yml avec 2 stages\n3. Vérifiez que le pipeline passe\n4. Soumettez l'URL du repo GitLab","points":175,"type_quete":"url_submit","icone":"⚙️","difficulte":3,"validation_config":{"url_must_contain":"gitlab.com","check_accessible":false},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[8]}},
+  {"model":"api.quete","pk":12,"fields":{"titre":"Quiz : Git avancé","description":"Maîtrisez les concepts avancés de Git.","instructions":"Question : Quelle commande Git fusionne une branche en créant toujours un commit de merge ?\n\na) git merge\nb) git merge --no-ff\nc) git rebase\nd) git cherry-pick\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"🔀","difficulte":2,"validation_config":{"answer":"b","explanation":"--no-ff force la création d'un commit de merge même si fast-forward est possible."},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[7]}},
+  {"model":"api.quete","pk":13,"fields":{"titre":"Quiz : Sécurité — JWT","description":"Maîtrisez les fondamentaux de l'authentification JWT.","instructions":"Question : Qu'est-ce qu'un JWT ?\n\na) Un cookie de session chiffré stocké côté serveur\nb) Un token signé contenant des données encodées en Base64, vérifié sans BDD\nc) Un mot de passe haché envoyé dans les headers HTTP\nd) Une clé API générée aléatoirement\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"🔐","difficulte":2,"validation_config":{"answer":"b","explanation":"Un JWT est un token auto-porteur signé, qui contient les données en Base64 et se vérifie sans accès à la BDD."},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[4]}},
+  {"model":"api.quete","pk":14,"fields":{"titre":"Quiz : Linux — commandes essentielles","description":"Maîtrisez les commandes Linux de base.","instructions":"Question : Quelle commande Linux affiche le contenu d'un fichier texte page par page ?\n\na) cat\nb) grep\nc) less\nd) ls\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🐧","difficulte":1,"validation_config":{"answer":"c","explanation":"'less' affiche le contenu d'un fichier page par page, avec navigation."},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[4]}},
+  {"model":"api.quete","pk":15,"fields":{"titre":"Faire 10 commits conventionnels","description":"Adoptez la convention Conventional Commits.","instructions":"1. Choisissez un repo GitHub\n2. Faites 10 commits avec des préfixes conventionnels\n3. Exemples : feat:, fix:, docs:, chore:, refactor:\n4. Soumettez le nom du repo","points":100,"type_quete":"github_commit","icone":"✍️","difficulte":2,"validation_config":{"min_commits":10},"active":true,"filieres_cibles":["informatique"],"competences_debloquees":[7]}},
+
+  {"model":"api.quete","pk":16,"fields":{"titre":"Créer un blog avec 3 articles","description":"Publiez un blog en ligne avec au moins 3 articles.","instructions":"1. Créez un blog (Medium, WordPress, Wix ou autre)\n2. Publiez 3 articles de 300 mots minimum chacun\n3. Les articles doivent avoir un titre accrocheur\n4. Soumettez l'URL de votre blog","points":120,"type_quete":"url_submit","icone":"✍️","difficulte":2,"validation_config":{"check_accessible":true},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[11,15]}},
+  {"model":"api.quete","pk":17,"fields":{"titre":"Quiz : Figures de style","description":"Identifiez les figures de style en littérature.","instructions":"Question : Comment s'appelle la figure de style qui attribue des qualités humaines à un objet ?\n\na) Métaphore\nb) Personnification\nc) Synecdoque\nd) Antiphrase\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"📖","difficulte":1,"validation_config":{"answer":"b","explanation":"La personnification attribue des traits humains à des éléments non-humains."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":18,"fields":{"titre":"Quiz : Mouvements littéraires","description":"Testez vos connaissances sur les grands mouvements littéraires.","instructions":"Question : Quel mouvement littéraire du XVIIe siècle prônait la raison, l'ordre et l'imitation des Anciens ?\n\na) Le Romantisme\nb) Le Réalisme\nc) Le Classicisme\nd) Le Surréalisme\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"📚","difficulte":1,"validation_config":{"answer":"c","explanation":"Le Classicisme (XVIIe) valorisait la raison, les règles et l'imitation des auteurs grecs et latins."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":19,"fields":{"titre":"Rédiger et publier un article SEO","description":"Rédigez un article optimisé pour les moteurs de recherche.","instructions":"1. Choisissez un sujet de votre domaine\n2. Rédigez 500 mots avec des mots-clés\n3. Ajoutez une introduction, des sous-titres H2, une conclusion\n4. Publiez-le et soumettez l'URL","points":100,"type_quete":"url_submit","icone":"🔍","difficulte":2,"validation_config":{"check_accessible":true},"active":true,"filieres_cibles":["litterature","langues"],"competences_debloquees":[11,12]}},
+  {"model":"api.quete","pk":20,"fields":{"titre":"Quiz : Analyse d'un texte littéraire","description":"Analysez la structure d'un texte.","instructions":"Question : Dans une analyse littéraire, qu'est-ce que le 'point de vue omniscient' ?\n\na) Le narrateur ne sait que ce que voit le personnage principal\nb) Le narrateur connaît les pensées et actions de tous les personnages\nc) Le narrateur raconte à la première personne\nd) Le narrateur est absent du récit\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🔬","difficulte":2,"validation_config":{"answer":"b","explanation":"Dans le point de vue omniscient, le narrateur connaît tout : pensées, actions, passé et futur de tous les personnages."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":21,"fields":{"titre":"Quiz : Poésie — versification","description":"Maîtrisez les bases de la versification française.","instructions":"Question : Comment s'appelle un vers de 12 syllabes en poésie française ?\n\na) Octosyllabe\nb) Décasyllabe\nc) Alexandrin\nd) Hendécasyllabe\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🎭","difficulte":1,"validation_config":{"answer":"c","explanation":"L'alexandrin est le vers de 12 syllabes, très utilisé dans la tragédie classique française."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":22,"fields":{"titre":"Quiz : Les grands auteurs français","description":"Testez vos connaissances sur les auteurs majeurs.","instructions":"Question : Quel auteur a écrit 'Les Misérables' ?\n\na) Honoré de Balzac\nb) Victor Hugo\nc) Gustave Flaubert\nd) Émile Zola\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"✒️","difficulte":1,"validation_config":{"answer":"b","explanation":"Victor Hugo a publié Les Misérables en 1862, l'un des romans les plus connus de la littérature française."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":23,"fields":{"titre":"Quiz : Le Naturalisme","description":"Testez vos connaissances sur le mouvement naturaliste.","instructions":"Question : Quel est le chef de file du mouvement naturaliste en littérature française ?\n\na) Victor Hugo\nb) Marcel Proust\nc) Émile Zola\nd) André Gide\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"📜","difficulte":2,"validation_config":{"answer":"c","explanation":"Émile Zola est le chef de file du Naturalisme avec la saga des Rougon-Macquart."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
+  {"model":"api.quete","pk":24,"fields":{"titre":"Écrire une nouvelle courte","description":"Rédigez une nouvelle de fiction de 500 mots minimum.","instructions":"1. Écrivez une nouvelle avec : personnages, situation initiale, péripétie, dénouement\n2. Minimum 500 mots\n3. Publiez sur Medium, blog ou Google Docs public\n4. Soumettez l'URL","points":150,"type_quete":"url_submit","icone":"📓","difficulte":3,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[11,15]}},
+  {"model":"api.quete","pk":25,"fields":{"titre":"Quiz : Genres littéraires","description":"Distinguez les différents genres littéraires.","instructions":"Question : Lequel de ces textes appartient au genre épistolaire ?\n\na) Une pièce de théâtre en vers\nb) Un roman raconté à travers des lettres\nc) Un poème en prose\nd) Un conte philosophique\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"📬","difficulte":1,"validation_config":{"answer":"b","explanation":"Le genre épistolaire désigne les œuvres écrites sous forme de lettres (ex: Les Liaisons dangereuses)."},"active":true,"filieres_cibles":["litterature"],"competences_debloquees":[15]}},
 
 
-  {"model":"api.competence","pk":11,"fields":{"nom":"Rédaction web",      "categorie":"redaction","niveau_requis":1,"description":"Écriture pour le web","filieres_cibles":["litterature","langues"]}},
-  {"model":"api.competence","pk":12,"fields":{"nom":"SEO / Référencement","categorie":"redaction","niveau_requis":2,"description":"Optimisation moteurs de recherche","filieres_cibles":["litterature","langues"]}},
-  {"model":"api.competence","pk":13,"fields":{"nom":"Anglais technique",  "categorie":"langues",  "niveau_requis":1,"description":"Anglais professionnel","filieres_cibles":["langues","informatique"]}},
-  {"model":"api.competence","pk":14,"fields":{"nom":"Traduction",         "categorie":"langues",  "niveau_requis":2,"description":"Traduction de documents","filieres_cibles":["langues"]}},
-  {"model":"api.competence","pk":15,"fields":{"nom":"Communication écrite","categorie":"redaction","niveau_requis":1,"description":"Expression écrite professionnelle","filieres_cibles":["litterature","langues","sante","sciences_naturelles"]}},
-
- 
-  {"model":"api.competence","pk":16,"fields":{"nom":"Statistiques",       "categorie":"maths",    "niveau_requis":2,"description":"Analyse statistique","filieres_cibles":["mathematiques","sciences_physiques","sante"]}},
-  {"model":"api.competence","pk":17,"fields":{"nom":"Algèbre linéaire",   "categorie":"maths",    "niveau_requis":3,"description":"Matrices et vecteurs","filieres_cibles":["mathematiques","sciences_physiques"]}},
-  {"model":"api.competence","pk":18,"fields":{"nom":"Excel avancé",       "categorie":"data",     "niveau_requis":1,"description":"Tableaux, formules, graphiques","filieres_cibles":["mathematiques","sante","sciences_naturelles","litterature"]}},
-  {"model":"api.competence","pk":19,"fields":{"nom":"Python scientifique","categorie":"sciences", "niveau_requis":2,"description":"NumPy, Pandas, Matplotlib","filieres_cibles":["mathematiques","sciences_physiques","sciences_naturelles"]}},
-  {"model":"api.competence","pk":20,"fields":{"nom":"LaTeX",              "categorie":"redaction","niveau_requis":2,"description":"Rédaction scientifique","filieres_cibles":["mathematiques","sciences_physiques"]}},
-
-
-  {"model":"api.competence","pk":21,"fields":{"nom":"Recherche bibliographique","categorie":"sante","niveau_requis":1,"description":"PubMed, bases de données santé","filieres_cibles":["sante","sciences_naturelles"]}},
-  {"model":"api.competence","pk":22,"fields":{"nom":"Bases de données médicales","categorie":"sante","niveau_requis":2,"description":"SNOMED, CIM-10","filieres_cibles":["sante"]}},
-  {"model":"api.competence","pk":23,"fields":{"nom":"Biostatistiques",    "categorie":"sante",    "niveau_requis":3,"description":"Stats appliquées à la santé","filieres_cibles":["sante"]}},
-
-
-  {"model":"api.competence","pk":24,"fields":{"nom":"Biologie moléculaire","categorie":"sciences","niveau_requis":2,"description":"ADN, protéines, cellules","filieres_cibles":["sciences_naturelles"]}},
-  {"model":"api.competence","pk":25,"fields":{"nom":"Écologie",           "categorie":"sciences", "niveau_requis":1,"description":"Étude des écosystèmes","filieres_cibles":["sciences_naturelles"]}},
-
- 
-  {"model":"api.competence","pk":26,"fields":{"nom":"Présentation orale", "categorie":"autre",    "niveau_requis":1,"description":"Prise de parole en public","filieres_cibles":[]}},
-  {"model":"api.competence","pk":27,"fields":{"nom":"Gestion de projet",  "categorie":"autre",    "niveau_requis":2,"description":"Organisation et planning","filieres_cibles":[]}},
-  {"model":"api.competence","pk":28,"fields":{"nom":"Travail en équipe",  "categorie":"autre",    "niveau_requis":1,"description":"Collaboration et communication","filieres_cibles":[]}},
-
-  
-
-  {"model":"api.quete","pk":1,"fields":{
-    "titre":"Présenter un projet devant l'équipe",
-    "description":"Présentez un projet de 5 minutes devant votre équipe ou formateur.",
-    "instructions":"1. Préparez une présentation de 5 minutes\n2. Présentez devant votre équipe\n3. Décrivez ce que vous avez appris\n(Votre formateur validera)",
-    "points":100,"type_quete":"admin_review","icone":"🎤","difficulte":2,
-    "validation_config":{},"active":true,
-    "filieres_cibles":[],
-    "competences_debloquees":[26,28]
-  }},
-  {"model":"api.quete","pk":2,"fields":{
-    "titre":"Rédiger un rapport de projet",
-    "description":"Rédigez un rapport structuré sur un projet ou travail réalisé.",
-    "instructions":"1. Rédigez un rapport de 2 pages minimum\n2. Il doit contenir : introduction, développement, conclusion\n3. Soumettez un lien vers le document (Google Docs, PDF en ligne)",
-    "points":80,"type_quete":"url_submit","icone":"📄","difficulte":2,
-    "validation_config":{"check_accessible":false},"active":true,
-    "filieres_cibles":[],
-    "competences_debloquees":[15,28]
-  }},
-  {"model":"api.quete","pk":3,"fields":{
-    "titre":"Quiz : Gestion de projet Agile",
-    "description":"Testez vos connaissances sur les méthodes agiles.",
-    "instructions":"Question : Dans la méthode Scrum, comment s'appelle la réunion quotidienne courte ?\n\na) Sprint Review\nb) Daily Scrum\nc) Sprint Planning\nd) Retrospective\n\nRépondez avec la lettre uniquement",
-    "points":30,"type_quete":"quiz","icone":"📋","difficulte":1,
-    "validation_config":{"answer":"b","explanation":"Le Daily Scrum (ou stand-up) est une réunion de 15 min max chaque jour."},"active":true,
-    "filieres_cibles":[],
-    "competences_debloquees":[27]
-  }},
-
-  
-  {"model":"api.quete","pk":4,"fields":{
-    "titre":"Créer votre premier repo GitHub",
-    "description":"Créez un repository public avec une description et un README.",
-    "instructions":"1. Allez sur github.com\n2. Créez un repo public\n3. Ajoutez une description\n4. Cochez Add README\n5. Soumettez le nom du repo",
-    "points":50,"type_quete":"github_repo","icone":"🐙","difficulte":1,
-    "validation_config":{},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[7]
-  }},
-  {"model":"api.quete","pk":5,"fields":{
-    "titre":"Faire au moins 5 commits",
-    "description":"Pratiquez le versioning avec 5 commits minimum.",
-    "instructions":"1. Sur un repo GitHub\n2. Faites au moins 5 commits avec messages clairs\n3. Soumettez le nom du repo",
-    "points":75,"type_quete":"github_commit","icone":"📝","difficulte":1,
-    "validation_config":{"min_commits":5},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[7]
-  }},
-  {"model":"api.quete","pk":6,"fields":{
-    "titre":"Containeriser une application avec Docker",
-    "description":"Créez un Dockerfile et docker-compose.yml fonctionnels.",
-    "instructions":"1. Créez un repo GitHub public\n2. Ajoutez Dockerfile, docker-compose.yml, README.md\n3. Soumettez le nom du repo",
-    "points":150,"type_quete":"github_file","icone":"🐳","difficulte":3,
-    "validation_config":{"required_files":["Dockerfile","docker-compose.yml","README.md"]},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[6]
-  }},
-  {"model":"api.quete","pk":7,"fields":{
-    "titre":"Quiz : Les bases de Docker",
-    "description":"Maîtrisez les concepts fondamentaux de Docker.",
-    "instructions":"Question : Quelle commande lance tous les services d'un docker-compose.yml ?\n\na) docker run\nb) docker compose up\nc) docker start\nd) docker build\n\nRépondez avec la lettre uniquement",
-    "points":30,"type_quete":"quiz","icone":"🧠","difficulte":1,
-    "validation_config":{"answer":"b","explanation":"docker compose up lance tous les services définis dans docker-compose.yml."},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[6]
-  }},
-  {"model":"api.quete","pk":8,"fields":{
-    "titre":"Déployer une application en ligne",
-    "description":"Déployez votre app et partagez l'URL publique.",
-    "instructions":"1. Déployez sur Render, Railway ou Vercel\n2. Vérifiez que l'URL est accessible\n3. Soumettez l'URL complète",
-    "points":200,"type_quete":"url_submit","icone":"🚀","difficulte":3,
-    "validation_config":{"check_accessible":true},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[6,8]
-  }},
-  {"model":"api.quete","pk":9,"fields":{
-    "titre":"Créer un pipeline CI/CD GitLab",
-    "description":"Configurez un pipeline avec au moins 2 stages.",
-    "instructions":"1. Créez un repo GitLab\n2. Ajoutez .gitlab-ci.yml avec 2 stages minimum\n3. Vérifiez que le pipeline passe\n4. Soumettez l'URL du repo GitLab",
-    "points":175,"type_quete":"url_submit","icone":"⚙️","difficulte":3,
-    "validation_config":{"url_must_contain":"gitlab.com","check_accessible":false},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[8]
-  }},
-  {"model":"api.quete","pk":10,"fields":{
-    "titre":"Quiz : HTTP et REST API",
-    "description":"Testez vos connaissances sur les APIs REST.",
-    "instructions":"Question : Quel code HTTP indique qu'une ressource a été créée avec succès ?\n\na) 200 OK\nb) 204 No Content\nc) 201 Created\nd) 301 Moved\n\nRépondez avec la lettre uniquement",
-    "points":30,"type_quete":"quiz","icone":"🌐","difficulte":1,
-    "validation_config":{"answer":"c","explanation":"201 Created est le code standard pour une création réussie."},"active":true,
-    "filieres_cibles":["informatique"],
-    "competences_debloquees":[4]
-  }},
-
-  
-
-  {"model":"api.quete","pk":11,"fields":{
-    "titre":"Créer un blog ou portfolio écrit",
-    "description":"Publiez un blog ou portfolio en ligne avec au moins 3 articles.",
-    "instructions":"1. Créez un blog (Medium, Wordpress, Wix, ou autre)\n2. Publiez au moins 3 articles de 300 mots minimum\n3. Soumettez l'URL de votre blog",
-    "points":120,"type_quete":"url_submit","icone":"✍️","difficulte":2,
-    "validation_config":{"check_accessible":true},"active":true,
-    "filieres_cibles":["litterature"],
-    "competences_debloquees":[11,15]
-  }},
-  {"model":"api.quete","pk":12,"fields":{
-    "titre":"Quiz : Figures de style",
-    "description":"Identifiez les figures de style en littérature.",
-    "instructions":"Question : Comment s'appelle la figure de style qui consiste à attribuer des qualités humaines à un objet ou une abstraction ?\n\na) Métaphore\nb) Personnification\nc) Synecdoque\nd) Antiphrase\n\nRépondez avec la lettre uniquement",
-    "points":25,"type_quete":"quiz","icone":"📖","difficulte":1,
-    "validation_config":{"answer":"b","explanation":"La personnification attribue des traits humains à des éléments non-humains."},"active":true,
-    "filieres_cibles":["litterature"],
-    "competences_debloquees":[15]
-  }},
-  {"model":"api.quete","pk":13,"fields":{
-    "titre":"Rédiger et publier un article SEO",
-    "description":"Rédigez un article optimisé pour les moteurs de recherche.",
-    "instructions":"1. Choisissez un sujet de votre domaine\n2. Rédigez un article de 500 mots avec mots-clés\n3. Publiez-le en ligne\n4. Soumettez l'URL de l'article",
-    "points":100,"type_quete":"url_submit","icone":"🔍","difficulte":2,
-    "validation_config":{"check_accessible":true},"active":true,
-    "filieres_cibles":["litterature","langues"],
-    "competences_debloquees":[11,12]
-  }},
-
-  
-  {"model":"api.quete","pk":14,"fields":{
-    "titre":"Quiz : Anglais technique — vocabulaire IT",
-    "description":"Maîtrisez le vocabulaire anglais technique en informatique.",
-    "instructions":"Question : En anglais technique, que signifie le terme 'deployment' ?\n\na) Développement\nb) Déploiement\nc) Documentation\nd) Diagnostic\n\nRépondez avec la lettre uniquement",
-    "points":25,"type_quete":"quiz","icone":"🌍","difficulte":1,
-    "validation_config":{"answer":"b","explanation":"Deployment signifie déploiement en anglais technique IT."},"active":true,
-    "filieres_cibles":["langues","informatique"],
-    "competences_debloquees":[13]
-  }},
-  {"model":"api.quete","pk":15,"fields":{
-    "titre":"Traduire un document technique",
-    "description":"Traduisez un document technique de 500 mots dans une autre langue.",
-    "instructions":"1. Choisissez un document technique (notice, guide, article)\n2. Traduisez-le dans une autre langue\n3. Publiez la traduction en ligne (Google Docs, blog)\n4. Soumettez l'URL",
-    "points":90,"type_quete":"url_submit","icone":"🔤","difficulte":2,
-    "validation_config":{"check_accessible":false},"active":true,
-    "filieres_cibles":["langues"],
-    "competences_debloquees":[14,15]
-  }},
-
-  
-
-  {"model":"api.quete","pk":16,"fields":{
-    "titre":"Quiz : Statistiques — moyenne et écart-type",
-    "description":"Maîtrisez les bases des statistiques descriptives.",
-    "instructions":"Question : Quel indicateur mesure la dispersion des données autour de la moyenne ?\n\na) La médiane\nb) Le mode\nc) L'écart-type\nd) Le quartile\n\nRépondez avec la lettre uniquement",
-    "points":30,"type_quete":"quiz","icone":"📊","difficulte":1,
-    "validation_config":{"answer":"c","explanation":"L'écart-type mesure la dispersion des données autour de la moyenne."},"active":true,
-    "filieres_cibles":["mathematiques","sciences_physiques","sante"],
-    "competences_debloquees":[16]
-  }},
-  {"model":"api.quete","pk":17,"fields":{
-    "titre":"Créer un notebook Python scientifique",
-    "description":"Créez un Jupyter Notebook avec analyse de données.",
-    "instructions":"1. Créez un repo GitHub public\n2. Ajoutez un fichier .ipynb avec analyse de données\n3. Utilisez NumPy, Pandas ou Matplotlib\n4. Soumettez le nom du repo",
-    "points":120,"type_quete":"github_file","icone":"🔬","difficulte":2,
-    "validation_config":{"required_files":["README.md"]},"active":true,
-    "filieres_cibles":["mathematiques","sciences_physiques","sciences_naturelles"],
-    "competences_debloquees":[4,19]
-  }},
-  {"model":"api.quete","pk":18,"fields":{
-    "titre":"Rédiger un document LaTeX",
-    "description":"Rédigez un document scientifique en LaTeX.",
-    "instructions":"1. Installez LaTeX (Overleaf en ligne = gratuit)\n2. Rédigez un document avec formules mathématiques\n3. Exportez en PDF et publiez le lien\n4. Soumettez l'URL du PDF",
-    "points":100,"type_quete":"url_submit","icone":"📐","difficulte":2,
-    "validation_config":{"check_accessible":false},"active":true,
-    "filieres_cibles":["mathematiques","sciences_physiques"],
-    "competences_debloquees":[20]
-  }},
+  {"model":"api.quete","pk":26,"fields":{"titre":"Quiz : Anglais technique — vocabulaire IT","description":"Maîtrisez le vocabulaire anglais technique.","instructions":"Question : En anglais technique, que signifie 'deployment' ?\n\na) Développement\nb) Déploiement\nc) Documentation\nd) Diagnostic\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🌍","difficulte":1,"validation_config":{"answer":"b","explanation":"'Deployment' signifie déploiement en anglais technique IT."},"active":true,"filieres_cibles":["langues","informatique"],"competences_debloquees":[13]}},
+  {"model":"api.quete","pk":27,"fields":{"titre":"Traduire un document technique","description":"Traduisez un document de 500 mots dans une autre langue.","instructions":"1. Choisissez un document technique (notice, guide, article)\n2. Traduisez-le dans une autre langue\n3. Publiez la traduction (Google Docs, blog)\n4. Soumettez l'URL","points":90,"type_quete":"url_submit","icone":"🔤","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[14,15]}},
+  {"model":"api.quete","pk":28,"fields":{"titre":"Quiz : Anglais — temps verbaux","description":"Maîtrisez les temps verbaux en anglais.","instructions":"Question : Quelle forme verbale utilise-t-on pour parler d'une action en cours au moment présent en anglais ?\n\na) Simple Present (I work)\nb) Present Perfect (I have worked)\nc) Present Continuous (I am working)\nd) Past Simple (I worked)\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"⏰","difficulte":1,"validation_config":{"answer":"c","explanation":"Le Present Continuous (be + V-ing) exprime une action en cours au moment où l'on parle."},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[13]}},
+  {"model":"api.quete","pk":29,"fields":{"titre":"Quiz : Espagnol — vocabulaire de base","description":"Testez vos connaissances en espagnol.","instructions":"Question : Comment dit-on 'Bonjour' en espagnol ?\n\na) Buenas noches\nb) Buenos días\nc) Hasta luego\nd) Por favor\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🇪🇸","difficulte":1,"validation_config":{"answer":"b","explanation":"'Buenos días' signifie Bonjour (le matin) en espagnol."},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[14]}},
+  {"model":"api.quete","pk":30,"fields":{"titre":"Quiz : Linguistique — phonologie","description":"Testez vos connaissances en linguistique.","instructions":"Question : Qu'est-ce qu'un phonème ?\n\na) Une lettre de l'alphabet\nb) La plus petite unité de sens d'une langue\nc) La plus petite unité sonore distinctive d'une langue\nd) Un mot composé de plusieurs syllabes\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"🗣️","difficulte":2,"validation_config":{"answer":"c","explanation":"Un phonème est la plus petite unité sonore qui permet de distinguer des mots (ex: /p/ et /b/ dans 'pain' et 'bain')."},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[14]}},
+  {"model":"api.quete","pk":31,"fields":{"titre":"Créer un lexique bilingue","description":"Créez un lexique de 50 termes dans 2 langues.","instructions":"1. Choisissez un domaine (médical, informatique, juridique...)\n2. Listez 50 termes avec leur traduction\n3. Publiez-le en ligne\n4. Soumettez l'URL","points":110,"type_quete":"url_submit","icone":"📒","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[14,15]}},
+  {"model":"api.quete","pk":32,"fields":{"titre":"Quiz : Allemand — vocabulaire courant","description":"Testez vos bases en allemand.","instructions":"Question : Comment dit-on 'Merci' en allemand ?\n\na) Bitte\nb) Entschuldigung\nc) Danke\nd) Guten Tag\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🇩🇪","difficulte":1,"validation_config":{"answer":"c","explanation":"'Danke' signifie Merci en allemand."},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[14]}},
+  {"model":"api.quete","pk":33,"fields":{"titre":"Quiz : Faux amis français-anglais","description":"Évitez les pièges des faux amis.","instructions":"Question : Que signifie réellement le mot anglais 'library' ?\n\na) Librairie (magasin de livres)\nb) Bibliothèque\nc) Liberté\nd) Livraison\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"⚠️","difficulte":1,"validation_config":{"answer":"b","explanation":"'Library' = bibliothèque (faux ami). 'Librairie' se dit 'bookshop' en anglais."},"active":true,"filieres_cibles":["langues"],"competences_debloquees":[13]}},
 
  
+  {"model":"api.quete","pk":34,"fields":{"titre":"Quiz : Statistiques — moyenne et écart-type","description":"Maîtrisez les bases des statistiques descriptives.","instructions":"Question : Quel indicateur mesure la dispersion des données autour de la moyenne ?\n\na) La médiane\nb) Le mode\nc) L'écart-type\nd) Le quartile\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"📊","difficulte":1,"validation_config":{"answer":"c","explanation":"L'écart-type mesure la dispersion des données autour de la moyenne."},"active":true,"filieres_cibles":["mathematiques","sciences_physiques","sante"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":35,"fields":{"titre":"Créer un notebook Python scientifique","description":"Créez un Jupyter Notebook avec analyse de données.","instructions":"1. Créez un repo GitHub public\n2. Ajoutez un fichier .ipynb avec analyse de données\n3. Utilisez NumPy, Pandas ou Matplotlib\n4. Soumettez le nom du repo","points":120,"type_quete":"github_file","icone":"🔬","difficulte":2,"validation_config":{"required_files":["README.md"]},"active":true,"filieres_cibles":["mathematiques","sciences_physiques"],"competences_debloquees":[4,18]}},
+  {"model":"api.quete","pk":36,"fields":{"titre":"Quiz : Algèbre — résolution d'équations","description":"Testez vos capacités en algèbre.","instructions":"Question : Quelle est la solution de l'équation 2x + 6 = 0 ?\n\na) x = 3\nb) x = -3\nc) x = 6\nd) x = -6\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"➕","difficulte":1,"validation_config":{"answer":"b","explanation":"2x + 6 = 0 → 2x = -6 → x = -3."},"active":true,"filieres_cibles":["mathematiques"],"competences_debloquees":[17]}},
+  {"model":"api.quete","pk":37,"fields":{"titre":"Rédiger un document LaTeX","description":"Rédigez un document scientifique en LaTeX.","instructions":"1. Utilisez Overleaf (gratuit en ligne)\n2. Rédigez un document avec formules mathématiques\n3. Exportez en PDF et publiez le lien partageable\n4. Soumettez l'URL Overleaf ou du PDF","points":100,"type_quete":"url_submit","icone":"📐","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["mathematiques","sciences_physiques"],"competences_debloquees":[19]}},
+  {"model":"api.quete","pk":38,"fields":{"titre":"Quiz : Probabilités — bases","description":"Testez vos connaissances en probabilités.","instructions":"Question : Si on lance un dé équilibré à 6 faces, quelle est la probabilité d'obtenir un nombre pair ?\n\na) 1/6\nb) 1/3\nc) 1/2\nd) 2/3\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🎲","difficulte":1,"validation_config":{"answer":"c","explanation":"Les nombres pairs sont 2, 4, 6 soit 3 cas sur 6 = 1/2."},"active":true,"filieres_cibles":["mathematiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":39,"fields":{"titre":"Quiz : Matrices et vecteurs","description":"Testez vos connaissances en algèbre linéaire.","instructions":"Question : Quel est le résultat du produit d'une matrice 2x3 par une matrice 3x2 ?\n\na) Une matrice 3x3\nb) Une matrice 2x2\nc) Une matrice 2x3\nd) Impossible à calculer\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"🔢","difficulte":2,"validation_config":{"answer":"b","explanation":"(2x3) × (3x2) = (2x2). Le résultat a les dimensions : lignes de la 1ère × colonnes de la 2ème."},"active":true,"filieres_cibles":["mathematiques","sciences_physiques"],"competences_debloquees":[17]}},
+  {"model":"api.quete","pk":40,"fields":{"titre":"Quiz : Dérivées — règles de base","description":"Maîtrisez les règles de dérivation.","instructions":"Question : Quelle est la dérivée de f(x) = x³ ?\n\na) f'(x) = 3x\nb) f'(x) = 3x²\nc) f'(x) = x²\nd) f'(x) = 3x⁴\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"📈","difficulte":2,"validation_config":{"answer":"b","explanation":"Règle : si f(x) = xⁿ alors f'(x) = n·xⁿ⁻¹. Donc (x³)' = 3x²."},"active":true,"filieres_cibles":["mathematiques","sciences_physiques"],"competences_debloquees":[17]}},
+  {"model":"api.quete","pk":41,"fields":{"titre":"Quiz : Logique — raisonnement","description":"Testez votre logique mathématique.","instructions":"Question : Si tous les A sont des B, et que C est un A, alors :\n\na) C est forcément un B\nb) C n'est pas un B\nc) On ne peut pas conclure\nd) B est forcément un A\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🧮","difficulte":2,"validation_config":{"answer":"a","explanation":"Syllogisme : Tous A→B, C est A, donc C est B. C'est un raisonnement déductif valide."},"active":true,"filieres_cibles":["mathematiques","culture_generale"],"competences_debloquees":[25]}},
 
-  {"model":"api.quete","pk":19,"fields":{
-    "titre":"Quiz : Électricité — loi d'Ohm",
-    "description":"Maîtrisez les bases de l'électricité.",
-    "instructions":"Question : Quelle est la formule de la loi d'Ohm ?\n\na) P = U × I\nb) U = R × I\nc) I = P / U\nd) R = U + I\n\nRépondez avec la lettre uniquement",
-    "points":25,"type_quete":"quiz","icone":"⚡","difficulte":1,
-    "validation_config":{"answer":"b","explanation":"U = R × I est la loi d'Ohm : tension = résistance × intensité."},"active":true,
-    "filieres_cibles":["sciences_physiques"],
-    "competences_debloquees":[16]
-  }},
+ 
+  {"model":"api.quete","pk":42,"fields":{"titre":"Quiz : Électricité — loi d'Ohm","description":"Maîtrisez les bases de l'électricité.","instructions":"Question : Quelle est la formule de la loi d'Ohm ?\n\na) P = U × I\nb) U = R × I\nc) I = P / U\nd) R = U + I\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"⚡","difficulte":1,"validation_config":{"answer":"b","explanation":"U = R × I est la loi d'Ohm : tension (V) = résistance (Ω) × intensité (A)."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":43,"fields":{"titre":"Quiz : Mécanique — les forces","description":"Testez vos connaissances sur les forces en mécanique.","instructions":"Question : Quelle est l'unité de mesure de la force dans le système international ?\n\na) Watt (W)\nb) Joule (J)\nc) Newton (N)\nd) Pascal (Pa)\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🏋️","difficulte":1,"validation_config":{"answer":"c","explanation":"La force se mesure en Newton (N) dans le système international. 1 N = 1 kg·m/s²."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":44,"fields":{"titre":"Quiz : Optique — la lumière","description":"Testez vos connaissances en optique.","instructions":"Question : Quelle est la vitesse approximative de la lumière dans le vide ?\n\na) 300 000 km/h\nb) 300 000 km/s\nc) 30 000 km/s\nd) 3 000 000 km/s\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"💡","difficulte":1,"validation_config":{"answer":"b","explanation":"La vitesse de la lumière dans le vide est c ≈ 300 000 km/s (3×10⁸ m/s)."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":45,"fields":{"titre":"Quiz : Thermodynamique","description":"Testez vos connaissances en thermodynamique.","instructions":"Question : Que dit le premier principe de la thermodynamique ?\n\na) L'énergie ne peut être ni créée ni détruite, seulement transformée\nb) La chaleur se transfère toujours du chaud vers le froid\nc) L'entropie d'un système isolé ne peut qu'augmenter\nd) Tout corps absorbe et émet des rayonnements\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"🌡️","difficulte":2,"validation_config":{"answer":"a","explanation":"Le 1er principe : conservation de l'énergie. L'énergie totale d'un système isolé est constante."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":46,"fields":{"titre":"Quiz : Chimie — tableau périodique","description":"Connaissez-vous le tableau périodique ?","instructions":"Question : Quel est le symbole chimique de l'or ?\n\na) Or\nb) Go\nc) Au\nd) Ag\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"⚗️","difficulte":1,"validation_config":{"answer":"c","explanation":"Le symbole de l'or est Au, du latin 'Aurum'."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":47,"fields":{"titre":"Quiz : Ondes et vibrations","description":"Testez vos connaissances sur les ondes.","instructions":"Question : Quelle est la relation entre la fréquence (f), la période (T) d'une onde ?\n\na) f = T\nb) f = 1/T\nc) f = T²\nd) f = 2T\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"〰️","difficulte":2,"validation_config":{"answer":"b","explanation":"f = 1/T. La fréquence est l'inverse de la période. Si T = 0,5s alors f = 2 Hz."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
+  {"model":"api.quete","pk":48,"fields":{"titre":"Quiz : Relativité — concepts de base","description":"Testez vos connaissances sur la relativité restreinte.","instructions":"Question : Selon la théorie de la relativité restreinte d'Einstein, qu'arrive-t-il au temps pour un objet se déplaçant à grande vitesse ?\n\na) Le temps s'accélère\nb) Le temps ralentit (dilatation temporelle)\nc) Le temps reste identique\nd) Le temps s'inverse\n\nRépondez avec la lettre uniquement","points":45,"type_quete":"quiz","icone":"🌌","difficulte":3,"validation_config":{"answer":"b","explanation":"La dilatation temporelle : plus un objet va vite, plus son temps propre ralentit par rapport à un observateur fixe."},"active":true,"filieres_cibles":["sciences_physiques"],"competences_debloquees":[16]}},
 
-  
-  {"model":"api.quete","pk":20,"fields":{
-    "titre":"Recherche bibliographique sur PubMed",
-    "description":"Effectuez une recherche bibliographique sur un sujet de santé.",
-    "instructions":"1. Allez sur pubmed.ncbi.nlm.nih.gov\n2. Recherchez 5 articles sur un sujet de santé\n3. Rédigez un résumé de 300 mots\n4. Publiez-le et soumettez le lien",
-    "points":90,"type_quete":"url_submit","icone":"🔬","difficulte":2,
-    "validation_config":{"check_accessible":false},"active":true,
-    "filieres_cibles":["sante"],
-    "competences_debloquees":[21,15]
-  }},
-  {"model":"api.quete","pk":21,"fields":{
-    "titre":"Quiz : Anatomie — système cardiovasculaire",
-    "description":"Testez vos connaissances en anatomie.",
-    "instructions":"Question : Quel est le rôle principal des globules rouges ?\n\na) Défense immunitaire\nb) Coagulation du sang\nc) Transport de l'oxygène\nd) Production d'hormones\n\nRépondez avec la lettre uniquement",
-    "points":25,"type_quete":"quiz","icone":"❤️","difficulte":1,
-    "validation_config":{"answer":"c","explanation":"Les globules rouges (érythrocytes) transportent l'oxygène grâce à l'hémoglobine."},"active":true,
-    "filieres_cibles":["sante"],
-    "competences_debloquees":[21]
-  }},
 
-  
+  {"model":"api.quete","pk":49,"fields":{"titre":"Recherche bibliographique sur PubMed","description":"Effectuez une recherche sur un sujet de santé.","instructions":"1. Allez sur pubmed.ncbi.nlm.nih.gov\n2. Recherchez 5 articles sur un sujet de santé\n3. Rédigez un résumé de 300 mots\n4. Publiez-le et soumettez le lien","points":90,"type_quete":"url_submit","icone":"🔬","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[20,15]}},
+  {"model":"api.quete","pk":50,"fields":{"titre":"Quiz : Anatomie — système cardiovasculaire","description":"Testez vos connaissances en anatomie.","instructions":"Question : Quel est le rôle principal des globules rouges ?\n\na) Défense immunitaire\nb) Coagulation du sang\nc) Transport de l'oxygène\nd) Production d'hormones\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"❤️","difficulte":1,"validation_config":{"answer":"c","explanation":"Les globules rouges (érythrocytes) transportent l'oxygène grâce à l'hémoglobine."},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[20]}},
+  {"model":"api.quete","pk":51,"fields":{"titre":"Quiz : Pharmacologie — bases","description":"Testez vos connaissances en pharmacologie.","instructions":"Question : Qu'est-ce que la biodisponibilité d'un médicament ?\n\na) La quantité totale de médicament dans une boîte\nb) La fraction du médicament qui atteint la circulation sanguine\nc) La durée de conservation du médicament\nd) La dose maximale sans danger\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"💊","difficulte":2,"validation_config":{"answer":"b","explanation":"La biodisponibilité est la fraction de la dose qui atteint la circulation systémique de façon inchangée."},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[20]}},
+  {"model":"api.quete","pk":52,"fields":{"titre":"Quiz : Microbiologie — bactéries","description":"Testez vos connaissances en microbiologie.","instructions":"Question : Quelle est la différence fondamentale entre une cellule procaryote et eucaryote ?\n\na) La taille de la cellule\nb) La présence ou absence d'un noyau délimité\nc) La présence de mitochondries\nd) La composition de la membrane cellulaire\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"🦠","difficulte":2,"validation_config":{"answer":"b","explanation":"Les procaryotes (bactéries) n'ont pas de noyau délimité par une membrane, contrairement aux eucaryotes."},"active":true,"filieres_cibles":["sante","sciences_naturelles"],"competences_debloquees":[20]}},
+  {"model":"api.quete","pk":53,"fields":{"titre":"Quiz : Nutrition — macronutriments","description":"Testez vos connaissances en nutrition.","instructions":"Question : Lequel de ces nutriments fournit le plus d'énergie par gramme ?\n\na) Les glucides (4 kcal/g)\nb) Les protéines (4 kcal/g)\nc) Les lipides (9 kcal/g)\nd) Les fibres (2 kcal/g)\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🥗","difficulte":1,"validation_config":{"answer":"c","explanation":"Les lipides (graisses) fournissent 9 kcal par gramme, soit plus du double des glucides et protéines."},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[20]}},
+  {"model":"api.quete","pk":54,"fields":{"titre":"Quiz : Physiologie — le système nerveux","description":"Testez vos connaissances sur le système nerveux.","instructions":"Question : Quelle est la fonction principale des neurones moteurs ?\n\na) Transmettre des informations sensorielles au cerveau\nb) Envoyer des signaux du cerveau aux muscles\nc) Réguler les fonctions autonomes\nd) Stocker les souvenirs\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🧠","difficulte":2,"validation_config":{"answer":"b","explanation":"Les neurones moteurs (efférents) transmettent les commandes du cerveau/moelle épinière vers les muscles effecteurs."},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[20]}},
+  {"model":"api.quete","pk":55,"fields":{"titre":"Quiz : Épidémiologie — indicateurs","description":"Testez vos connaissances en épidémiologie.","instructions":"Question : Quelle est la différence entre incidence et prévalence ?\n\na) Aucune différence, ce sont des synonymes\nb) L'incidence mesure les nouveaux cas, la prévalence mesure tous les cas existants\nc) L'incidence concerne les maladies chroniques, la prévalence les maladies aiguës\nd) L'incidence s'applique aux adultes, la prévalence aux enfants\n\nRépondez avec la lettre uniquement","points":40,"type_quete":"quiz","icone":"📊","difficulte":2,"validation_config":{"answer":"b","explanation":"Incidence = nouveaux cas sur une période. Prévalence = tous les cas existants à un moment donné."},"active":true,"filieres_cibles":["sante"],"competences_debloquees":[21]}},
+  {"model":"api.quete","pk":56,"fields":{"titre":"Quiz : Immunologie — anticorps","description":"Testez vos connaissances en immunologie.","instructions":"Question : Quel type de lymphocytes produit les anticorps ?\n\na) Les lymphocytes T cytotoxiques\nb) Les lymphocytes T auxiliaires\nc) Les lymphocytes B\nd) Les cellules NK\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"🛡️","difficulte":2,"validation_config":{"answer":"c","explanation":"Les lymphocytes B se différencient en plasmocytes qui produisent les anticorps (immunoglobulines)."},"active":true,"filieres_cibles":["sante","sciences_naturelles"],"competences_debloquees":[20]}},
 
-  {"model":"api.quete","pk":22,"fields":{
-    "titre":"Quiz : Biologie — la cellule",
-    "description":"Testez vos connaissances sur la cellule.",
-    "instructions":"Question : Quel organite cellulaire est responsable de la production d'énergie (ATP) ?\n\na) Le noyau\nb) Le ribosome\nc) La mitochondrie\nd) Le réticulum endoplasmique\n\nRépondez avec la lettre uniquement",
-    "points":25,"type_quete":"quiz","icone":"🌿","difficulte":1,
-    "validation_config":{"answer":"c","explanation":"La mitochondrie produit l'ATP (énergie) via la respiration cellulaire."},"active":true,
-    "filieres_cibles":["sciences_naturelles"],
-    "competences_debloquees":[24]
-  }},
-  {"model":"api.quete","pk":23,"fields":{
-    "titre":"Créer un herbier numérique",
-    "description":"Photographiez et documentez 5 espèces végétales.",
-    "instructions":"1. Photographiez 5 plantes différentes\n2. Identifiez chaque espèce (nom commun + nom latin)\n3. Créez un document avec photos et descriptions\n4. Publiez-le en ligne et soumettez le lien",
-    "points":80,"type_quete":"url_submit","icone":"🌱","difficulte":2,
-    "validation_config":{"check_accessible":false},"active":true,
-    "filieres_cibles":["sciences_naturelles"],
-    "competences_debloquees":[25,15]
-  }}
+ 
+  {"model":"api.quete","pk":57,"fields":{"titre":"Quiz : Biologie — la cellule","description":"Testez vos connaissances sur la cellule.","instructions":"Question : Quel organite cellulaire est responsable de la production d'énergie (ATP) ?\n\na) Le noyau\nb) Le ribosome\nc) La mitochondrie\nd) Le réticulum endoplasmique\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🌿","difficulte":1,"validation_config":{"answer":"c","explanation":"La mitochondrie produit l'ATP via la respiration cellulaire aérobie."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[22]}},
+  {"model":"api.quete","pk":58,"fields":{"titre":"Créer un herbier numérique","description":"Photographiez et documentez 5 espèces végétales.","instructions":"1. Photographiez 5 plantes différentes\n2. Identifiez chaque espèce (nom commun + nom latin)\n3. Notez : habitat, caractéristiques, utilité\n4. Publiez en ligne et soumettez le lien","points":80,"type_quete":"url_submit","icone":"🌱","difficulte":2,"validation_config":{"check_accessible":false},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[23,15]}},
+  {"model":"api.quete","pk":59,"fields":{"titre":"Quiz : Génétique — ADN et hérédité","description":"Testez vos connaissances en génétique.","instructions":"Question : Qu'est-ce qu'un allèle dominant ?\n\na) Un allèle qui s'exprime uniquement quand il est présent en double\nb) Un allèle qui s'exprime même en présence d'un seul exemplaire\nc) Un allèle présent uniquement chez les mâles\nd) Un allèle qui disparaît à chaque génération\n\nRépondez avec la lettre uniquement","points":35,"type_quete":"quiz","icone":"🧬","difficulte":2,"validation_config":{"answer":"b","explanation":"Un allèle dominant s'exprime dans le phénotype même à l'état hétérozygote (un seul exemplaire suffit)."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[22]}},
+  {"model":"api.quete","pk":60,"fields":{"titre":"Quiz : Écologie — chaînes alimentaires","description":"Testez vos connaissances sur les écosystèmes.","instructions":"Question : Dans une chaîne alimentaire, que représente un 'producteur' ?\n\na) Un animal carnivore\nb) Un décomposeur comme un champignon\nc) Un végétal qui produit sa propre nourriture par photosynthèse\nd) Un animal herbivore\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🌍","difficulte":1,"validation_config":{"answer":"c","explanation":"Les producteurs sont les végétaux (autotrophes) qui fabriquent leur matière organique via la photosynthèse."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[23]}},
+  {"model":"api.quete","pk":61,"fields":{"titre":"Quiz : Évolution — théorie de Darwin","description":"Testez vos connaissances sur l'évolution.","instructions":"Question : Quel mécanisme principal Darwin propose-t-il pour expliquer l'évolution des espèces ?\n\na) La transmission des caractères acquis\nb) La sélection naturelle\nc) Les mutations aléatoires uniquement\nd) L'adaptation volontaire au milieu\n\nRépondez avec la lettre uniquement","points":30,"type_quete":"quiz","icone":"🦕","difficulte":1,"validation_config":{"answer":"b","explanation":"Darwin propose la sélection naturelle : les individus les mieux adaptés survivent et se reproduisent davantage."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[23]}},
+  {"model":"api.quete","pk":62,"fields":{"titre":"Quiz : Photosynthèse","description":"Testez vos connaissances sur la photosynthèse.","instructions":"Question : Quels sont les réactifs nécessaires à la photosynthèse ?\n\na) Oxygène et glucose\nb) CO2, eau et lumière\nc) Azote et minéraux\nd) Glucose et oxygène\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🌞","difficulte":1,"validation_config":{"answer":"b","explanation":"La photosynthèse nécessite CO2 + H2O + énergie lumineuse pour produire glucose + O2."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[22]}},
+  {"model":"api.quete","pk":63,"fields":{"titre":"Quiz : Biodiversité — classification","description":"Testez vos connaissances sur la classification du vivant.","instructions":"Question : Dans la classification du vivant, quel est le rang taxonomique le plus bas ?\n\na) Famille\nb) Genre\nc) Espèce\nd) Ordre\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🦋","difficulte":1,"validation_config":{"answer":"c","explanation":"L'espèce est le rang taxonomique le plus bas. Ex : Homo sapiens (Genre espèce)."},"active":true,"filieres_cibles":["sciences_naturelles"],"competences_debloquees":[23]}},
+
+
+  {"model":"api.quete","pk":64,"fields":{"titre":"Quiz : Histoire — la Révolution française","description":"Testez vos connaissances sur la Révolution française.","instructions":"Question : En quelle année a eu lieu la prise de la Bastille ?\n\na) 1789\nb) 1793\nc) 1799\nd) 1804\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🗼","difficulte":1,"validation_config":{"answer":"a","explanation":"La prise de la Bastille a eu lieu le 14 juillet 1789, symbole du début de la Révolution française."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":65,"fields":{"titre":"Quiz : Géographie — capitales du monde","description":"Testez vos connaissances sur les capitales.","instructions":"Question : Quelle est la capitale du Brésil ?\n\na) São Paulo\nb) Rio de Janeiro\nc) Brasília\nd) Salvador\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🌐","difficulte":1,"validation_config":{"answer":"c","explanation":"Brasília est la capitale du Brésil depuis 1960, construite de toutes pièces pour être capitale."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":66,"fields":{"titre":"Quiz : Sciences — prix Nobel","description":"Testez vos connaissances sur les grands scientifiques.","instructions":"Question : Qui a découvert la pénicilline, premier antibiotique ?\n\na) Louis Pasteur\nb) Marie Curie\nc) Alexander Fleming\nd) Robert Koch\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🏆","difficulte":1,"validation_config":{"answer":"c","explanation":"Alexander Fleming a découvert la pénicilline en 1928, en observant qu'une moisissure détruisait des bactéries."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":67,"fields":{"titre":"Quiz : Arts — peintres célèbres","description":"Testez vos connaissances sur les grands peintres.","instructions":"Question : Qui a peint la Joconde (Mona Lisa) ?\n\na) Michel-Ange\nb) Raphaël\nc) Léonard de Vinci\nd) Botticelli\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🎨","difficulte":1,"validation_config":{"answer":"c","explanation":"La Joconde a été peinte par Léonard de Vinci vers 1503-1519. Elle est exposée au Louvre à Paris."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":68,"fields":{"titre":"Quiz : Philosophie — grands penseurs","description":"Testez vos connaissances en philosophie.","instructions":"Question : À qui attribue-t-on la phrase 'Je pense donc je suis' ?\n\na) Platon\nb) Aristote\nc) Descartes\nd) Kant\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🤔","difficulte":1,"validation_config":{"answer":"c","explanation":"'Cogito ergo sum' (Je pense donc je suis) est la formule de René Descartes dans le Discours de la méthode (1637)."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":69,"fields":{"titre":"Quiz : Économie — concepts de base","description":"Testez vos connaissances en économie.","instructions":"Question : Qu'est-ce que l'inflation ?\n\na) Une augmentation de la production nationale\nb) Une hausse générale et durable des prix\nc) Une baisse du chômage\nd) Une augmentation des exportations\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"💶","difficulte":1,"validation_config":{"answer":"b","explanation":"L'inflation est la hausse générale et continue des prix, qui réduit le pouvoir d'achat de la monnaie."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":70,"fields":{"titre":"Quiz : Institutions françaises","description":"Testez vos connaissances sur les institutions.","instructions":"Question : En France, qui nomme le Premier ministre ?\n\na) Le Parlement\nb) Le Sénat\nc) Le Président de la République\nd) Le Conseil constitutionnel\n\nRépondez avec la lettre uniquement","points":25,"type_quete":"quiz","icone":"🏛️","difficulte":1,"validation_config":{"answer":"c","explanation":"En France, le Premier ministre est nommé par le Président de la République, selon l'article 8 de la Constitution."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":71,"fields":{"titre":"Quiz : Musique — théorie de base","description":"Testez vos connaissances musicales.","instructions":"Question : Combien de notes compte la gamme diatonique (do, ré, mi...) ?\n\na) 5 notes\nb) 7 notes\nc) 8 notes\nd) 12 notes\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🎵","difficulte":1,"validation_config":{"answer":"b","explanation":"La gamme diatonique compte 7 notes : do, ré, mi, fa, sol, la, si. L'octave (do supérieur) est la 8ème."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":72,"fields":{"titre":"Quiz : Cinéma — 7ème art","description":"Testez vos connaissances sur le cinéma.","instructions":"Question : Dans quel pays a été inventé le cinéma par les frères Lumière ?\n\na) États-Unis\nb) Royaume-Uni\nc) France\nd) Allemagne\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🎬","difficulte":1,"validation_config":{"answer":"c","explanation":"Les frères Auguste et Louis Lumière ont inventé le cinématographe en France. Première projection publique le 28 décembre 1895 à Paris."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}},
+  {"model":"api.quete","pk":73,"fields":{"titre":"Quiz : Sport — Jeux Olympiques","description":"Testez vos connaissances sur les JO.","instructions":"Question : Dans quelle ville ont eu lieu les premiers Jeux Olympiques modernes en 1896 ?\n\na) Rome\nb) Paris\nc) Athènes\nd) Londres\n\nRépondez avec la lettre uniquement","points":20,"type_quete":"quiz","icone":"🏅","difficulte":1,"validation_config":{"answer":"c","explanation":"Les premiers JO modernes ont eu lieu à Athènes en 1896, sous l'impulsion du Baron Pierre de Coubertin."},"active":true,"filieres_cibles":["culture_generale"],"competences_debloquees":[28]}}
 ]
