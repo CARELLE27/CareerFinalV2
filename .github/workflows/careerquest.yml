@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: 📥 Récupérer le code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🐍 Installer Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
@@ -47,10 +47,10 @@ jobs:
 
     steps:
       - name: 📥 Récupérer le code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🟢 Installer Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -80,7 +80,7 @@ jobs:
 
     steps:
       - name: 📥 Récupérer le code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🐳 Builder image Backend
         run: docker build -t careerquest-backend ./backend
