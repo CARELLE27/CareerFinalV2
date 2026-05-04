@@ -61,7 +61,7 @@ export default function Dashboard() {
     : user.avatar === 'senior' ? '🧙‍♂️ Senior Dev'
     : '🦸 Expert'
   }</span>
-  <p className="level-badge">Niveau {user.level}</p>
+ <span className="hero-tag niveau">Niveau {user.level}</span>
     {/* Filtres filière */}
   {filieres.map((f, i) => (
     <span key={i} className="hero-tag filiere">{f}</span>
@@ -175,6 +175,11 @@ export default function Dashboard() {
           color: #fde047;
           margin: 8px 0;
         }
+          .hero-tag.niveau {
+  background: rgba(236, 72, 153, 0.2);
+  color: #f472b6;
+  border: 1px solid #ec4899;
+}
         .stat.clickable { cursor: pointer; transition: all 0.2s; }
         .stat.clickable:hover { background: rgba(111,66,193,0.4); transform: translateY(-2px); }
         .dashboard-quetes-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
