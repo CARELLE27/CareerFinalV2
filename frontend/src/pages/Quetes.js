@@ -209,7 +209,7 @@ export default function Quetes() {
       getMesQuetes().then(r => setQuetes(r.data));
       getProfil().then(r => setUser(r.data));
       if (res.data.statut === 'valide' && res.data.competences_debloquees?.length > 0) {
-        setModal({ competences: res.data.competences_debloquees, points: res.data.points_gagnes, level: res.data.level });
+        setModal({ competences: res.data.competences_debloquees, points: res.data.points_gagnes, level: res.data.level, queteTitre: selected.quete.titre });
       }
     } catch (err) {
       if (err.response?.status === 401) return;
@@ -251,14 +251,14 @@ export default function Quetes() {
   const nb_recomm  = quetes.filter(q => q.recommandee).length;
   const total_xp   = quetes.reduce((sum, q) => sum + (q.points_gagnes || 0), 0);
 
-  //const modeCompetence = filtre === 'par_competence';
-  const modeCompetence= false;
+  const modeCompetence = filtre === 'par_competence';
 
   return (
     <div className="quetes-root">
       {modal && (
         <CompetenceUnlockedModal
           competences={modal.competences}
+          queteTitre={modal.queteTitre}
           username={user?.username}
           level={modal.level}
           points={modal.points}
