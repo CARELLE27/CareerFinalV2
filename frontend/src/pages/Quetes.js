@@ -190,12 +190,13 @@ export default function Quetes() {
                     </div>
                   )}
 
-                  {/* ✅ Lien direct vers la question — visible si sélectionnée */}
-                  {!isSelected && (
-                    <div className="quete-card-link">
-                      Voir la question →
-                    </div>
-                  )}
+                  {/* ✅ Bouton visible en permanence pour aller à la question */}
+                  <button
+                    className={`quete-card-btn-link ${isSelected ? 'active' : ''}`}
+                    onClick={e => { e.stopPropagation(); handleOuvrir(uq); }}
+                  >
+                    {isSelected ? '📖 Question affichée →' : '👉 Voir la question →'}
+                  </button>
                 </div>
               );
             })}
@@ -344,6 +345,26 @@ export default function Quetes() {
         .attente-box { background: rgba(202,138,4,0.15); border: 1px solid #ca8a04; color: #fde047; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
         .valide-box  { background: rgba(22,163,74,0.15); border: 1px solid #16a34a; color: #4ade80; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
         .quetes-vide { text-align: center; color: #666; padding: 40px; font-size: 0.9rem; }
+
+        /* ✅ Bouton lien direct vers la question */
+        .quete-card-btn-link {
+          display: block;
+          width: 100%;
+          margin-top: 8px;
+          padding: 5px 10px;
+          background: transparent;
+          border: 1px solid #6f42c1;
+          border-radius: 6px;
+          color: #a78bfa;
+          font-size: 0.75rem;
+          font-weight: 600;
+          cursor: pointer;
+          text-align: center;
+          transition: all 0.2s;
+          font-family: inherit;
+        }
+        .quete-card-btn-link:hover { background: rgba(111,66,193,0.2); }
+        .quete-card-btn-link.active { background: rgba(111,66,193,0.15); border-color: #a78bfa; color: #c4b5fd; }
 
         @media (max-width: 800px) {
           .quetes-root { height: auto; overflow: visible; }

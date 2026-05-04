@@ -1,36 +1,19 @@
 import React from 'react';
 import './CompetenceUnlockedModal.css';
 
-/**
- * Modal qui s'affiche après validation d'une quête
- * Props :
- *   competences : string[]  — compétences débloquées
- *   queteTitre  : string    — titre de la quête validée
- *   username    : string
- *   level       : number
- *   points      : number
- *   onClose     : function
- */
 export default function CompetenceUnlockedModal({
-  competences,
-  queteTitre,
-  username,
-  level,
-  points,
-  onClose
+  competences, queteTitre, username, level, points, onClose
 }) {
   if (!competences || competences.length === 0) return null;
 
   const handleShare = (competence) => {
-    // ✅ Message mentionnant la quête réussie ET la compétence débloquée
     const texte = queteTitre
       ? `🎮 J'ai validé la quête "${queteTitre}" sur CareerQuest et débloqué la compétence "${competence}" !\n\n+${points} XP gagnés — Niveau ${level} atteint 🚀\n\n#CareerQuest #${competence.replace(/[\s\/\-]/g, '')} #Formation #Dev`
-      : `🎮 J'ai débloqué la compétence "${competence}" sur CareerQuest !\n\nNiveau ${level} atteint 🚀\n\n#CareerQuest #${competence.replace(/[\s\/\-]/g, '')} #Formation`;
+      : `🎮 J'ai débloqué la compétence "${competence}" sur CareerQuest ! Niveau ${level} 🚀 #CareerQuest #Formation`;
 
     window.open(
       `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
-      '_blank',
-      'width=600,height=600,scrollbars=yes'
+      '_blank', 'width=600,height=600,scrollbars=yes'
     );
   };
 
@@ -38,12 +21,9 @@ export default function CompetenceUnlockedModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={e => e.stopPropagation()}>
 
-        {/* Trophée animé */}
         <div className="modal-trophy">🏆</div>
-
         <h2 className="modal-title">Compétence débloquée !</h2>
 
-        {/* Quête validée */}
         {queteTitre && (
           <p className="modal-quete-label">
             ✅ Quête validée : <strong>{queteTitre}</strong>
@@ -52,24 +32,19 @@ export default function CompetenceUnlockedModal({
 
         <p className="modal-sub">+{points} XP • Niveau {level}</p>
 
-        {/* Compétences débloquées */}
         <div className="modal-comps">
           {competences.map((c, i) => (
-            <div key={i} className="modal-comp-badge">
-              ✅ {c}
-            </div>
+            <div key={i} className="modal-comp-badge">✅ {c}</div>
           ))}
         </div>
 
         <p className="modal-msg">
-          Ces compétences ont été ajoutées automatiquement à votre profil !
+          Compétence ajoutée automatiquement à votre profil !
         </p>
 
-        {/* Bouton LinkedIn par compétence */}
+        {/* ✅ Bouton LinkedIn visible pour chaque compétence */}
         <div className="modal-linkedin-section">
-          <p className="modal-linkedin-label">
-            📢 Partagez votre réussite sur LinkedIn :
-          </p>
+          <p className="modal-linkedin-label">📢 Partagez votre réussite :</p>
           {competences.map((c, i) => (
             <button
               key={i}
