@@ -143,3 +143,23 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Django
+*.sqlite3
+backend/api/migrations/__pycache__/
+backend/careerquest/__pycache__/
+
+# Node
+node_modules/
+frontend/build/
+
+# Env
+.env
+*.env
