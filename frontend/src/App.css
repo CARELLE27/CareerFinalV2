@@ -1,3 +1,21 @@
+:root {
+  --bg-main: #07071a;
+  --bg-card: #1a1a2e;
+  --bg-input: #07071a;
+  --border: #2a1a5e;
+  --border-light: #333;
+  --text-main: #e0e0f0;
+  --text-sub: #a78bfa;
+  --text-muted: #888;
+  --purple: #7c3aed;
+  --navbar-bg: #0d0d2b;
+  --hero-bg: linear-gradient(135deg, #1a1a40, #2d1060);
+  --shadow: 0 4px 20px rgba(0,0,0,0.5);
+  --stat-bg: rgba(111,66,193,0.2);
+}
+body { background: var(--bg-main); transition: background 0.3s, color 0.3s; }
+.theme-toggle-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 50%; width: 34px; height: 34px; cursor: pointer; font-size: 1rem; }
+
 /* ══ THÈME SOMBRE (défaut — déjà votre CSS actuel) ══ */
 body.theme-dark {
   background: #07071a !important;
