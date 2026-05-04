@@ -19,9 +19,9 @@ export default function Navbar({ onLogout, isAdmin, toggleBtn }) {
         <Link to="/quetes"     className={`nav-link ${active('/quetes')     ? 'active' : ''}`}>⚔️ Quêtes</Link>
         <Link to="/profil"     className={`nav-link ${active('/profil')     ? 'active' : ''}`}>👤 Profil</Link>
         <Link to="/classement" className={`nav-link ${active('/classement') ? 'active' : ''}`}>🏆 Classement</Link>
-        {isAdmin && (
-          <Link to="/admin" className={`nav-link nav-link-admin ${active('/admin') ? 'active' : ''}`}>🛡️ Admin</Link>
-        )}
+
+        {/* ✅ Admin toujours visible — sécurité gérée côté backend */}
+        <Link to="/admin" className={`nav-link nav-link-admin ${active('/admin') ? 'active' : ''}`}>🛡️ Admin</Link>
       </div>
 
       {/* ── Actions ── */}
