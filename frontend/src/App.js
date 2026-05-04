@@ -8,6 +8,7 @@ import Classement from './pages/Classement';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminPanel from './pages/AdminPanel';
+import { getProfil } from './services/api';   // ✅ utiliser le service existant
 import './App.css';
 
 function applyTheme(isDark) {
@@ -25,45 +26,24 @@ export default function App() {
     localStorage.setItem('cq_dark', isDark);
   }, [isDark]);
 
-  // ✅ Détecter isAdmin — 3 méthodes en cascade
+  // ✅ Utilise getProfil() depuis api.js — bonne baseURL + token automatique
   useEffect(() => {
     if (!token) { setIsAdmin(false); return; }
 
-    // ── Méthode 1 : décoder le JWT ──
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log('[CareerQuest] JWT payload:', payload);
-      if (payload.is_staff || payload.is_superuser) {
-        console.log('[CareerQuest] isAdmin=true via JWT');
-        setIsAdmin(true);
-        return;
-      }
-    } catch(e) {
-      console.warn('[CareerQuest] JWT decode failed:', e);
-    }
-
-    // ── Méthode 2 : appel /api/profil/ ──
-    fetch('/api/profil/', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    getProfil()
       .then(r => {
-        console.log('[CareerQuest] /api/profil/ status:', r.status);
-        return r.ok ? r.json() : null;
-      })
-      .then(data => {
-        console.log('[CareerQuest] Profil data:', data);
-        if (data) {
-          const admin = !!(
-            data.is_staff     === true ||
-            data.is_superuser === true ||
-            data.is_formateur === true
-          );
-          console.log('[CareerQuest] isAdmin:', admin);
-          setIsAdmin(admin);
-        }
+        const data = r.data;
+        console.log('[CareerQuest] Profil:', data);
+        const admin = !!(
+          data.is_staff     === true ||
+          data.is_superuser === true ||
+          data.is_formateur === true
+        );
+        console.log('[CareerQuest] isAdmin:', admin);
+        setIsAdmin(admin);
       })
       .catch(e => {
-        console.error('[CareerQuest] Profil fetch error:', e);
+        console.error('[CareerQuest] getProfil error:', e);
         setIsAdmin(false);
       });
 
