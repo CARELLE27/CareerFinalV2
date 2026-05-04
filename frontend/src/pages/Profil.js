@@ -174,11 +174,14 @@ function VueParCompetence({ quetes, user }) {
                       cursor: maitrisee ? 'pointer' : 'not-allowed',
                       fontFamily: 'inherit', transition: 'all 0.2s',
                     }}
-                    onClick={() => {
+                    onClick={async () => {
                       if (!maitrisee) return;
-                      const texte = `🎮 J'ai maîtrisé la compétence "${parcour.nom}" sur CareerQuest !\n\nToutes les quêtes validées. Niveau ${user?.level} atteint 🚀\n\n#CareerQuest #${parcour.nom.replace(/[\s\/\-]/g, '')} #Formation`;
+                      const texte = `🎮 J'ai maîtrisé la compétence "${parcour.nom}" sur CareerQuest !\n\nToutes les quêtes validées. Niveau ${user?.level} atteint 🚀\n\n#CareerQuest #${parcour.nom.replace(/[\s\/\-]/g, '')} #Formation #Dev`;
+                      // ✅ Copier dans le presse-papiers
+                      try { await navigator.clipboard.writeText(texte); } catch {}
+                      // Ouvrir LinkedIn
                       window.open(
-                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
+                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}`,
                         '_blank', 'width=600,height=600'
                       );
                     }}
