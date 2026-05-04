@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ThemeSwitcher from './ThemeSwitcher';
+
 
 export default function Navbar({ onLogout, isAdmin }) {
   const location = useLocation();

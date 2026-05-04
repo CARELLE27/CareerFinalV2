@@ -10,6 +10,7 @@ import Classement from './pages/Classement';
 import AdminPanel from './pages/AdminPanel';
 import Navbar from './components/Navbar';
 import './App.css';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
