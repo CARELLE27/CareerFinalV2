@@ -1,56 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { getProfil } from './services/api';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import Quetes from './pages/Quetes';
+import Profil from './pages/Profil';
+import Classement from './pages/Classement';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Profil from './pages/Profil';
-import Quetes from './pages/Quetes';
-import Classement from './pages/Classement';
 import AdminPanel from './pages/AdminPanel';
-import Navbar from './components/Navbar';
 import './App.css';
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-  const [user, setUser] = useState(null);
+export default function App() {
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem('cq_dark') !== 'false';
+  });
+  const [token, setToken]     = useState(localStorage.getItem('token'));
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  // ✅ Applique la classe sur <body> — simple et efficace
   useEffect(() => {
-    if (isLoggedIn) {
-      getProfil()
-        .then(r => setUser(r.data))
-        .catch(() => {});
-    }
-  }, [isLoggedIn]);
+    document.body.classList.toggle('theme-light', !isDark);
+    document.body.classList.toggle('theme-dark', isDark);
+    localStorage.setItem('cq_dark', isDark);
+  }, [isDark]);
 
-  const handleLogin = (token) => {
-    localStorage.setItem('token', token);
-    setIsLoggedIn(true);
+  const handleLogin = (newToken) => {
+    setToken(newToken);
+    localStorage.setItem('token', newToken);
+    // Vérifier si admin
+    try {
+      const payload = JSON.parse(atob(newToken.split('.')[1]));
+      setIsAdmin(payload.is_staff || false);
+    } catch {}
   };
 
   const handleLogout = () => {
+    setToken(null);
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setUser(null);
   };
 
-  const isAdmin = user?.is_formateur || user?.is_staff;
+  const toggleBtn = (
+    <button
+      onClick={() => setIsDark(d => !d)}
+      className="theme-toggle-btn"
+      title={isDark ? 'Mode clair' : 'Mode sombre'}
+    >
+      {isDark ? '☀️' : '🌙'}
+    </button>
+  );
+
+  if (!token) {
+    return (
+      <BrowserRouter>
+        {/* Bouton toggle en haut à droite sur pages publiques */}
+        <div style={{ position:'fixed', top:'12px', right:'12px', zIndex:9999 }}>
+          {toggleBtn}
+        </div>
+        <Routes>
+          <Route path="/login"    element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*"         element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 
   return (
     <BrowserRouter>
-      {isLoggedIn && <Navbar onLogout={handleLogout} isAdmin={isAdmin} />}
-      <Routes>
-        <Route path="/login"      element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />} />
-        <Route path="/register"   element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />} />
-        <Route path="/dashboard"  element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/profil"     element={isLoggedIn ? <Profil /> : <Navigate to="/login" />} />
-        <Route path="/quetes"     element={isLoggedIn ? <Quetes /> : <Navigate to="/login" />} />
-        <Route path="/classement" element={isLoggedIn ? <Classement /> : <Navigate to="/login" />} />
-        <Route path="/admin"      element={isLoggedIn && isAdmin ? <AdminPanel /> : <Navigate to="/dashboard" />} />
-        <Route path="*"           element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} />} />
-      </Routes>
+      <Navbar
+        onLogout={handleLogout}
+        isAdmin={isAdmin}
+        toggleBtn={toggleBtn}
+      />
+      <div className="app-content">
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/quetes"    element={<Quetes />} />
+          <Route path="/profil"    element={<Profil />} />
+          <Route path="/classement"element={<Classement />} />
+          <Route path="/admin"     element={<AdminPanel />} />
+          <Route path="*"          element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
-
-export default App;
