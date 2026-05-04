@@ -1,17 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Navbar({ onLogout, isAdmin, isDark, onToggleTheme }) {
+export default function Navbar({ onLogout, isAdmin, toggleBtn }) {
   const loc = useLocation();
-
-  const navLink = (to, label) => (
-    <Link
-      to={to}
-      className={`nav-link ${loc.pathname === to ? 'active' : ''}`}
-    >
-      {label}
-    </Link>
-  );
 
   return (
     <nav className="navbar">
@@ -20,26 +11,17 @@ export default function Navbar({ onLogout, isAdmin, isDark, onToggleTheme }) {
       </Link>
 
       <div className="nav-links">
-        {navLink('/dashboard',  '🏠 Accueil')}
-        {navLink('/quetes',     '⚔️ Quêtes')}
-        {navLink('/profil',     '👤 Profil')}
-        {navLink('/classement', '🏆 Classement')}
-        {isAdmin && navLink('/admin', '🛡️ Admin')}
+        <Link to="/dashboard"  className={`nav-link ${loc.pathname==='/dashboard'  ?'active':''}`}>🏠 Accueil</Link>
+        <Link to="/quetes"     className={`nav-link ${loc.pathname==='/quetes'     ?'active':''}`}>⚔️ Quêtes</Link>
+        <Link to="/profil"     className={`nav-link ${loc.pathname==='/profil'     ?'active':''}`}>👤 Profil</Link>
+        <Link to="/classement" className={`nav-link ${loc.pathname==='/classement' ?'active':''}`}>🏆 Classement</Link>
+        {isAdmin && <Link to="/admin" className={`nav-link ${loc.pathname==='/admin'?'active':''}`}>🛡️ Admin</Link>}
       </div>
 
       <div className="nav-actions">
-        {/* ✅ Bouton toggle thème — simple et visible */}
-        <button
-          className="theme-toggle-btn"
-          onClick={onToggleTheme}
-          title={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
-        >
-          {isDark ? '☀️' : '🌙'}
-        </button>
-
-        <button className="btn-deconnexion" onClick={onLogout}>
-          Déconnexion
-        </button>
+        {/* ✅ Bouton toggle reçu depuis App.js */}
+        {toggleBtn}
+        <button className="btn-deconnexion" onClick={onLogout}>Déconnexion</button>
       </div>
     </nav>
   );
