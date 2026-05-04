@@ -32,6 +32,7 @@ export default function Quetes() {
   const [filtre, setFiltre]         = useState('recommandees');
   const [user, setUser]             = useState(null);
   const [modal, setModal]           = useState(null);
+  const [linkedinCopied, setLinkedinCopied] = useState(false);
 
   useEffect(() => {
     getMesQuetes().then(r => {
@@ -192,11 +193,30 @@ export default function Quetes() {
                   </div>
                   <p className="quete-desc-short">{uq.quete.description}</p>
 
-                  {/* Compétences — sans bouton LinkedIn */}
+                  {/* Compétences + bouton LinkedIn si validée */}
                   {uq.quete.competences_debloquees?.length > 0 && (
-                    <div className="quete-comps-preview">
-                      🎯 {uq.statut === 'valide' ? 'Débloquée : ' : 'Débloque : '}
-                      {uq.quete.competences_debloquees.map(c => c.nom).join(', ')}
+                    <div>
+                      <div className="quete-comps-preview">
+                        🎯 {uq.statut === 'valide' ? 'En progression : ' : 'Débloque : '}
+                        {uq.quete.competences_debloquees.map(c => c.nom).join(', ')}
+                      </div>
+                      {uq.statut === 'valide' && (
+                        <button
+                          className="linkedin-quete-btn"
+                          onClick={async e => {
+                            e.stopPropagation();
+                            const comp  = uq.quete.competences_debloquees.map(c => c.nom).join(', ');
+                            const texte = `🎮 J'ai validé la quête "${uq.quete.titre}" sur CareerQuest !\n\n+${uq.points_gagnes} XP gagnés — Je progresse vers la compétence "${comp}" 🚀\n\n#CareerQuest #${comp.replace(/[\s\/\-]/g, '')} #Formation #Dev`;
+                            try { await navigator.clipboard.writeText(texte); } catch {}
+                            window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://careerquest.app'), '_blank', 'width=600,height=600');
+                          }}
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                          </svg>
+                          Partager sur LinkedIn
+                        </button>
+                      )}
                     </div>
                   )}
 
@@ -275,13 +295,38 @@ export default function Quetes() {
                 </div>
               )}
 
-              {/* ✅ Validée — sans bouton LinkedIn (déplacé dans Profil) */}
+              {/* ✅ Validée — avec bouton LinkedIn */}
               {selected.statut === 'valide' && (
                 <div className="valide-box">
-                  🎉 Quête complétée ! +{selected.points_gagnes} XP
+                  <div>🎉 Quête complétée ! +{selected.points_gagnes} XP</div>
+
                   {selected.quete.competences_debloquees?.length > 0 && (
-                    <div style={{ fontSize: '0.8rem', color: '#4ade80', marginTop: '6px' }}>
-                      ✅ Compétence débloquée — retrouvez le partage LinkedIn dans votre Profil 🏆
+                    <div>
+                      <div style={{ fontSize: '0.8rem', color: '#4ade80', marginBottom: '10px' }}>
+                        ✅ Compétences débloquées : {selected.quete.competences_debloquees.map(c => c.nom).join(', ')}
+                      </div>
+
+                      {/* ✅ Bouton LinkedIn avec copie auto */}
+                      {linkedinCopied && (
+                        <div style={{ fontSize: '0.78rem', color: '#4ade80', background: 'rgba(22,163,74,0.15)', border: '1px solid #16a34a', borderRadius: '6px', padding: '6px 10px', marginBottom: '8px' }}>
+                          ✅ Texte copié ! LinkedIn s'ouvre — collez avec <strong>Ctrl+V</strong> 🎉
+                        </div>
+                      )}
+                      <button
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', width: '100%', padding: '10px 16px', background: '#0077B5', color: 'white', border: 'none', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}
+                        onClick={async () => {
+                          const comp  = selected.quete.competences_debloquees.map(c => c.nom).join(', ');
+                          // ✅ Message juste : en progression vers la compétence, pas encore maîtrisée
+                          const texte = `🎮 J'ai validé la quête "${selected.quete.titre}" sur CareerQuest !\n\n+${selected.points_gagnes} XP gagnés — Je progresse vers la compétence "${comp}" 🚀\n\n#CareerQuest #${comp.replace(/[\s\/\-]/g, '')} #Formation #Dev`;
+                          try { await navigator.clipboard.writeText(texte); setLinkedinCopied(true); setTimeout(() => setLinkedinCopied(false), 4000); } catch {}
+                          window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://careerquest.app'), '_blank', 'width=600,height=600');
+                        }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        Partager sur LinkedIn
+                      </button>
                     </div>
                   )}
                 </div>
@@ -349,6 +394,16 @@ export default function Quetes() {
         .attente-box { background: rgba(202,138,4,0.15); border: 1px solid #ca8a04; color: #fde047; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
         .valide-box  { background: rgba(22,163,74,0.15); border: 1px solid #16a34a; color: #4ade80; border-radius: 8px; padding: 12px; font-size: 0.85rem; margin-top: 12px; }
         .quetes-vide { text-align: center; color: #666; padding: 40px; font-size: 0.9rem; }
+        .linkedin-quete-btn {
+          display: flex; align-items: center; gap: 6px;
+          background: #0077B5; color: white; border: none;
+          padding: 5px 12px; border-radius: 6px;
+          font-size: 0.72rem; font-weight: 700;
+          cursor: pointer; margin-top: 6px;
+          font-family: inherit; transition: background 0.2s;
+          width: 100%; justify-content: center;
+        }
+        .linkedin-quete-btn:hover { background: #005885; }
 
         /* ✅ Bouton lien direct vers la question */
         .quete-card-btn-link {
