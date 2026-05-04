@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProfil, getMesCompetences, getCompetences, updateProfil, getMesQuetes } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '../components/Avatar';
 import GithubModal from '../components/GithubModal';
 
@@ -16,25 +17,6 @@ function getNextAvatar(points) {
     { label: 'Senior Dev', minXP: 1500 },
     { label: 'Expert',     minXP: 3000 },
   ].find(a => a.minXP > points) || null;
-}
-
-// ── Bouton LinkedIn ───────────────────────────────────────
-function LinkedInShareComp({ competenceNom, username, level }) {
-  const handleShare = () => {
-    const texte = `🎮 J'ai maîtrisé la compétence "${competenceNom}" sur CareerQuest !\n\nToutes les quêtes validées. Niveau ${level} atteint 🚀\n\n#CareerQuest #${competenceNom.replace(/[\s\/\-]/g, '')} #Formation #Dev`;
-    window.open(
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
-      '_blank', 'width=600,height=600,scrollbars=yes'
-    );
-  };
-  return (
-    <button className="linkedin-comp-btn" onClick={handleShare}>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-      </svg>
-      Partager sur LinkedIn
-    </button>
-  );
 }
 
 // ── GRILLE COMPÉTENCES ────────────────────────────────────
@@ -69,8 +51,9 @@ function CompetencesGrid({ competences, mesCompIds }) {
 
 // ── VUE PAR COMPÉTENCE ────────────────────────────────────
 function VueParCompetence({ quetes, user }) {
-  const parcours = {};
+  const navigate = useNavigate();
 
+  const parcours = {};
   quetes.forEach(uq => {
     const comps = uq.quete.competences_debloquees || [];
     if (comps.length === 0) {
@@ -85,7 +68,6 @@ function VueParCompetence({ quetes, user }) {
       });
     }
   });
-
   Object.values(parcours).forEach(p => {
     p.quetes.sort((a, b) => a.quete.difficulte - b.quete.difficulte);
   });
@@ -111,7 +93,12 @@ function VueParCompetence({ quetes, user }) {
               </div>
               <div className="vpc-bar-wrap">
                 <div className="vpc-bar-bg">
-                  <div className="vpc-bar-fill" style={{ width: `${pct}%`, background: maitrisee ? 'linear-gradient(90deg, #4ade80, #fde047)' : 'linear-gradient(90deg, #7c3aed, #4ade80)' }} />
+                  <div className="vpc-bar-fill" style={{
+                    width: `${pct}%`,
+                    background: maitrisee
+                      ? 'linear-gradient(90deg,#4ade80,#fde047)'
+                      : 'linear-gradient(90deg,#7c3aed,#4ade80)'
+                  }} />
                 </div>
                 <span className="vpc-pct" style={{ color: maitrisee ? '#fde047' : '#a78bfa' }}>{pct}%</span>
               </div>
@@ -129,7 +116,12 @@ function VueParCompetence({ quetes, user }) {
                     {i > 0 && (
                       <div className={`vpc-connector ${parcour.quetes[i-1].statut === 'valide' ? 'done' : ''}`}>→</div>
                     )}
-                    <div className={`vpc-quete-card ${estProch ? 'prochaine' : ''} ${done ? 'done' : ''}`}>
+                    <div
+                      className={`vpc-quete-card ${estProch ? 'prochaine' : ''} ${done ? 'done' : ''}`}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => navigate('/quetes')}
+                      title="Aller à cette quête"
+                    >
                       {estProch && !maitrisee && <div className="vpc-badge-prochaine">✈️ Suivante</div>}
                       <div className="vpc-quete-icone">{uq.quete.icone}</div>
                       <div className="vpc-quete-titre">{uq.quete.titre}</div>
@@ -144,12 +136,20 @@ function VueParCompetence({ quetes, user }) {
                         {!done && !refused && !waiting && estProch  ? '✈️ À faire'  : ''}
                         {!done && !refused && !waiting && !estProch ? '🔒 Bloquée'  : ''}
                       </div>
+                      {/* Lien vers quêtes */}
+                      <div style={{
+                        fontSize: '0.65rem', color: '#6f42c1',
+                        marginTop: '6px', borderTop: '1px solid #2a1a5e',
+                        paddingTop: '4px'
+                      }}>
+                        → Aller à la quête
+                      </div>
                     </div>
                   </React.Fragment>
                 );
               })}
 
-              {/* ✅ RÉCOMPENSE FINALE avec LinkedIn si maîtrisée */}
+              {/* RÉCOMPENSE FINALE */}
               <div className="vpc-connector done">→</div>
               <div className={`vpc-reward ${maitrisee ? 'unlocked' : ''}`}>
                 <span className="vpc-reward-trophy">{maitrisee ? '🏆' : '🔒'}</span>
@@ -158,17 +158,39 @@ function VueParCompetence({ quetes, user }) {
                   {maitrisee ? 'Maîtrisée !' : `${valides}/${total} quêtes`}
                 </span>
 
-                {/* ✅ BOUTON LINKEDIN — uniquement si maîtrisée */}
-                {maitrisee && key !== '__general__' && (
-                  <LinkedInShareComp
-                    competenceNom={parcour.nom}
-                    username={user?.username}
-                    level={user?.level}
-                  />
+                {/* ✅ Bouton LinkedIn — actif si maîtrisée, grisé sinon */}
+                {key !== '__general__' && (
+                  <button
+                    disabled={!maitrisee}
+                    title={maitrisee ? 'Partager sur LinkedIn' : `Validez toutes les quêtes pour partager`}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '6px',
+                      justifyContent: 'center', width: '100%',
+                      padding: '7px 10px', marginTop: '8px',
+                      background: maitrisee ? '#0077B5' : '#1a1a2e',
+                      color: maitrisee ? 'white' : '#444',
+                      border: maitrisee ? '1px solid #0077B5' : '1px solid #333',
+                      borderRadius: '8px', fontSize: '0.68rem', fontWeight: 700,
+                      cursor: maitrisee ? 'pointer' : 'not-allowed',
+                      fontFamily: 'inherit', transition: 'all 0.2s',
+                    }}
+                    onClick={() => {
+                      if (!maitrisee) return;
+                      const texte = `🎮 J'ai maîtrisé la compétence "${parcour.nom}" sur CareerQuest !\n\nToutes les quêtes validées. Niveau ${user?.level} atteint 🚀\n\n#CareerQuest #${parcour.nom.replace(/[\s\/\-]/g, '')} #Formation`;
+                      window.open(
+                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
+                        '_blank', 'width=600,height=600'
+                      );
+                    }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    {maitrisee ? 'Partager sur LinkedIn' : '🔒 Partager sur LinkedIn'}
+                  </button>
                 )}
               </div>
             </div>
-
           </div>
         );
       })}
