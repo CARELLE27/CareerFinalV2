@@ -1,34 +1,45 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ThemeSwitcher from './ThemeSwitcher';
 
+export default function Navbar({ onLogout, isAdmin, isDark, onToggleTheme }) {
+  const loc = useLocation();
 
-export default function Navbar({ onLogout, isAdmin }) {
-  const location = useLocation();
-
-  const links = [
-    { to: '/dashboard',  label: '🏠 Accueil' },
-    { to: '/quetes',     label: '⚔️ Quêtes' },
-    { to: '/profil',     label: '👤 Profil' },
-    { to: '/classement', label: '🏆 Classement' },
-  ];
+  const navLink = (to, label) => (
+    <Link
+      to={to}
+      className={`nav-link ${loc.pathname === to ? 'active' : ''}`}
+    >
+      {label}
+    </Link>
+  );
 
   return (
     <nav className="navbar">
-      <span className="navbar-brand">🎮 CareerQuest</span>
-      <div className="navbar-links">
-        {links.map(l => (
-          <Link key={l.to} to={l.to} className={location.pathname === l.to ? 'active' : ''}>
-            {l.label}
-          </Link>
-        ))}
-        {/* Lien Admin visible uniquement pour formateurs/admins */}
-        {isAdmin && (
-          <Link to="/admin" className={location.pathname === '/admin' ? 'active admin-link' : 'admin-link'}>
-            🛡️ Admin
-          </Link>
-        )}
-        <button onClick={onLogout} className="btn-logout">Déconnexion</button>
+      <Link to="/dashboard" className="nav-brand">
+        🎮 <strong>CareerQuest</strong>
+      </Link>
+
+      <div className="nav-links">
+        {navLink('/dashboard',  '🏠 Accueil')}
+        {navLink('/quetes',     '⚔️ Quêtes')}
+        {navLink('/profil',     '👤 Profil')}
+        {navLink('/classement', '🏆 Classement')}
+        {isAdmin && navLink('/admin', '🛡️ Admin')}
+      </div>
+
+      <div className="nav-actions">
+        {/* ✅ Bouton toggle thème — simple et visible */}
+        <button
+          className="theme-toggle-btn"
+          onClick={onToggleTheme}
+          title={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
+        >
+          {isDark ? '☀️' : '🌙'}
+        </button>
+
+        <button className="btn-deconnexion" onClick={onLogout}>
+          Déconnexion
+        </button>
       </div>
     </nav>
   );
