@@ -10,46 +10,27 @@ import Register from './pages/Register';
 import AdminPanel from './pages/AdminPanel';
 import './App.css';
 
-const THEMES = {
-  dark: {
-    '--bg-main': '#07071a', '--bg-card': '#1a1a2e', '--bg-input': '#07071a',
-    '--border': '#2a1a5e', '--text-main': '#e0e0f0', '--text-sub': '#a78bfa',
-    '--purple': '#7c3aed', '--navbar-bg': '#1a1a2e',
-    '--hero-bg': 'linear-gradient(135deg,#1a1a2e,#2d1060)',
-    '--stat-bg': 'rgba(111,66,193,0.2)',
-  },
-  light: {
-    '--bg-main': '#f8f7ff', '--bg-card': '#ffffff', '--bg-input': '#ffffff',
-    '--border': '#ddd6fe', '--text-main': '#1f2937', '--text-sub': '#5b21b6',
-    '--purple': '#7c3aed', '--navbar-bg': '#ffffff',
-    '--hero-bg': 'linear-gradient(135deg,#ede9fe,#faf5ff)',
-    '--stat-bg': 'rgba(124,58,237,0.06)',
-  },
-};
-
 function applyTheme(isDark) {
-  const vars = isDark ? THEMES.dark : THEMES.light;
-  Object.entries(vars).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+  document.body.classList.toggle('theme-light', !isDark);
+  document.body.classList.toggle('theme-dark',   isDark);
 }
 
 export default function App() {
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('cq_dark') !== 'false');
-  const [token, setToken]   = useState(localStorage.getItem('token'));
+  const [isDark,  setIsDark]  = useState(() => localStorage.getItem('cq_dark') !== 'false');
+  const [token,   setToken]   = useState(localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Appliquer thème
+  // Appliquer le thème
   useEffect(() => {
-    document.body.classList.toggle('theme-light', !isDark);
-    document.body.classList.toggle('theme-dark',   isDark);
     applyTheme(isDark);
     localStorage.setItem('cq_dark', isDark);
   }, [isDark]);
 
-  // ✅ Vérifier isAdmin dès qu'on a un token
+  // ✅ Détecter isAdmin dès qu'on a un token
   useEffect(() => {
     if (!token) { setIsAdmin(false); return; }
 
-    // Méthode 1 : décoder le JWT
+    // Étape 1 — lire le JWT directement
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       if (payload.is_staff || payload.is_superuser) {
@@ -58,13 +39,19 @@ export default function App() {
       }
     } catch {}
 
-    // Méthode 2 : appel API /profil/ pour récupérer is_staff
+    // Étape 2 — appeler /api/profil/ pour récupérer is_staff
     fetch('/api/profil/', {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` }
     })
-      .then(r => r.json())
+      .then(r => r.ok ? r.json() : null)
       .then(data => {
-        setIsAdmin(data.is_staff === true || data.is_superuser === true);
+        if (data) {
+          setIsAdmin(
+            data.is_staff === true ||
+            data.is_superuser === true ||
+            data.is_formateur === true
+          );
+        }
       })
       .catch(() => setIsAdmin(false));
   }, [token]);
@@ -93,7 +80,7 @@ export default function App() {
   if (!token) {
     return (
       <BrowserRouter>
-        <div style={{ position: 'fixed', top: 12, right: 12, zIndex: 9999 }}>
+        <div style={{ position:'fixed', top:12, right:12, zIndex:9999 }}>
           {toggleBtn}
         </div>
         <Routes>
@@ -107,19 +94,14 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Navbar
-        onLogout={handleLogout}
-        isAdmin={isAdmin}
-        toggleBtn={toggleBtn}
-      />
+      <Navbar onLogout={handleLogout} isAdmin={isAdmin} toggleBtn={toggleBtn} />
       <div className="app-content">
         <Routes>
           <Route path="/dashboard"  element={<Dashboard />} />
           <Route path="/quetes"     element={<Quetes />} />
           <Route path="/profil"     element={<Profil />} />
           <Route path="/classement" element={<Classement />} />
-          {/* ✅ Route admin toujours présente, même si le lien est caché */}
-          <Route path="/admin"      element={<AdminPanel />} />
+          <Route path="/admin"      element={isAdmin ? <AdminPanel /> : <Navigate to="/dashboard" />} />
           <Route path="*"           element={<Navigate to="/dashboard" />} />
         </Routes>
       </div>
