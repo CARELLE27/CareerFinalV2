@@ -20,40 +20,53 @@ export default function App() {
   const [token,   setToken]   = useState(localStorage.getItem('token'));
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Appliquer le thème
   useEffect(() => {
     applyTheme(isDark);
     localStorage.setItem('cq_dark', isDark);
   }, [isDark]);
 
-  // ✅ Détecter isAdmin dès qu'on a un token
+  // ✅ Détecter isAdmin — 3 méthodes en cascade
   useEffect(() => {
     if (!token) { setIsAdmin(false); return; }
 
-    // Étape 1 — lire le JWT directement
+    // ── Méthode 1 : décoder le JWT ──
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('[CareerQuest] JWT payload:', payload);
       if (payload.is_staff || payload.is_superuser) {
+        console.log('[CareerQuest] isAdmin=true via JWT');
         setIsAdmin(true);
         return;
       }
-    } catch {}
+    } catch(e) {
+      console.warn('[CareerQuest] JWT decode failed:', e);
+    }
 
-    // Étape 2 — appeler /api/profil/ pour récupérer is_staff
+    // ── Méthode 2 : appel /api/profil/ ──
     fetch('/api/profil/', {
       headers: { Authorization: `Bearer ${token}` }
     })
-      .then(r => r.ok ? r.json() : null)
+      .then(r => {
+        console.log('[CareerQuest] /api/profil/ status:', r.status);
+        return r.ok ? r.json() : null;
+      })
       .then(data => {
+        console.log('[CareerQuest] Profil data:', data);
         if (data) {
-          setIsAdmin(
-            data.is_staff === true ||
+          const admin = !!(
+            data.is_staff     === true ||
             data.is_superuser === true ||
             data.is_formateur === true
           );
+          console.log('[CareerQuest] isAdmin:', admin);
+          setIsAdmin(admin);
         }
       })
-      .catch(() => setIsAdmin(false));
+      .catch(e => {
+        console.error('[CareerQuest] Profil fetch error:', e);
+        setIsAdmin(false);
+      });
+
   }, [token]);
 
   const handleLogin = (newToken) => {
