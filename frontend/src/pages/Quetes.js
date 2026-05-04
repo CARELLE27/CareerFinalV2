@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getMesQuetes, soumettreQuete, reessayerQuete, getProfil } from '../services/api';
 import CompetenceUnlockedModal from '../components/CompetenceUnlockedModal';
 
@@ -22,6 +23,7 @@ const TYPE_PLACEHOLDER = {
 };
 
 export default function Quetes() {
+  const location = useLocation();
   const [quetes, setQuetes]         = useState([]);
   const [selected, setSelected]     = useState(null);
   const [soumission, setSoumission] = useState('');
@@ -34,13 +36,21 @@ export default function Quetes() {
   useEffect(() => {
     getMesQuetes().then(r => {
       setQuetes(r.data);
+      // ✅ Si un ID est passé dans l'URL (?id=42), sélectionner cette quête
+      const params  = new URLSearchParams(location.search);
+      const idParam = params.get('id');
+      if (idParam) {
+        const found = r.data.find(q => q.quete.id === parseInt(idParam));
+        if (found) { setSelected(found); return; }
+      }
+      // Sinon sélectionner la première recommandée
       const premiere = r.data.find(q => q.recommandee && q.statut !== 'valide')
         || r.data.find(q => q.statut !== 'valide')
         || r.data[0];
       if (premiere) setSelected(premiere);
     }).catch(() => {});
     getProfil().then(r => setUser(r.data)).catch(() => {});
-  }, []);
+  }, [location.search]);
 
   const handleOuvrir = (uq) => {
     setSelected(uq);

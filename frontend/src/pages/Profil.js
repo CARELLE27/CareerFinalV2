@@ -119,7 +119,7 @@ function VueParCompetence({ quetes, user }) {
                     <div
                       className={`vpc-quete-card ${estProch ? 'prochaine' : ''} ${done ? 'done' : ''}`}
                       style={{ cursor: 'pointer' }}
-                      onClick={() => navigate('/quetes')}
+                      onClick={() => navigate(`/quetes?id=${uq.quete.id}`)}
                       title="Aller à cette quête"
                     >
                       {estProch && !maitrisee && <div className="vpc-badge-prochaine">✈️ Suivante</div>}
