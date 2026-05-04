@@ -190,13 +190,7 @@ export default function Quetes() {
                     </div>
                   )}
 
-                  {/* ✅ Bouton visible en permanence pour aller à la question */}
-                  <button
-                    className={`quete-card-btn-link ${isSelected ? 'active' : ''}`}
-                    onClick={e => { e.stopPropagation(); handleOuvrir(uq); }}
-                  >
-                    {isSelected ? '📖 Question affichée →' : '👉 Voir la question →'}
-                  </button>
+
                 </div>
               );
             })}

@@ -1,5 +1,4 @@
 import React from 'react';
-import './CompetenceUnlockedModal.css';
 
 export default function CompetenceUnlockedModal({
   competences, queteTitre, username, level, points, onClose
@@ -8,8 +7,8 @@ export default function CompetenceUnlockedModal({
 
   const handleShare = (competence) => {
     const texte = queteTitre
-      ? `🎮 J'ai validé la quête "${queteTitre}" sur CareerQuest et débloqué la compétence "${competence}" !\n\n+${points} XP gagnés — Niveau ${level} atteint 🚀\n\n#CareerQuest #${competence.replace(/[\s\/\-]/g, '')} #Formation #Dev`
-      : `🎮 J'ai débloqué la compétence "${competence}" sur CareerQuest ! Niveau ${level} 🚀 #CareerQuest #Formation`;
+      ? `🎮 J'ai validé la quête "${queteTitre}" sur CareerQuest et débloqué la compétence "${competence}" !\n\n+${points} XP — Niveau ${level} 🚀\n\n#CareerQuest #${competence.replace(/[\s\/\-]/g, '')} #Formation #Dev`
+      : `🎮 J'ai débloqué "${competence}" sur CareerQuest ! Niveau ${level} 🚀 #CareerQuest #Formation`;
 
     window.open(
       `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://careerquest.app')}&summary=${encodeURIComponent(texte)}`,
@@ -17,38 +16,84 @@ export default function CompetenceUnlockedModal({
     );
   };
 
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-box" onClick={e => e.stopPropagation()}>
+  // ✅ Tout en inline styles — plus de dépendance au fichier CSS
+  const S = {
+    overlay: {
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 9999, padding: '20px',
+    },
+    box: {
+      background: 'linear-gradient(135deg, #1a1a2e, #2d1060)',
+      border: '2px solid #7c3aed', borderRadius: '20px',
+      padding: '36px 32px', maxWidth: '460px', width: '100%',
+      textAlign: 'center',
+      boxShadow: '0 0 60px rgba(124,58,237,0.4)',
+    },
+    trophy: { fontSize: '4rem', marginBottom: '12px', display: 'block' },
+    title:  { fontSize: '1.6rem', fontWeight: 700, color: '#fde047', marginBottom: '8px' },
+    queteLabel: {
+      fontSize: '0.85rem', color: '#a78bfa', marginBottom: '8px',
+      background: 'rgba(111,66,193,0.15)', padding: '6px 12px',
+      borderRadius: '8px', border: '1px solid #6f42c1',
+    },
+    sub:  { fontSize: '0.9rem', color: '#a78bfa', marginBottom: '16px' },
+    comps:{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '12px' },
+    badge:{ background: 'rgba(124,58,237,0.3)', border: '2px solid #7c3aed', color: '#a78bfa', padding: '8px 18px', borderRadius: '20px', fontSize: '0.95rem', fontWeight: 700 },
+    msg:  { fontSize: '0.82rem', color: '#888', marginBottom: '16px' },
+    linkedinSection: {
+      background: 'rgba(0,0,0,0.3)', border: '1px solid #444',
+      borderRadius: '12px', padding: '16px', marginBottom: '16px',
+    },
+    linkedinLabel: { fontSize: '0.82rem', color: '#aaa', marginBottom: '10px' },
+    linkedinBtn: {
+      display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center',
+      width: '100%', padding: '12px 20px',
+      background: '#0077B5', color: 'white',
+      border: 'none', borderRadius: '8px',
+      fontSize: '0.9rem', fontWeight: 700,
+      cursor: 'pointer', marginBottom: '8px',
+      fontFamily: 'inherit',
+    },
+    closeBtn: {
+      width: '100%', padding: '12px',
+      background: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
+      color: 'white', border: 'none', borderRadius: '10px',
+      fontSize: '1rem', fontWeight: 700,
+      cursor: 'pointer', fontFamily: 'inherit',
+    },
+  };
 
-        <div className="modal-trophy">🏆</div>
-        <h2 className="modal-title">Compétence débloquée !</h2>
+  return (
+    <div style={S.overlay} onClick={onClose}>
+      <div style={S.box} onClick={e => e.stopPropagation()}>
+
+        <span style={S.trophy}>🏆</span>
+        <h2 style={S.title}>Compétence débloquée !</h2>
 
         {queteTitre && (
-          <p className="modal-quete-label">
-            ✅ Quête validée : <strong>{queteTitre}</strong>
-          </p>
+          <p style={S.queteLabel}>✅ Quête validée : <strong>{queteTitre}</strong></p>
         )}
 
-        <p className="modal-sub">+{points} XP • Niveau {level}</p>
+        <p style={S.sub}>+{points} XP • Niveau {level}</p>
 
-        <div className="modal-comps">
+        <div style={S.comps}>
           {competences.map((c, i) => (
-            <div key={i} className="modal-comp-badge">✅ {c}</div>
+            <div key={i} style={S.badge}>✅ {c}</div>
           ))}
         </div>
 
-        <p className="modal-msg">
-          Compétence ajoutée automatiquement à votre profil !
-        </p>
+        <p style={S.msg}>Compétence ajoutée automatiquement à votre profil !</p>
 
-        {/* ✅ Bouton LinkedIn visible pour chaque compétence */}
-        <div className="modal-linkedin-section">
-          <p className="modal-linkedin-label">📢 Partagez votre réussite :</p>
+        {/* ✅ Bouton LinkedIn en inline style — toujours visible */}
+        <div style={S.linkedinSection}>
+          <p style={S.linkedinLabel}>📢 Partagez votre réussite sur LinkedIn :</p>
           {competences.map((c, i) => (
             <button
               key={i}
-              className="linkedin-share-btn"
+              style={S.linkedinBtn}
+              onMouseEnter={e => e.currentTarget.style.background = '#005885'}
+              onMouseLeave={e => e.currentTarget.style.background = '#0077B5'}
               onClick={() => handleShare(c)}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ flexShrink: 0 }}>
@@ -59,9 +104,7 @@ export default function CompetenceUnlockedModal({
           ))}
         </div>
 
-        <button className="modal-close-btn" onClick={onClose}>
-          Continuer ✨
-        </button>
+        <button style={S.closeBtn} onClick={onClose}>Continuer ✨</button>
       </div>
     </div>
   );
