@@ -1,0 +1,500 @@
+[
+  {
+    "model": "api.competence",
+    "pk": 101,
+    "fields": {
+      "nom": "HTML5 Sémantique",
+      "categorie": "Frontend",
+      "niveau_requis": 1,
+      "description": "Maîtrise des balises sémantiques HTML5, accessibilité et structure de document",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+  {
+    "model": "api.competence",
+    "pk": 102,
+    "fields": {
+      "nom": "CSS3 Avancé",
+      "categorie": "Frontend",
+      "niveau_requis": 2,
+      "description": "Flexbox, Grid, animations, variables CSS, responsive design",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+  {
+    "model": "api.competence",
+    "pk": 103,
+    "fields": {
+      "nom": "JavaScript ES6+",
+      "categorie": "Frontend",
+      "niveau_requis": 3,
+      "description": "Closures, Promises, async/await, destructuring, modules ES6",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+  {
+    "model": "api.competence",
+    "pk": 104,
+    "fields": {
+      "nom": "DOM & Événements",
+      "categorie": "Frontend",
+      "niveau_requis": 3,
+      "description": "Manipulation du DOM, event listeners, bubbling, délégation d'événements",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+  {
+    "model": "api.competence",
+    "pk": 105,
+    "fields": {
+      "nom": "Responsive Design",
+      "categorie": "Frontend",
+      "niveau_requis": 2,
+      "description": "Media queries, mobile-first, unités relatives, images responsives",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+  {
+    "model": "api.competence",
+    "pk": 106,
+    "fields": {
+      "nom": "JavaScript Asynchrone",
+      "categorie": "Frontend",
+      "niveau_requis": 5,
+      "description": "Event loop, Promises, async/await, fetch API, gestion des erreurs",
+      "filieres_cibles": ["informatique"]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 201,
+    "fields": {
+      "titre": "Quiz HTML5 — Balises sémantiques",
+      "description": "Testez votre connaissance des balises sémantiques HTML5 et leur usage correct.",
+      "instructions": "Quelle balise HTML5 est la plus appropriée pour contenir le contenu principal et unique d'une page ?\na) <section>\nb) <article>\nc) <main>\nd) <div>",
+      "points": 20,
+      "type_quete": "quiz",
+      "icone": "🌐",
+      "difficulte": 1,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [101]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 202,
+    "fields": {
+      "titre": "Quiz HTML5 — Formulaires avancés",
+      "description": "Les nouveaux types d'input et attributs HTML5 pour les formulaires.",
+      "instructions": "Quel attribut HTML5 permet de valider un champ email SANS JavaScript ?\na) validate=\"email\"\nb) type=\"email\"\nc) pattern=\"email\"\nd) required=\"email\"",
+      "points": 25,
+      "type_quete": "quiz",
+      "icone": "📋",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [101]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 203,
+    "fields": {
+      "titre": "Quiz HTML5 — Accessibilité ARIA",
+      "description": "Attributs ARIA et bonnes pratiques d'accessibilité web.",
+      "instructions": "Quel attribut ARIA doit être ajouté à un bouton qui contrôle l'ouverture d'un menu déroulant ?\na) aria-expanded\nb) aria-open\nc) aria-visible\nd) aria-toggle",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "♿",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "a"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [101]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 204,
+    "fields": {
+      "titre": "Quiz CSS3 — Flexbox",
+      "description": "Maîtrisez Flexbox pour créer des mises en page flexibles.",
+      "instructions": "Pour centrer un élément horizontalement ET verticalement dans un conteneur flex, quelle combinaison est correcte ?\na) justify-content: center; align-content: center;\nb) justify-content: center; align-items: center;\nc) flex-align: center; flex-justify: center;\nd) margin: auto; dans le conteneur",
+      "points": 25,
+      "type_quete": "quiz",
+      "icone": "📐",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [102]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 205,
+    "fields": {
+      "titre": "Quiz CSS3 — Grid Layout",
+      "description": "CSS Grid pour des mises en page complexes en 2 dimensions.",
+      "instructions": "Quelle déclaration CSS Grid place un élément de la colonne 1 à la colonne 3 (en occupant 2 colonnes) ?\na) grid-column: 1 / 3;\nb) grid-column: 1 to 3;\nc) grid-column: span 2 / 1;\nd) column-start: 1; column-end: 3;",
+      "points": 30,
+      "type_quete": "quiz",
+      "icone": "🔲",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "a"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [102]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 206,
+    "fields": {
+      "titre": "Quiz CSS3 — Variables & Cascade",
+      "description": "Variables CSS custom properties et règles de cascade.",
+      "instructions": "Comment déclarer une variable CSS globale nommée --couleur-primaire avec la valeur #7c3aed ?\na) $couleur-primaire: #7c3aed;\nb) var(--couleur-primaire): #7c3aed;\nc) :root { --couleur-primaire: #7c3aed; }\nd) @var --couleur-primaire: #7c3aed;",
+      "points": 25,
+      "type_quete": "quiz",
+      "icone": "🎨",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [102]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 207,
+    "fields": {
+      "titre": "Quiz CSS3 — Animations & Transitions",
+      "description": "Créer des animations fluides avec CSS3.",
+      "instructions": "Quelle propriété CSS contrôle la VITESSE de progression d'une animation (lente au début, rapide au milieu) ?\na) animation-speed: ease-in;\nb) animation-timing-function: ease-in-out;\nc) transition-curve: ease;\nd) animation-pace: accelerate;",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "✨",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [102]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 208,
+    "fields": {
+      "titre": "Quiz CSS3 — Responsive & Media Queries",
+      "description": "Créer des designs adaptatifs avec les media queries.",
+      "instructions": "Quelle media query applique des styles UNIQUEMENT si la largeur d'écran est entre 768px et 1024px ?\na) @media (width: 768px and 1024px)\nb) @media screen and (min-width: 768px) and (max-width: 1024px)\nc) @media (768px < width < 1024px)\nd) @responsive (768, 1024)",
+      "points": 30,
+      "type_quete": "quiz",
+      "icone": "📱",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [102, 105]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 209,
+    "fields": {
+      "titre": "Quiz Responsive — Mobile First",
+      "description": "L'approche mobile-first et les unités relatives.",
+      "instructions": "Dans une approche mobile-first, dans quel ordre écrit-on les media queries ?\na) Du plus grand au plus petit écran\nb) Du plus petit au plus grand écran\nc) Par ordre alphabétique\nd) L'ordre n'a aucune importance",
+      "points": 20,
+      "type_quete": "quiz",
+      "icone": "📲",
+      "difficulte": 1,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [105]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 210,
+    "fields": {
+      "titre": "Quiz Responsive — Unités CSS",
+      "description": "Différences entre px, em, rem, vw, vh et leurs usages.",
+      "instructions": "Quelle unité CSS est relative à la taille de police de l'ÉLÉMENT RACINE (html) ?\na) em\nb) %\nc) rem\nd) vw",
+      "points": 25,
+      "type_quete": "quiz",
+      "icone": "📏",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [105]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 211,
+    "fields": {
+      "titre": "Quiz JS — let, const, var",
+      "description": "Comprendre les différences fondamentales entre les déclarations de variables.",
+      "instructions": "Quel est le résultat de ce code ?\nconsole.log(x);\nvar x = 5;\n\na) ReferenceError\nb) undefined\nc) 5\nd) null",
+      "points": 25,
+      "type_quete": "quiz",
+      "icone": "📦",
+      "difficulte": 2,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 212,
+    "fields": {
+      "titre": "Quiz JS — Closures",
+      "description": "Comprendre les fermetures (closures) en JavaScript.",
+      "instructions": "Que retourne ce code ?\nfunction compteur() {\n  let n = 0;\n  return function() { return ++n; };\n}\nconst c = compteur();\nconsole.log(c(), c(), c());\n\na) 1 1 1\nb) 1 2 3\nc) 0 1 2\nd) undefined",
+      "points": 40,
+      "type_quete": "quiz",
+      "icone": "🔒",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 213,
+    "fields": {
+      "titre": "Quiz JS — Destructuring & Spread",
+      "description": "Syntaxe moderne ES6+ pour destructurer et étendre les objets/tableaux.",
+      "instructions": "Que contient la variable b après ce code ?\nconst [a, ...b] = [1, 2, 3, 4, 5];\n\na) [2, 3, 4, 5]\nb) 2\nc) [1, 2, 3, 4]\nd) [3, 4, 5]",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "🔀",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "a"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 214,
+    "fields": {
+      "titre": "Quiz JS — Arrow Functions & this",
+      "description": "Comprendre le comportement de 'this' dans les arrow functions.",
+      "instructions": "Dans une arrow function, que représente 'this' ?\na) L'objet window\nb) L'objet qui a appelé la fonction\nc) Le contexte lexical (là où la fonction est définie)\nd) undefined en mode strict",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "➡️",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 215,
+    "fields": {
+      "titre": "Quiz JS — Prototypes & Classes",
+      "description": "Héritage prototypal et syntaxe des classes ES6.",
+      "instructions": "Quelle est la différence principale entre une classe ES6 et une fonction constructeur ?\na) Les classes ES6 sont compilées en C++\nb) Les classes ES6 ne peuvent pas être héritées\nc) Les classes ES6 ne sont pas hoistées (hissées)\nd) Il n'y a aucune différence, c'est purement syntaxique",
+      "points": 45,
+      "type_quete": "quiz",
+      "icone": "🏗️",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 216,
+    "fields": {
+      "titre": "Quiz DOM — Sélecteurs",
+      "description": "Sélectionner des éléments du DOM efficacement.",
+      "instructions": "Quelle méthode retourne UN SEUL élément correspondant à un sélecteur CSS ?\na) document.getElementsByClassName()\nb) document.querySelectorAll()\nc) document.querySelector()\nd) document.getElementById() uniquement",
+      "points": 20,
+      "type_quete": "quiz",
+      "icone": "🎯",
+      "difficulte": 1,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [104]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 217,
+    "fields": {
+      "titre": "Quiz DOM — Event Bubbling",
+      "description": "Comprendre la propagation des événements dans le DOM.",
+      "instructions": "Vous avez un bouton dans un div. En cliquant sur le bouton, les deux handlers se déclenchent. Pour STOPPER la propagation vers le div, que fait-on dans le handler du bouton ?\na) event.preventDefault()\nb) event.stopPropagation()\nc) event.stopBubbling()\nd) return false",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "🫧",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [104]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 218,
+    "fields": {
+      "titre": "Quiz DOM — Délégation d'événements",
+      "description": "Technique avancée pour gérer les événements efficacement.",
+      "instructions": "Pourquoi utilise-t-on la délégation d'événements ?\na) Pour éviter les conflits entre handlers\nb) Pour gérer les événements sur des éléments créés dynamiquement et réduire le nombre de listeners\nc) Pour que les événements se déclenchent plus vite\nd) Pour empêcher le bubbling automatiquement",
+      "points": 40,
+      "type_quete": "quiz",
+      "icone": "📡",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [104]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 219,
+    "fields": {
+      "titre": "Quiz DOM — Manipulation avancée",
+      "description": "Créer, modifier et supprimer des éléments du DOM.",
+      "instructions": "Quelle est la méthode la plus performante pour insérer un grand nombre d'éléments dans le DOM ?\na) Faire un document.createElement() dans une boucle et appendChild() à chaque itération\nb) Utiliser innerHTML avec une grande chaîne\nc) Créer un DocumentFragment, y ajouter tous les éléments, puis l'insérer une seule fois\nd) Utiliser document.write()",
+      "points": 45,
+      "type_quete": "quiz",
+      "icone": "⚡",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [104]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 220,
+    "fields": {
+      "titre": "Quiz JS Async — Promises",
+      "description": "Comprendre les Promises et la gestion asynchrone.",
+      "instructions": "Que retourne une fonction async qui contient 'return 42' ?\na) 42\nb) undefined\nc) Une Promise résolue avec la valeur 42\nd) Une Promise rejetée",
+      "points": 35,
+      "type_quete": "quiz",
+      "icone": "🔄",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"reponse_correcte": "c"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [106]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 221,
+    "fields": {
+      "titre": "Quiz JS Async — Event Loop",
+      "description": "L'event loop JavaScript et l'ordre d'exécution du code asynchrone.",
+      "instructions": "Dans quel ordre s'affiche ?\nconsole.log('A');\nsetTimeout(() => console.log('B'), 0);\nPromise.resolve().then(() => console.log('C'));\nconsole.log('D');\n\na) A B C D\nb) A D C B\nc) A D B C\nd) A C D B",
+      "points": 50,
+      "type_quete": "quiz",
+      "icone": "🔁",
+      "difficulte": 5,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [106]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 222,
+    "fields": {
+      "titre": "Quiz JS Async — Fetch API",
+      "description": "Utiliser l'API Fetch pour faire des requêtes HTTP.",
+      "instructions": "Que se passe-t-il si un serveur répond avec un code HTTP 404 lors d'un fetch() ?\na) La Promise est rejetée automatiquement\nb) La Promise est résolue, response.ok vaut false\nc) Une exception est levée\nd) La Promise est rejetée avec un TypeError",
+      "points": 40,
+      "type_quete": "quiz",
+      "icone": "🌐",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "b"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [106]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 223,
+    "fields": {
+      "titre": "Quiz JS Async — async/await avancé",
+      "description": "Gestion des erreurs et cas complexes avec async/await.",
+      "instructions": "Comment gérer correctement les erreurs avec async/await ?\na) if (result.error) { ... }\nb) try { await maFonction(); } catch(e) { ... }\nc) maFonction().catch(e => ...)\nd) Les réponses b et c sont toutes les deux correctes",
+      "points": 40,
+      "type_quete": "quiz",
+      "icone": "🛡️",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"reponse_correcte": "d"},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [106]
+    }
+  },
+
+  {
+    "model": "api.quete",
+    "pk": 224,
+    "fields": {
+      "titre": "Projet HTML/CSS — Page Portfolio",
+      "description": "Créez une page portfolio responsive avec HTML5 sémantique et CSS3.",
+      "instructions": "Créez un repo GitHub 'portfolio-devweb' contenant une page index.html avec :\n- Structure sémantique : header, nav, main, section, footer\n- Au moins 1 media query (mobile/desktop)\n- Variables CSS custom\n- Au moins une animation CSS\nSoumettez le nom du repo.",
+      "points": 80,
+      "type_quete": "github_repo",
+      "icone": "💼",
+      "difficulte": 3,
+      "active": true,
+      "validation_config": {"fichiers_requis": ["index.html"]},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [101, 102, 105]
+    }
+  },
+  {
+    "model": "api.quete",
+    "pk": 225,
+    "fields": {
+      "titre": "Projet JS — Todo App dynamique",
+      "description": "Créez une application Todo en JavaScript pur sans framework.",
+      "instructions": "Créez un repo GitHub 'todo-app-vanilla-js' avec :\n- Ajout/suppression de tâches via le DOM\n- Persistance avec localStorage\n- Filtres (tout / actif / complété)\n- Utilisation de fetch pour sauvegarder sur une API publique (jsonplaceholder)\nSoumettez le nom du repo.",
+      "points": 100,
+      "type_quete": "github_repo",
+      "icone": "✅",
+      "difficulte": 4,
+      "active": true,
+      "validation_config": {"fichiers_requis": ["index.html", "app.js"]},
+      "filieres_cibles": ["informatique"],
+      "competences_debloquees": [103, 104, 106]
+    }
+  }
+]
