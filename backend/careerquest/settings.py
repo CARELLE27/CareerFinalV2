@@ -3,8 +3,8 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
-DEBUG = os.environ.get('DEBUG', '1') == '1'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-prod')
+DEBUG      = os.environ.get('DEBUG', '1') == '1'
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -16,12 +16,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'whitenoise.runserver_nostatic',   # ✅ Render
     'api',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # ✅ Render — juste après security
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -44,16 +46,32 @@ TEMPLATES = [{
     ]},
 }]
 
-DATABASES = {
-    'default': {
-        'ENGINE':   'django.db.backends.postgresql',
-        'NAME':     'careerquest',
-        'USER':     'admin',
-        'PASSWORD': 'password123',
-        'HOST':     'db',
-        'PORT':     '5432',
+# ✅ Base de données — locale Docker OU Render via DATABASE_URL
+import dj_database_url
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # ── Render production ──
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
-}
+else:
+    # ── Docker local ──
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql',
+            'NAME':     'careerquest',
+            'USER':     'admin',
+            'PASSWORD': 'password123',
+            'HOST':     'db',
+            'PORT':     '5432',
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -65,6 +83,11 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-STATIC_URL = '/static/'
+
+# ✅ Fichiers statiques — Render
+STATIC_URL  = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'api.User'
+AUTH_USER_MODEL    = 'api.User'

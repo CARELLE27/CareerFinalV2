@@ -5,3 +5,6 @@ psycopg2-binary
 python-decouple
 djangorestframework-simplejwt
 requests
+gunicorn
+whitenoise
+dj-database-url
